@@ -1,0 +1,31 @@
+# NoSwear Config. NOTE: Banning will override Kick. Leave kick = false and ban = false for unlimited warnings
+CheckForUpdates: true
+SpamBlocker:
+  Enabled: true
+CapsBlocker:
+  Enabled: true
+  MinPercent: 50
+ResetWarnings:
+  onKick: true
+OnJoin:
+  Broadcast: true
+  WarningsLeft: true
+OnSwear:
+  Prevent: true
+  Ban: false
+  Kick: true
+Block:
+  Websites: true
+  Strict: false
+  Characters: false
+  General: true
+Warnings:
+  Default: 3
+Message:
+  Ban: 'Banned for Swearing '
+  Kick: 'Do not swear '
+  Muted: You have been muted!
+  Warn: 'Do not swear '
+  Join: Protects this server!
+  Spam: Please do not spam!
+Muted: []

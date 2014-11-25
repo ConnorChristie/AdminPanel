@@ -1,0 +1,158 @@
+2014-08-27 14:58:38 [INFO] Starting minecraft server version 1.6.4
+2014-08-27 14:58:38 [INFO] Loading properties
+2014-08-27 14:58:38 [WARNING] server.properties does not exist
+2014-08-27 14:58:38 [INFO] Generating new properties file
+2014-08-27 14:58:38 [INFO] Default game type: SURVIVAL
+2014-08-27 14:58:38 [INFO] Generating keypair
+2014-08-27 14:58:38 [INFO] Starting Minecraft server on *:25565
+2014-08-27 14:58:38 [WARNING] **** FAILED TO BIND TO PORT!
+2014-08-27 14:58:38 [WARNING] The exception was: java.net.BindException: Address already in use: JVM_Bind
+2014-08-27 14:58:38 [WARNING] Perhaps a server is already running on that port?
+2014-08-27 14:59:38 [SEVERE] java.lang.NullPointerException
+2014-08-27 14:59:38 [SEVERE] 	at net.minecraft.server.v1_6_R3.DedicatedServer.as(DedicatedServer.java:259)
+2014-08-27 14:59:38 [SEVERE] 	at net.minecraft.server.v1_6_R3.DedicatedServer.a(DedicatedServer.java:205)
+2014-08-27 14:59:38 [SEVERE] 	at net.minecraft.server.v1_6_R3.MinecraftServer.run(MinecraftServer.java:428)
+2014-08-27 14:59:38 [SEVERE] 	at net.minecraft.server.v1_6_R3.ThreadServerApplication.run(SourceFile:583)
+2014-08-27 14:59:38 [SEVERE] Encountered an unexpected exception NullPointerException
+java.lang.NullPointerException
+	at net.minecraft.server.v1_6_R3.DedicatedServer.as(DedicatedServer.java:259)
+	at net.minecraft.server.v1_6_R3.DedicatedServer.a(DedicatedServer.java:205)
+	at net.minecraft.server.v1_6_R3.MinecraftServer.run(MinecraftServer.java:428)
+	at net.minecraft.server.v1_6_R3.ThreadServerApplication.run(SourceFile:583)
+2014-08-27 14:59:38 [SEVERE] This crash report has been saved to: F:\Users\Connor\Workspace-luna\McAdminPanel\.\crash-reports\crash-2014-08-27_14.59.38-server.txt
+2014-08-27 14:59:38 [INFO] Stopping server
+2014-08-27 14:59:38 [INFO] Saving worlds
+2014-08-27 14:59:38 [INFO] Stopping server
+2014-08-27 15:00:20 [INFO] Starting minecraft server version 1.6.4
+2014-08-27 15:00:20 [INFO] Loading properties
+2014-08-27 15:00:20 [INFO] Default game type: SURVIVAL
+2014-08-27 15:00:20 [INFO] Generating keypair
+2014-08-27 15:00:21 [INFO] Starting Minecraft server on *:25565
+2014-08-27 15:00:21 [WARNING] **** FAILED TO BIND TO PORT!
+2014-08-27 15:00:21 [WARNING] The exception was: java.net.BindException: Address already in use: JVM_Bind
+2014-08-27 15:00:21 [WARNING] Perhaps a server is already running on that port?
+2014-08-27 15:01:34 [SEVERE] java.lang.NullPointerException
+2014-08-27 15:01:34 [SEVERE] 	at net.minecraft.server.v1_6_R3.DedicatedServer.as(DedicatedServer.java:259)
+2014-08-27 15:01:34 [SEVERE] 	at net.minecraft.server.v1_6_R3.DedicatedServer.a(DedicatedServer.java:205)
+2014-08-27 15:01:34 [SEVERE] 	at net.minecraft.server.v1_6_R3.MinecraftServer.run(MinecraftServer.java:428)
+2014-08-27 15:01:34 [SEVERE] 	at net.minecraft.server.v1_6_R3.ThreadServerApplication.run(SourceFile:583)
+2014-08-27 15:01:34 [SEVERE] Encountered an unexpected exception NullPointerException
+java.lang.NullPointerException
+	at net.minecraft.server.v1_6_R3.DedicatedServer.as(DedicatedServer.java:259)
+	at net.minecraft.server.v1_6_R3.DedicatedServer.a(DedicatedServer.java:205)
+	at net.minecraft.server.v1_6_R3.MinecraftServer.run(MinecraftServer.java:428)
+	at net.minecraft.server.v1_6_R3.ThreadServerApplication.run(SourceFile:583)
+2014-08-27 15:01:34 [SEVERE] This crash report has been saved to: F:\Users\Connor\Workspace-luna\McAdminPanel\.\crash-reports\crash-2014-08-27_15.01.34-server.txt
+2014-08-27 15:01:34 [INFO] Stopping server
+2014-08-27 15:01:34 [INFO] Saving worlds
+2014-08-27 15:08:02 [INFO] Starting minecraft server version 1.6.4
+2014-08-27 15:08:02 [INFO] Loading properties
+2014-08-27 15:08:02 [INFO] Default game type: SURVIVAL
+2014-08-27 15:08:02 [INFO] Generating keypair
+2014-08-27 15:08:02 [INFO] Starting Minecraft server on *:25566
+2014-08-27 15:08:02 [WARNING] **** FAILED TO BIND TO PORT!
+2014-08-27 15:08:02 [WARNING] The exception was: java.net.BindException: Address already in use: JVM_Bind
+2014-08-27 15:08:02 [WARNING] Perhaps a server is already running on that port?
+2014-08-27 15:08:06 [SEVERE] java.lang.NullPointerException
+2014-08-27 15:08:06 [SEVERE] 	at net.minecraft.server.v1_6_R3.DedicatedServer.as(DedicatedServer.java:259)
+2014-08-27 15:08:06 [SEVERE] 	at net.minecraft.server.v1_6_R3.DedicatedServer.a(DedicatedServer.java:205)
+2014-08-27 15:08:06 [SEVERE] 	at net.minecraft.server.v1_6_R3.MinecraftServer.run(MinecraftServer.java:428)
+2014-08-27 15:08:06 [SEVERE] 	at net.minecraft.server.v1_6_R3.ThreadServerApplication.run(SourceFile:583)
+2014-08-27 15:08:06 [SEVERE] Encountered an unexpected exception NullPointerException
+java.lang.NullPointerException
+	at net.minecraft.server.v1_6_R3.DedicatedServer.as(DedicatedServer.java:259)
+	at net.minecraft.server.v1_6_R3.DedicatedServer.a(DedicatedServer.java:205)
+	at net.minecraft.server.v1_6_R3.MinecraftServer.run(MinecraftServer.java:428)
+	at net.minecraft.server.v1_6_R3.ThreadServerApplication.run(SourceFile:583)
+2014-08-27 15:08:06 [SEVERE] This crash report has been saved to: F:\Users\Connor\Workspace-luna\McAdminPanel\.\crash-reports\crash-2014-08-27_15.08.06-server.txt
+2014-08-27 15:08:06 [INFO] Stopping server
+2014-08-27 15:08:06 [INFO] Saving worlds
+2014-08-27 15:08:06 [INFO] Stopping server
+2014-08-27 15:08:24 [INFO] Starting minecraft server version 1.6.4
+2014-08-27 15:08:24 [INFO] Loading properties
+2014-08-27 15:08:24 [INFO] Default game type: SURVIVAL
+2014-08-27 15:08:24 [INFO] Generating keypair
+2014-08-27 15:08:25 [INFO] Starting Minecraft server on *:25566
+2014-08-27 15:08:25 [INFO] This server is running CraftBukkit version git-Bukkit-1.6.4-R2.0-b2918jnks (MC: 1.6.4) (Implementing API version 1.6.4-R2.0)
+2014-08-27 15:08:25 [INFO] Preparing level "world"
+2014-08-27 15:08:25 [INFO] Preparing start region for level 0 (Seed: 1340287716919242321)
+2014-08-27 15:08:26 [INFO] Preparing start region for level 1 (Seed: 1340287716919242321)
+2014-08-27 15:08:26 [INFO] Preparing start region for level 2 (Seed: 1340287716919242321)
+2014-08-27 15:08:26 [INFO] Server permissions file permissions.yml is empty, ignoring it
+2014-08-27 15:08:26 [INFO] Done (1.421s)! For help, type "help" or "?"
+2014-08-27 15:08:36 [INFO] CONSOLE: Stopping the server..
+2014-08-27 15:08:36 [INFO] Stopping server
+2014-08-27 15:08:36 [INFO] Saving players
+2014-08-27 15:08:36 [WARNING] DSCT: socket closed
+2014-08-27 15:08:36 [INFO] Saving worlds
+2014-08-27 15:08:36 [INFO] Closing listening thread
+2014-08-27 15:08:36 [INFO] Saving chunks for level 'world'/Overworld
+2014-08-27 15:08:37 [INFO] Saving chunks for level 'world_nether'/Nether
+2014-08-27 15:08:37 [INFO] Saving chunks for level 'world_the_end'/The End
+2014-08-30 22:05:44 [INFO] Starting minecraft server version 1.6.4
+2014-08-30 22:05:44 [INFO] Loading properties
+2014-08-30 22:05:44 [INFO] Default game type: SURVIVAL
+2014-08-30 22:05:44 [INFO] Generating keypair
+2014-08-30 22:05:45 [INFO] Starting Minecraft server on *:25566
+2014-08-30 22:05:45 [INFO] This server is running CraftBukkit version git-Bukkit-1.6.4-R2.0-b2918jnks (MC: 1.6.4) (Implementing API version 1.6.4-R2.0)
+2014-08-30 22:05:45 [SEVERE] Could not load 'plugins\ABroadcast.jar' in folder 'plugins'
+org.bukkit.plugin.InvalidDescriptionException: Invalid plugin.yml
+	at org.bukkit.plugin.java.JavaPluginLoader.getPluginDescription(JavaPluginLoader.java:247)
+	at org.bukkit.plugin.SimplePluginManager.loadPlugins(SimplePluginManager.java:132)
+	at org.bukkit.craftbukkit.v1_6_R3.CraftServer.loadPlugins(CraftServer.java:241)
+	at org.bukkit.craftbukkit.v1_6_R3.CraftServer.<init>(CraftServer.java:219)
+	at net.minecraft.server.v1_6_R3.PlayerList.<init>(PlayerList.java:56)
+	at net.minecraft.server.v1_6_R3.DedicatedPlayerList.<init>(SourceFile:11)
+	at net.minecraft.server.v1_6_R3.DedicatedServer.init(DedicatedServer.java:107)
+	at net.minecraft.server.v1_6_R3.MinecraftServer.run(MinecraftServer.java:393)
+	at net.minecraft.server.v1_6_R3.ThreadServerApplication.run(SourceFile:583)
+Caused by: java.io.FileNotFoundException: Jar does not contain plugin.yml
+	... 9 more
+2014-08-30 22:05:45 [INFO] [AdminChat] Loading AdminChat v0.2
+2014-08-30 22:05:45 [INFO] AChat version R0.2 by Rodolffo loaded
+2014-08-30 22:05:45 [INFO] [Admincanbroadcast] Loading Admincanbroadcast v3.3
+2014-08-30 22:05:45 [INFO] [AdminFun] Loading AdminFun v2.2.3
+2014-08-30 22:05:45 [INFO] [AntiAutoSoup] Loading AntiAutoSoup v1.3.3
+2014-08-30 22:05:45 [INFO] [NoSwear] Loading NoSwear v6.1
+2014-08-30 22:05:45 [INFO] Preparing level "world"
+2014-08-30 22:05:45 [INFO] Preparing start region for level 0 (Seed: 1340287716919242321)
+2014-08-30 22:05:46 [INFO] Preparing start region for level 1 (Seed: 1340287716919242321)
+2014-08-30 22:05:47 [INFO] Preparing start region for level 2 (Seed: 1340287716919242321)
+2014-08-30 22:05:47 [INFO] [AdminChat] Enabling AdminChat v0.2
+2014-08-30 22:05:47 [INFO] [Admincanbroadcast] Enabling Admincanbroadcast v3.3
+2014-08-30 22:05:48 [INFO] Loading done
+2014-08-30 22:05:48 [INFO] [AdminFun] Enabling AdminFun v2.2.3
+2014-08-30 22:05:48 [INFO] [AdminFun] AdminFun's metrics system is enabled!
+2014-08-30 22:05:48 [INFO] [AdminFun] +-----------------------------------+
+2014-08-30 22:05:48 [INFO] [AdminFun] | AdminFun v2.2.3 has been enabled! |
+2014-08-30 22:05:48 [INFO] [AdminFun] +-----------------------------------+
+2014-08-30 22:05:48 [INFO] [AntiAutoSoup] Enabling AntiAutoSoup v1.3.3
+2014-08-30 22:05:48 [INFO] [NoSwear] Enabling NoSwear v6.1
+2014-08-30 22:05:48 [INFO] [NoSwear] Creating words.yml
+2014-08-30 22:05:48 [INFO] [NoSwear] Done
+2014-08-30 22:05:48 [INFO] [NoSwear] Enabled! Config Loaded! Kicking!
+2014-08-30 22:05:48 [INFO] Server permissions file permissions.yml is empty, ignoring it
+2014-08-30 22:05:48 [INFO] Done (3.006s)! For help, type "help" or "?"
+2014-08-30 22:05:53 [INFO] CONSOLE: Stopping the server..
+2014-08-30 22:05:53 [INFO] Stopping server
+2014-08-30 22:05:53 [INFO] [NoSwear] Disabling NoSwear v6.1
+2014-08-30 22:05:53 [INFO] [NoSwear] Disabled!
+2014-08-30 22:05:53 [INFO] [AntiAutoSoup] Disabling AntiAutoSoup v1.3.3
+2014-08-30 22:05:53 [INFO] [AdminFun] Disabling AdminFun v2.2.3
+2014-08-30 22:05:53 [INFO] [AdminFun] +------------------------------------+
+2014-08-30 22:05:53 [INFO] [AdminFun] | AdminFun v2.2.3 has been disabled! |
+2014-08-30 22:05:53 [INFO] [AdminFun] +------------------------------------+
+2014-08-30 22:05:53 [INFO] [Admincanbroadcast] Disabling Admincanbroadcast v3.3
+2014-08-30 22:05:53 [INFO] [Admincanbroadcast] Error
+2014-08-30 22:05:53 [INFO] [AdminChat] Disabling AdminChat v0.2
+2014-08-30 22:05:53 [INFO] Saving players
+2014-08-30 22:05:53 [INFO] Saving worlds
+2014-08-30 22:05:53 [WARNING] DSCT: socket closed
+2014-08-30 22:05:53 [INFO] Saving chunks for level 'world'/Overworld
+2014-08-30 22:05:53 [INFO] Closing listening thread
+2014-08-30 22:05:54 [INFO] Saving chunks for level 'world_nether'/Nether
+2014-08-30 22:05:54 [INFO] Saving chunks for level 'world_the_end'/The End
+2014-08-30 22:05:54 [INFO] Stopping server
+2014-08-30 22:05:54 [INFO] Saving players
+2014-08-30 22:05:54 [INFO] Saving worlds
+2014-08-30 22:05:54 [INFO] Saving chunks for level 'world'/Overworld

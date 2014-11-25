@@ -1,0 +1,35 @@
+# +----------------------------------------------------+ #
+# |            AdminFun Main Configuration             | #
+# |                   By: Trevor1134                   | #
+# |                   Version: 2.2.3                   | #
+# +----------------------------------------------------+ #
+
+log-fake-joins: true
+log-fake-quits: true
+rocket-message:
+- Well this can't be good...
+- How's the weather up there?
+- I believe I can fly!
+- You have been launched into the air!
+drop-part-amount: 15
+dropparty-items:
+- 276
+- 264
+- 267
+- 266
+- 310
+- 312
+- 311
+- 313
+- 322
+- 314
+- 317
+- 316
+- 315
+- 278
+- 266
+max-slap-size: 15
+god-bold: false
+check-for-updates: true
+automatic-updates: false
+firework-amount: 15

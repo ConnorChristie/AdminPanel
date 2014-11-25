@@ -1,0 +1,9 @@
+installed: false
+ip_address: 127.0.0.1
+web_port: 80
+http_vars:
+  servername: ChillerCraft
+  bg_imgs_show: true
+  bg_imgs:
+  - /images/white-bg.png
+  bg_color: '#f1f1f1'
