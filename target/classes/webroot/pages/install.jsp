@@ -17,14 +17,19 @@
 				</div>
 				<div class="col-sm-4 form-group">
 					<label for="webport">McAdminPanel Port (Ex: 80)</label>
-					<input type="text" class="form-control" id="webport" name="webport" placeholder="Enter McAdminPanel Port" required>
+					<input type="number" class="form-control" id="webport" name="webport" placeholder="Enter McAdminPanel Port" required>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-8 form-group">
+				<div class="col-sm-6 form-group">
+					<label for="cbname">Server Name</label>
+					<input type="text" class="form-control" id="cbname" name="cbname" placeholder="Enter Server Name">
+				</div>
+				<div class="col-sm-6 form-group">
 					<label for="cbfile">Server Jar File (Ex: C:\Users\Connor\Desktop\McAdminPanel\craftbukkit.jar)</label>
 					<input type="text" class="form-control" id="cbfile" name="cbfile" placeholder="Enter Server Jar File">
 				</div>
+				<!--
 				<div class="col-sm-4 form-group">
 					<label for="cbinstall">Install CraftBukkit for me</label>
 					<select class="form-control" id="cbinstall" name="cbinstall">
@@ -34,7 +39,9 @@
 						<option value="dev">Yes, latest CraftBukkit Development</option>
 					</select>
 				</div>
+				 -->
 			</div>
+			<br />
 			<div class="row">
 				<div class="col-sm-6 form-group">
 					<label for="mcname">Minecraft Username</label>
@@ -49,6 +56,7 @@
 				<label for="tmcpassconf">Confirm Password</label>
 				<input type="password" class="form-control" id="tmcpassconf" name="tmcpassconf" placeholder="Confirm Password" required>
 			</div>
+			<br />
 			<div class="row">
 				<div class="col-sm-6 form-group">
 					<label for="licemail">License Email (Optional)</label>

@@ -21,23 +21,26 @@ public class IndexController extends Controller
 {
 	public void index() throws IOException
 	{
-		if (request.getAttribute("tabs") == null)
-			request.setAttribute("tabs", getTabs());
-		
-		Object includeSidebar = request.getAttribute("includeSidebar");
-		
-		if (includeSidebar != null && (Boolean) includeSidebar)
-			setOnlinePlayers();
-		
-		request.setAttribute("chats", getChats(bukkitServer));
-		
-		if (isLoggedIn() && user.getGroup().hasPermission("server.console.view"))
-			request.setAttribute("console", getConsole(bukkitServer));
-		
-		if (isLoggedIn() && user.getGroup().hasPermission("server.whitelist.view"))
-			request.setAttribute("applications", db.find(Application.class).findRowCount());
-		
-		request.setAttribute("servers", getServers());
+		if (!request.getPathInfo().contains("install"))
+		{
+			if (request.getAttribute("tabs") == null)
+				request.setAttribute("tabs", getTabs());
+			
+			Object includeSidebar = request.getAttribute("includeSidebar");
+			
+			if (includeSidebar != null && (Boolean) includeSidebar)
+				setOnlinePlayers();
+			
+			request.setAttribute("chats", getChats(bukkitServer));
+			
+			if (isLoggedIn() && user.getGroup().hasPermission("server.console.view"))
+				request.setAttribute("console", getConsole(bukkitServer));
+			
+			if (isLoggedIn() && user.getGroup().hasPermission("server.whitelist.view"))
+				request.setAttribute("applications", db.find(Application.class).findRowCount());
+			
+			request.setAttribute("servers", getServers());
+		}
 	}
 	
 	private List<String> getTabs()

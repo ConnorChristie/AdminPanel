@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
+import com.mcapanel.bukkit.BukkitServer;
+import com.mcapanel.panel.AdminPanelWrapper;
 import com.mcapanel.web.database.Server;
 import com.mcapanel.web.handlers.Controller;
 
@@ -36,6 +38,12 @@ public class ServerController extends Controller
 				
 				Server server = new Server(serverName, serverJar);
 				db.save(server);
+				
+				BukkitServer bukkitServer = new BukkitServer(server);
+				
+				AdminPanelWrapper.getInstance().servers.put(server.getId(), bukkitServer);
+				
+				bukkitServer.setupBackups();
 				
 				ret.put("good", "Successfully added your new server!");
 			} else

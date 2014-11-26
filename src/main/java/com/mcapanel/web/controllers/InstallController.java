@@ -11,8 +11,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.simple.JSONObject;
 
+import com.mcapanel.bukkit.BukkitServer;
 import com.mcapanel.bukkit.BukkitVersion;
+import com.mcapanel.panel.AdminPanelWrapper;
 import com.mcapanel.web.database.Group;
+import com.mcapanel.web.database.Server;
 import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.Controller;
 
@@ -54,6 +57,8 @@ public class InstallController extends Controller
 			{
 				String serverIp = request.getParameter("serverip");
 				String webPort = request.getParameter("webport");
+				
+				String cbName = request.getParameter("cbname");
 				String cbFile = request.getParameter("cbfile");
 				String cbInstall = request.getParameter("cbinstall");
 				
@@ -75,9 +80,16 @@ public class InstallController extends Controller
 					
 					loginUser(u);
 					
-					config.setValue("installed", "true");
-					config.setValue("server-jar", cbFile);
+					Server server = new Server(cbName, cbFile);
+					db.save(server);
 					
+					BukkitServer bukkitServer = new BukkitServer(server);
+					
+					AdminPanelWrapper.getInstance().servers.put(server.getId(), bukkitServer);
+					
+					bukkitServer.setupBackups();
+					
+					config.setValue("installed", "true");
 					config.setValue("server-ip", serverIp);
 					config.setValue("web-port", webPort);
 					

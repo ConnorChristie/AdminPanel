@@ -31,6 +31,9 @@ public class Server
 	{
 		this.name = name;
 		this.serverJar = serverJar;
+		
+		this.minMemory = "1024m";
+		this.maxMemory = "2048m";
 	}
 
 	public int getId()

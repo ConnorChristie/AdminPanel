@@ -21,21 +21,14 @@ public class Config
     {
         configFile = new File("McAdminPanel", "mcadminpanel.properties");
         
-        configDefaults.put("server-jar", "");
-        
         configDefaults.put("server-ip", "localhost");
         configDefaults.put("web-port", "80");
         
         configDefaults.put("installed", "false");
         configDefaults.put("restart-on-error", "true");
         
-        configDefaults.put("min-memory", "1024m");
-        configDefaults.put("max-memory", "4096m");
-        
         loadConfig();
-        
         copyDefaults();
-        
         saveConfig();
     }
     

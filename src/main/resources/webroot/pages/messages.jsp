@@ -1,19 +1,4 @@
-<!-- <script src="/js/viewjs/messages.js"></script> -->
-
-<script>
-$(function() {
-	$("#webmessages").dataTable({
-		"bLengthChange": false,
-		stateSave: true
-	});
-	
-	$("#webmessages tbody").on("click", "tr", function(e) {
-		window.location = "/message/view/" + $(this).find("td:first").text();
-		
-		return false;
-	});
-});
-</script>
+<script src="/js/viewjs/messages.js"></script>
 
 <div class="panel panel-default">
 	<div class="panel-heading">

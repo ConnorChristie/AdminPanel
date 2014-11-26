@@ -45,13 +45,13 @@ public class AppServlet extends HttpServlet
 		try
 		{
 			id = (Integer) request.getSession().getAttribute("chosenServer");
-		} catch (Exception e) { }
+		} catch (Exception e) { id = 1; }
 		
 		BukkitServer bukkitServer = AdminPanelWrapper.getInstance().getServer(id);
 		
 		request.setAttribute("ap", AdminPanelWrapper.getInstance());
 		request.setAttribute("user", getUser());
-		request.setAttribute("connected", bukkitServer.getPluginConnector().connected());
+		request.setAttribute("connected", bukkitServer != null ? bukkitServer.getPluginConnector().connected() : false);
 		
 		boolean[] retBools = callController(bukkitServer);
 		

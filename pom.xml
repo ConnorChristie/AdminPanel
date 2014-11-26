@@ -217,8 +217,8 @@
 
 		<resources>
 			<resource>
-				<targetPath>/webroot</targetPath>
-				<directory>src/main/resources/webroot</directory>
+				<targetPath>.</targetPath>
+				<directory>src/main/resources/.</directory>
 			</resource>
 		</resources>
 	</build>

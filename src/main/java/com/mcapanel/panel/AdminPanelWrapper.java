@@ -80,7 +80,7 @@ public class AdminPanelWrapper
 	private TinyUrl tinyUrl;
 	//private BackupHandler backupHandler;
 	
-	private Map<Integer, BukkitServer> servers = new HashMap<Integer, BukkitServer>();
+	public Map<Integer, BukkitServer> servers = new HashMap<Integer, BukkitServer>();
 	
 	/*
 	private File serverJar;
@@ -439,35 +439,22 @@ public class AdminPanelWrapper
 			installDDL();
 			
 			Group g = new Group("Ghost");
-			
 			g.setGhost(true);
 			g.setWhitelistDefault(true);
-			g.addPermission("none");
-			
+			g.setPermissions("server.chat.view;server.players.view;");
 			getDatabase().save(g);
 			
 			g = new Group("Player");
-			
 			g.setExistingDefault(true);
-			g.addPermission("chat");
-			
+			g.setPermissions("server.chat.view;server.chat.issue;server.players.view;");
 			getDatabase().save(g);
 			
 			g = new Group("Moderator");
-			
-			g.addPermission("chat");
-			g.addPermission("usage");
-			g.addPermission("control");
-			g.addPermission("plugins");
-			g.addPermission("editplayer");
-			g.addPermission("applications");
-			
+			g.setPermissions("server.chat.view;server.chat.issue;server.console.view;server.reload;server.properties.view;server.whitelist.view;server.whitelist.edit;server.players.view;server.players.healfeed;server.players.kill;server.players.kick;server.players.ban;server.plugins.view;server.plugins.edit;server.backups.view;server.backups.schedule.issue;web.users.view;web.users.whiteblack;web.groups.view;web.messages.view;web.messages.respond;mcapanel.properties.view;");
 			getDatabase().save(g);
 			
 			g = new Group("Admin");
-			
-			g.addPermission("*");
-			
+			g.setPermissions("server.chat.view;server.chat.issue;server.console.view;server.console.issue;server.controls;server.reload;server.usage;server.properties.view;server.properties.edit;server.properties.add;server.whitelist.view;server.whitelist.edit;server.players.view;server.players.healfeed;server.players.kill;server.players.kick;server.plugins.view;server.plugins.control;server.plugins.edit;server.plugins.install;server.plugins.delete;server.backups.view;server.backups.schedule.issue;server.backups.schedule.delete;server.backups.restore;server.backups.delete;web.users.view;web.users.group;web.users.whiteblack;web.users.delete;web.groups.view;web.groups.edit;web.groups.permissions;web.groups.delete;web.messages.view;web.messages.respond;mcapanel.properties.view;mcapanel.properties.edit;");
 			getDatabase().save(g);
 		}
 	}
@@ -607,7 +594,7 @@ public class AdminPanelWrapper
 			
 			if (!config.getBoolean("installed", false))
 			{
-				System.out.println("Goto localhost:" + config.getString("web-port", "80") + ", to start the setup.");
+				System.out.println("Goto http://localhost:" + config.getString("web-port", "80") + " in a browser to start the setup.");
 			}
 		} catch (BindException e)
 		{
