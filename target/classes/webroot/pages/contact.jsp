@@ -1,3 +1,4 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="net.tanesha.recaptcha.ReCaptcha"%>
 <%@page import="java.util.Properties"%>
 <%@page import="net.tanesha.recaptcha.ReCaptchaFactory"%>
@@ -12,10 +13,16 @@
 	</div>
 	<div class="panel-body">
 		<form id="contactform" method="post" action="/contact/send">
-			<div class="form-group">
-				<label for="mcname">Minecraft Username</label>
-				<input type="text" class="form-control" style="width: 380px;" id="mcname" name="mcname" placeholder="Enter Username" required>
-			</div>
+			<c:if test="${!loggedIn}">
+				<div class="form-group">
+					<label for="mcname">Minecraft Username</label>
+					<input type="text" class="form-control" style="width: 380px;" id="mcname" name="mcname" placeholder="Enter Username" required>
+				</div>
+			</c:if>
+			
+			<c:if test="${loggedIn}">
+				<input type="hidden" name="mcname" value="${user.getUsername()}" />
+			</c:if>
 			
 			<div class="form-group">
 				<label for="subject">Subject</label>

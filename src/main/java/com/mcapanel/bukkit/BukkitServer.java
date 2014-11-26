@@ -277,6 +277,8 @@ public class BukkitServer
 			});
 			
 			processBuilder.directory(serverJar.getParentFile());
+			
+			bukkitConfig = new BukkitConfig(serverJar);
 		}
 	}
 	

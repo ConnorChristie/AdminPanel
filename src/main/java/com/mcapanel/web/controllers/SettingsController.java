@@ -86,6 +86,47 @@ public class SettingsController extends Controller
 				String minmemory = request.getParameter("minmemory");
 				String maxmemory = request.getParameter("maxmemory");
 				
+				bukkitServer.setServerJar(serverjar);
+				bukkitServer.setName(servername);
+				bukkitServer.setMinMemory(minmemory);
+				bukkitServer.setMaxMemory(maxmemory);
+				
+				Server serv = db.find(Server.class, bukkitServer.getId());
+				
+				if (serv != null)
+				{
+					serv.setServerJar(serverjar);
+					serv.setName(servername);
+					serv.setMinMemory(minmemory);
+					serv.setMaxMemory(maxmemory);
+					
+					db.save(serv);
+				}
+				
+				obj.put("good", "Saved all server config settings");
+			} else
+				obj.put("error", "You do not have permission to do that.");
+			
+			response.getWriter().println(obj.toJSONString());
+			
+			return true;
+		}
+		
+		return error();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean saveServerProperties() throws IOException
+	{
+		if (isMethod("POST"))
+		{
+			includeIndex(false);
+			mimeType("application/json");
+			
+			JSONObject obj = new JSONObject();
+			
+			if (canView() && user.getGroup().hasPermission("server.properties.edit"))
+			{
 				String seed = request.getParameter("seed");
 				String serverport = request.getParameter("serverport");
 				String gensettings = request.getParameter("gensettings");
@@ -95,6 +136,7 @@ public class SettingsController extends Controller
 				String genstructures = request.getParameter("genstructures");
 				String worldtype = request.getParameter("worldtype");
 				String difficulty = request.getParameter("difficulty");
+				String onlinemode = request.getParameter("onlinemode");
 				String enablepvp = request.getParameter("enablepvp");
 				String spawnmonsters = request.getParameter("spawnmonsters");
 				String spawnanimals = request.getParameter("spawnmonsters");
@@ -106,55 +148,32 @@ public class SettingsController extends Controller
 				String spawnprotection = request.getParameter("spawnprotection");
 				String snooping = request.getParameter("snooping");
 				
-				if (seed != null && spawnmonsters != null)
-				{
-					BukkitConfig bukkitConfig = bukkitServer.getConfig();
-					
-					bukkitConfig.setValue("level-seed", seed);
-					bukkitConfig.setValue("generator-settings", gensettings);
-					bukkitConfig.setValue("motd", servermotd);
-					bukkitConfig.setValue("server-port", serverport);
-					
-					bukkitConfig.setValue("max-players", maxplayers);
-					bukkitConfig.setValue("generate-structures", genstructures);
-					bukkitConfig.setValue("level-type", worldtype);
-					bukkitConfig.setValue("difficulty", difficulty);
-					bukkitConfig.setValue("pvp", enablepvp);
-					bukkitConfig.setValue("spawn-monsters", spawnmonsters);
-					bukkitConfig.setValue("spawn-animals", spawnanimals);
-					bukkitConfig.setValue("spawn-npcs", spawnnpc);
-					bukkitConfig.setValue("announce-player-achievements", announceachiev);
-					bukkitConfig.setValue("player-idle-timeout", playertimeout);
-					bukkitConfig.setValue("max-build-height", maxheight);
-					bukkitConfig.setValue("view-distance", viewdistance);
-					bukkitConfig.setValue("spawn-protection", spawnprotection);
-					bukkitConfig.setValue("snooper-enabled", snooping);
-					
-					bukkitConfig.saveConfig();
-					
-					obj.put("good", "Saved all server config settings");
-				} else if (serverjar != null && servername != null)
-				{
-					bukkitServer.setServerJar(serverjar);
-					bukkitServer.setName(servername);
-					bukkitServer.setMinMemory(minmemory);
-					bukkitServer.setMaxMemory(maxmemory);
-					
-					Server serv = db.find(Server.class, bukkitServer.getId());
-					
-					if (serv != null)
-					{
-						serv.setServerJar(serverjar);
-						serv.setName(servername);
-						serv.setMinMemory(minmemory);
-						serv.setMaxMemory(maxmemory);
-						
-						db.save(serv);
-					}
-					
-					obj.put("good", "Saved all server config settings");
-				} else
-					obj.put("error", "Could not save any settings.");
+				BukkitConfig bukkitConfig = bukkitServer.getConfig();
+				
+				bukkitConfig.setValue("level-seed", seed);
+				bukkitConfig.setValue("generator-settings", gensettings);
+				bukkitConfig.setValue("motd", servermotd);
+				bukkitConfig.setValue("server-port", serverport);
+				
+				bukkitConfig.setValue("max-players", maxplayers);
+				bukkitConfig.setValue("generate-structures", genstructures);
+				bukkitConfig.setValue("level-type", worldtype);
+				bukkitConfig.setValue("difficulty", difficulty);
+				bukkitConfig.setValue("online-mode", onlinemode);
+				bukkitConfig.setValue("pvp", enablepvp);
+				bukkitConfig.setValue("spawn-monsters", spawnmonsters);
+				bukkitConfig.setValue("spawn-animals", spawnanimals);
+				bukkitConfig.setValue("spawn-npcs", spawnnpc);
+				bukkitConfig.setValue("announce-player-achievements", announceachiev);
+				bukkitConfig.setValue("player-idle-timeout", playertimeout);
+				bukkitConfig.setValue("max-build-height", maxheight);
+				bukkitConfig.setValue("view-distance", viewdistance);
+				bukkitConfig.setValue("spawn-protection", spawnprotection);
+				bukkitConfig.setValue("snooper-enabled", snooping);
+				
+				bukkitConfig.saveConfig();
+				
+				obj.put("good", "Saved all server config settings");
 			} else
 				obj.put("error", "You do not have permission to do that.");
 			

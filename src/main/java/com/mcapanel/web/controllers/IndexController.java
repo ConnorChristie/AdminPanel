@@ -67,7 +67,10 @@ public class IndexController extends Controller
 				else
 					noPerm = true;
 				
-				request.setAttribute("serverTabs", serverTabs);
+				if (serverTabs.size() > 1)
+					request.setAttribute("serverTabs", serverTabs);
+				else if (serverTabs.size() == 1)
+					tabs.add(serverTabs.get(0));
 			} else
 				noPerm = true;
 			

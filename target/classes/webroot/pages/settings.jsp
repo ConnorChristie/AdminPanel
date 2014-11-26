@@ -67,6 +67,25 @@ $(function() {
 		});
 	});
 	
+	$("#propertiesform input").each(function() {
+		$(this).blur(function() {
+			saveServerProperties();
+		});
+		
+		$(this).keydown(function(e) {
+		    if (e.keyCode == 13)
+		    {
+		    	saveServerProperties();
+		    }
+		});
+	});
+	
+	$("#propertiesform select").each(function() {
+		$(this).blur(function() {
+			saveServerProperties();
+		});
+	});
+	
 	$("#mcadminform input").each(function() {
 		$(this).blur(function() {
 			saveMcAdminSettings();
@@ -91,6 +110,47 @@ function saveServerSettings()
 {
 	$.ajax("/settings/saveServerSettings", {
 		data: $("#settingsform").serialize(),
+		type: "POST",
+		success: function(data) {
+			if (data.good != undefined)
+			{
+				var n = noty({
+		            text        : "<b>Success: </b>" + data.good,
+		            type        : 'success',
+		            dismissQueue: true,
+		            layout      : 'bottomLeft',
+		            theme       : 'defaultTheme',
+		            timeout     : 2000
+		        });
+			} else if (data.error != undefined)
+			{
+				var n = noty({
+		            text        : "<b>Error: </b>" + data.error,
+		            type        : 'error',
+		            dismissQueue: true,
+		            layout      : 'bottomLeft',
+		            theme       : 'defaultTheme',
+		            timeout     : 2000
+		        });
+			}
+		},
+		error:  function(data) {
+			var n = noty({
+	            text        : "<b>Error: </b>Could not save config settings",
+	            type        : 'error',
+	            dismissQueue: true,
+	            layout      : 'bottomLeft',
+	            theme       : 'defaultTheme',
+	            timeout     : 2000
+	        });
+		}
+	});
+}
+
+function saveServerProperties()
+{
+	$.ajax("/settings/saveServerProperties", {
+		data: $("#propertiesform").serialize(),
 		type: "POST",
 		success: function(data) {
 			if (data.good != undefined)
@@ -257,7 +317,7 @@ function saveMcAdminSettings()
 	              		<span style="float: right;"><a href="/settings/reload" style="color: #428bca !important;">Reload Properties</a></span>
 	            	</div>
 	            	<div class="panel-body">
-						<form id="settingsform" role="form" method="post" action="/">
+						<form id="propertiesform" role="form" method="post" action="/">
 							<div class="form-group">
 								<div class="col-sm-4">
 									<label for="serverport">Server Port</label><br />
@@ -317,6 +377,21 @@ function saveMcAdminSettings()
 										<option value="3">Hard</option>
 									</select>
 									<script>$("#difficulty").val("${bukkitConfig.getString('difficulty', '1')}");</script>
+								</div>
+								<br style="clear: both;" />
+							</div>
+							<div class="form-group">
+								<div class="col-sm-4">
+									<label for="onlinemode">Online Mode</label><br />
+									Disable if not connected to internet.
+								</div>
+								<div class="col-sm-8">
+									<br />
+									<select class="form-control" id="onlinemode" name="onlinemode" ${user.getGroup().hasPermission("server.properties.edit") ? "" : "disabled"}>
+										<option value="true">Yes</option>
+										<option value="false">No</option>
+									</select>
+									<script>$("#onlinemode").val("${bukkitConfig.getString('online-mode', '')}");</script>
 								</div>
 								<br style="clear: both;" />
 							</div>
