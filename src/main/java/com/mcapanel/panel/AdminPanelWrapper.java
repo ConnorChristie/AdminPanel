@@ -517,15 +517,7 @@ public class AdminPanelWrapper
 		
 		tmpDir.deleteOnExit();
 		
-		URI baseUri = null;
-		
-		if (inDev())
-		{
-			baseUri = getClass().getResource("/webroot").toURI();
-		} else
-		{
-			baseUri = getClass().getResource("/resources/webroot").toURI();
-		}
+		URI baseUri = getClass().getResource("/webroot").toURI();
 		
 		System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
 		

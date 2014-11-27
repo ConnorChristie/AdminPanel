@@ -82,12 +82,14 @@ public class BukkitServer
 		processBuilder = new ProcessBuilder(new String[] {
 			"java",
 			"-Djline.terminal=jline.UnsupportedTerminal",
-			"-Xms" + ap.getConfig().getValue("min-memory"),
-			"-Xmx" + ap.getConfig().getValue("max-memory"),
+			"-Xms" + minMemory,
+			"-Xmx" + maxMemory,
 			"-jar", serverJar.getAbsolutePath()
 		});
 		
 		processBuilder.directory(serverJar.getParentFile());
+		
+		copyPlugin();
 	}
 	
 	public int getId()
@@ -471,18 +473,17 @@ public class BukkitServer
 	
 	private void copyPlugin()
 	{
-		try
+		File pluginFile = new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar");
+		
+		if (pluginFile == null || (pluginFile != null && !pluginFile.exists()))
 		{
-			if (ap.inDev())
+			try
 			{
-				//FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/plugin/McAdminPanelPlugin.jar"), new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar"));
-			} else
+				FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/plugin/McAdminPanelPlugin.jar"), pluginFile);
+			} catch (Exception e)
 			{
-				FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/resources/plugin/McAdminPanelPlugin.jar"), new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar"));
+				System.out.println("Could not copy the McAdminPanel Plugin to the plugins folder...");
 			}
-		} catch (Exception e)
-		{
-			System.out.println("Could not copy the McAdminPanel Plugin to the plugins folder...");
 		}
 	}
 	

@@ -49,6 +49,11 @@ public class AppServlet extends HttpServlet
 		
 		BukkitServer bukkitServer = AdminPanelWrapper.getInstance().getServer(id);
 		
+		if (bukkitServer == null)
+			bukkitServer = AdminPanelWrapper.getInstance().getServer(id = 1);
+		
+		request.getSession().setAttribute("chosenServer", id);
+		
 		request.setAttribute("ap", AdminPanelWrapper.getInstance());
 		request.setAttribute("user", getUser());
 		request.setAttribute("connected", bukkitServer != null ? bukkitServer.getPluginConnector().connected() : false);
