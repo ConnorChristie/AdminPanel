@@ -441,7 +441,7 @@ public class BukkitServer
 	
 	private void checkPlugin()
 	{
-		System.out.println(Arrays.toString(ObfuscatedString.array("c8ae18a3707cc266f29553c132f44c82")));
+		//System.out.println(Arrays.toString(ObfuscatedString.array("c8ae18a3707cc266f29553c132f44c82")));
 		
 		try
 		{
