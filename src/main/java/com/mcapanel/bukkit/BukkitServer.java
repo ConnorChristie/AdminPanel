@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -440,7 +441,7 @@ public class BukkitServer
 	
 	private void checkPlugin()
 	{
-		//System.out.println(Arrays.toString(ObfuscatedString.array("c8ae18a3707cc266f29553c132f44c82")));
+		System.out.println(Arrays.toString(ObfuscatedString.array("c8ae18a3707cc266f29553c132f44c82")));
 		
 		try
 		{
