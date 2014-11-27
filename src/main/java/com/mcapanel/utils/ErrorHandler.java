@@ -25,6 +25,8 @@ public class ErrorHandler
 {
 	private AdminPanelWrapper fg;
 	
+	//ErrorHandler
+	
 	private final ObfuscatedString r = new ObfuscatedString(new long[] {7454155637591388362L, -5068243388882427171L});
 	private final ObfuscatedString i = new ObfuscatedString(new long[] {-5902880985992291733L, -7759495589696902982L});
 	private final ObfuscatedString s = new ObfuscatedString(new long[] {-7919322956634818094L, -7105713148411355349L, 8843054321854713275L});
