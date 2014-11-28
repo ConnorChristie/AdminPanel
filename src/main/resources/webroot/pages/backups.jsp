@@ -2,6 +2,15 @@
 
 <script src="/js/viewjs/backups.js"></script>
 
+<script>
+$(function() {
+	if (${user.getGroup().hasPermission("server.backups.schedule.issue")})
+	{
+		$("#scheduledbackups_wrapper .col-xs-6:first").html('<button type="button" id="newbackupschedule" class="btn btn-xs btn-success">Schedule Backup</button>');
+	}
+});
+</script>
+
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">

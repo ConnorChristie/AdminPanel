@@ -276,14 +276,10 @@ public class GroupsController extends Controller
 			if (canView())
 			{
 				String groupName = request.getParameter("groupname");
-				String groupPerms = request.getParameter("groupperms");
 				
 				if (groupName != null)
 				{
 					Group group = new Group(groupName);
-					
-					group.setPermissions(groupPerms);
-					
 					db.save(group);
 					
 					obj.put("good", "Successfully added the group: " + groupName + ".");

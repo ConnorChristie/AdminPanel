@@ -5,7 +5,29 @@ $(function() {
 		stateSave: true
 	});
 	
-	gnameClick();
+	if (${user.getGroup().hasPermission("web.users.group")})
+		gnameClick();
+	
+	if (${user.getGroup().hasPermission("web.users.whiteblack")})
+	{
+		$(".clickLabel").click(function() {
+			$("." + $(this).attr("uid")).removeClass("label-success").addClass("label-danger").text("false");
+			$(this).removeClass("label-danger").addClass("label-success").text("true");
+			
+			saveUsers();
+		});
+	}
+	
+	if (${user.getGroup().hasPermission("web.users.delete")})
+	{
+		$(".deleteUser").click(function() {
+			$.post($(this).attr("href"), function() {
+				window.location = "/users/";
+			});
+			
+			return false;
+		});
+	}
 });
 
 function gnameClick()
@@ -21,44 +43,50 @@ function gnameClick()
 		$("#groupname").blur(function() {
 			$(this).parent().html("<span class=\"gname\" style=\"cursor: pointer;\">" + $(this).val() + "</span>");
 			
-			var rows = $("#usertable").dataTable().fnGetNodes();
-			
-			var data = [];
-			
-			for (var i = 0; i < rows.length; i++)
-			{
-				data[i] = {};
-				
-				data[i].id = $(rows[i]).find("td:eq(0)").text();
-				data[i].group = $(rows[i]).find("td:eq(2)").text();
-			}
-			
-			$.post("/users/saveUsers", {"data":JSON.stringify(data)}, function(ret) {
-				if (ret.good != undefined)
-				{
-					var n = noty({
-			            text        : "<b>Success: </b>" + ret.good,
-			            type        : 'success',
-			            dismissQueue: true,
-			            layout      : 'bottomLeft',
-			            theme       : 'defaultTheme',
-			            timeout     : 2000
-			        });
-				} else if (ret.error != undefined)
-				{
-					var n = noty({
-			            text        : "<b>Error: </b>" + ret.error,
-			            type        : 'error',
-			            dismissQueue: true,
-			            layout      : 'bottomLeft',
-			            theme       : 'defaultTheme',
-			            timeout     : 2000
-			        });
-				}
-			});
-			
+			saveUsers();
 			gnameClick();
 		});
+	});
+}
+
+function saveUsers()
+{
+	var rows = $("#usertable").dataTable().fnGetNodes();
+	
+	var data = [];
+	
+	for (var i = 0; i < rows.length; i++)
+	{
+		data[i] = {};
+		
+		data[i].id = $(rows[i]).find("td:eq(0)").text();
+		data[i].group = $(rows[i]).find("td:eq(2)").text();
+		data[i].whitelisted = $(rows[i]).find("td:eq(3)").text();
+		data[i].blacklisted = $(rows[i]).find("td:eq(4)").text();
+	}
+	
+	$.post("/users/saveUsers", {"data":JSON.stringify(data)}, function(ret) {
+		if (ret.good != undefined)
+		{
+			var n = noty({
+	            text        : "<b>Success: </b>" + ret.good,
+	            type        : 'success',
+	            dismissQueue: true,
+	            layout      : 'bottomLeft',
+	            theme       : 'defaultTheme',
+	            timeout     : 2000
+	        });
+		} else if (ret.error != undefined)
+		{
+			var n = noty({
+	            text        : "<b>Error: </b>" + ret.error,
+	            type        : 'error',
+	            dismissQueue: true,
+	            layout      : 'bottomLeft',
+	            theme       : 'defaultTheme',
+	            timeout     : 2000
+	        });
+		}
 	});
 }
 </script>
@@ -78,6 +106,7 @@ function gnameClick()
 					<th>Group</th>
 					<th>Whitelisted</th>
 					<th>Blacklisted</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>

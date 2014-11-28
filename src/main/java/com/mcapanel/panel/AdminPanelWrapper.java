@@ -1,5 +1,6 @@
 package com.mcapanel.panel;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -587,6 +588,8 @@ public class AdminPanelWrapper
 			if (!config.getBoolean("installed", false))
 			{
 				System.out.println("Goto http://localhost:" + config.getString("web-port", "80") + " in a browser to start the setup.");
+				
+				Desktop.getDesktop().browse(URI.create("http://localhost"));
 			}
 		} catch (BindException e)
 		{
@@ -800,7 +803,7 @@ public class AdminPanelWrapper
 					
 					for (BukkitServer serv : servers.values())
 					{
-						if (serv.hasConsoleFocus())
+						if (serv.hasConsoleFocus() && serv.getWriter() != null)
 						{
 							serv.getWriter().write((line + "\n").getBytes());
 							serv.getWriter().flush();

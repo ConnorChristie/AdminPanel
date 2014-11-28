@@ -5,7 +5,8 @@ $(function() {
 	});
 	
 	$("#webmessages tbody").on("click", "tr", function(e) {
-		window.location = "/message/view/" + $(this).find("td:first").text();
+		if ($("#webmessages").dataTable().fnGetData().length > 0)
+			window.location = "/message/view/" + $(this).find("td:first").text();
 		
 		return false;
 	});

@@ -71,7 +71,7 @@ public class InstallController extends Controller
 				
 				if (mcpass.equals(mcpassconf))
 				{
-					User u = new User(mcname, mcpass, RandomStringUtils.randomAlphanumeric(8), request.getRemoteAddr());
+					User u = new User(mcname, mcpass, RandomStringUtils.randomAlphanumeric(8), request.getRemoteAddr().equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : request.getRemoteAddr());
 					
 					u.setGroupId(db.find(Group.class).where().ieq("group_name", "Admin").findUnique().getId());
 					u.setWhitelisted(true);
@@ -84,9 +84,9 @@ public class InstallController extends Controller
 					db.save(server);
 					
 					BukkitServer bukkitServer = new BukkitServer(server);
-					
 					AdminPanelWrapper.getInstance().servers.put(server.getId(), bukkitServer);
 					
+					request.getSession().setAttribute("chosenServer", server.getId());
 					bukkitServer.setupBackups();
 					
 					config.setValue("installed", "true");

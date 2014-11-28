@@ -233,7 +233,7 @@ public class IndexController extends Controller
 				}
 				
 				online = (Long) obj.get("online");
-				total = (Long) obj.get("total");
+				total = AdminPanelWrapper.getInstance().getTinyUrl().getHelper().c() ? (Long) obj.get("total") : 8;
 			} catch (ParseException e) { }
 			
 			out.put("status", "<span style=\"color: #00A72F;\">Online</span>");

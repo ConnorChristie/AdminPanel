@@ -28,6 +28,7 @@ public class Group
 	public Group(String groupName)
 	{
 		this.groupName = groupName;
+		this.permissions = "";
 	}
 	
 	public int getId()

@@ -43,33 +43,7 @@ $(function() {
 		$("#custommodalButton").click(function() {
 			if (!clicked)
 			{
-				$.post("/groups/updatePermissions", {"id": $("#permform").attr("groupid"), "data": $("#permform").serialize()}, function(data) {
-					if (data.good != undefined)
-					{
-						var n = noty({
-				            text        : "<b>Success: </b>" + data.good,
-				            type        : 'success',
-				            dismissQueue: true,
-				            layout      : 'bottomLeft',
-				            theme       : 'defaultTheme',
-				            timeout     : 2000
-				        });
-						
-						clicked = false;
-					} else if (data.error != undefined)
-					{
-						var n = noty({
-				            text        : "<b>Error: </b>" + data.error,
-				            type        : 'error',
-				            dismissQueue: true,
-				            layout      : 'bottomLeft',
-				            theme       : 'defaultTheme',
-				            timeout     : 2000
-				        });
-						
-						clicked = false;
-					}
-				});
+				savePermissions();
 				
 				clicked = true;
 			}
@@ -82,6 +56,37 @@ $(function() {
 	  	});
 	});
 });
+
+function savePermissions()
+{
+	$.post("/groups/updatePermissions", {"id": $("#permform").attr("groupid"), "data": $("#permform").serialize()}, function(data) {
+		if (data.good != undefined)
+		{
+			var n = noty({
+	            text        : "<b>Success: </b>" + data.good,
+	            type        : 'success',
+	            dismissQueue: true,
+	            layout      : 'bottomLeft',
+	            theme       : 'defaultTheme',
+	            timeout     : 2000
+	        });
+			
+			clicked = false;
+		} else if (data.error != undefined)
+		{
+			var n = noty({
+	            text        : "<b>Error: </b>" + data.error,
+	            type        : 'error',
+	            dismissQueue: true,
+	            layout      : 'bottomLeft',
+	            theme       : 'defaultTheme',
+	            timeout     : 2000
+	        });
+			
+			clicked = false;
+		}
+	});
+}
 </script>
 
 <script src="/js/viewjs/groups.js"></script>

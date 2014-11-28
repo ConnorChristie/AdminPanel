@@ -50,8 +50,20 @@ public class AppServlet extends HttpServlet
 		BukkitServer bukkitServer = AdminPanelWrapper.getInstance().getServer(id);
 		
 		if (bukkitServer == null)
-			bukkitServer = AdminPanelWrapper.getInstance().getServer(id = 1);
-		
+		{
+			if (AdminPanelWrapper.getInstance().servers.size() > 0)
+			{
+				bukkitServer = AdminPanelWrapper.getInstance().getServer(id = AdminPanelWrapper.getInstance().servers.keySet().toArray(new Integer[AdminPanelWrapper.getInstance().servers.keySet().size()])[0]);
+			} else if (!request.getPathInfo().contains("install"))
+			{
+				AdminPanelWrapper.getInstance().getConfig().setValue("installed", "false");
+				AdminPanelWrapper.getInstance().getConfig().saveConfig();
+				
+				response.getWriter().print("<script>document.location = '/install/';</script>");
+				
+				return;
+			}
+		}
 		request.getSession().setAttribute("chosenServer", id);
 		
 		request.setAttribute("ap", AdminPanelWrapper.getInstance());

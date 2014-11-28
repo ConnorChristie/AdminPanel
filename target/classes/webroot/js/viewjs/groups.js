@@ -112,7 +112,7 @@ $(function() {
 		$("#addgroup").click(function() {
 			$("#custommodal").on("shown.bs.modal", function() { $("#groupname").focus(); });
 			
-			showModalFull("Add Group", "<label for='groupname'>Group Name</label><input type=\"text\" class=\"form-control\" id=\"groupname\" placeholder=\"Enter Group Name\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\"><br /><label for='groupperms'>Group Permissions (Ex: chat;usage;control;)</label><input type=\"text\" class=\"form-control\" id=\"groupperms\" placeholder=\"Enter Permissions\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\">", "Save Group", true);
+			showModalFull("Add Group", "<label for='groupname'>Group Name</label><input type=\"text\" class=\"form-control\" id=\"groupname\" placeholder=\"Enter Group Name\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\">", "Save Group", true);
 			
 			var clicked;
 			
@@ -120,9 +120,8 @@ $(function() {
 				if (!clicked)
 				{
 					var gname = $("#groupname").val();
-					var gperms = $("#groupperms").val();
 					
-					$.post("/groups/addGroup", {"groupname": gname, "groupperms": gperms}, function(data) {
+					$.post("/groups/addGroup", {"groupname": gname}, function(data) {
 						if (data.good != undefined)
 						{
 							location.reload();

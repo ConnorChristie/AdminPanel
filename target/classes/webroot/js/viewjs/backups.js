@@ -25,8 +25,6 @@ $(function() {
        ]
 	});
 	
-	$("#scheduledbackups_wrapper .col-xs-6:first").html('<button type="button" id="newbackupschedule" class="btn btn-xs btn-success">Schedule Backup</button>');
-	
 	$("#newbackupschedule").click(function() {
 		$("#backupmodal").modal();
 		

@@ -419,6 +419,9 @@ public class BukkitServer
 						} else if (line.contains("**** FAILED TO BIND TO PORT!"))
 						{
 							serverStatus = ServerStatus.STOPPED;
+						} else if (line.contains("Unable to access jarfile"))
+						{
+							serverStatus = ServerStatus.STOPPED;
 						}
 						
 						if (line.contains("[dynmap] Enabled"))
