@@ -31,7 +31,7 @@ public class ServerController extends Controller
 			
 			JSONObject ret = new JSONObject();
 			
-			if (isLoggedIn() && user.getGroup().hasPermission("server.properties.add"))
+			if (isLoggedIn() && user.getGroup().hasPermission("server.properties.add") && ap.getTinyUrl().getHelper().a())
 			{
 				String serverName = request.getParameter("serverName");
 				String serverJar = request.getParameter("serverJar");
@@ -64,15 +64,18 @@ public class ServerController extends Controller
 		{
 			includeIndex(false);
 			
-			int serverId = 1;
-			
-			try
+			if (ap.getTinyUrl().getHelper().a())
 			{
-				serverId = Integer.parseInt(request.getParameter("serverId"));
-			} catch (Exception e) { }
-			
-			if (ap.hasServer(serverId))
-				request.getSession().setAttribute("chosenServer", serverId);
+				int serverId = 1;
+				
+				try
+				{
+					serverId = Integer.parseInt(request.getParameter("serverId"));
+				} catch (Exception e) { }
+				
+				if (ap.hasServer(serverId))
+					request.getSession().setAttribute("chosenServer", serverId);
+			}
 			
 			response.getWriter().println("good");
 			

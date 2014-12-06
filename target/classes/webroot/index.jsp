@@ -159,51 +159,53 @@
 					              	</li>
 								</ul>
 								
-								<select id="serverSelect" class="form-control" style="width: 200px; height: 30px; margin-top: 10px; margin-right: 10px; float: right;">
-									${servers}
-								</select>
+								<c:if test="${a}">
+									<select id="serverSelect" class="form-control" style="width: 200px; height: 30px; margin-top: 10px; margin-right: 10px; float: right;">
+										${servers}
+									</select>
 								
-								<script>
-									$(function() {
-										var pervServer;
-										
-										$("#serverSelect").on("focus", function() {
-											pervServer = this.value;
-										}).change(function() {
-											if ($(this).val() == "addServer")
-											{
-												$("#serverSelect").val(pervServer);
-												$("#custommodal").on("shown.bs.modal", function() { $("#serverName").focus(); });
-												
-												showModalFull("Add Server", "<input type=\"text\" class=\"form-control\" id=\"serverName\" placeholder=\"Enter Server Name\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\"><br /><input type=\"text\" class=\"form-control\" id=\"serverJar\" placeholder=\"Enter Server Jar\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\">", "Add Server", true);
-												
-												$("#custommodal .btn-primary").click(function() {
-													$.post("/server/addServer", {"serverName": $("#serverName").val(), "serverJar": $("#serverJar").val()}, function(data) {
-														if (data.good != undefined)
-														{
-															location.reload(true);
-														} else if (data.error != undefined)
-														{
-															var n = noty({
-													            text        : "<b>Error: </b>" + data.error,
-													            type        : 'error',
-													            dismissQueue: true,
-													            layout      : 'bottomLeft',
-													            theme       : 'defaultTheme',
-													            timeout     : 2000
-													        });
-														}
+									<script>
+										$(function() {
+											var pervServer;
+											
+											$("#serverSelect").on("focus", function() {
+												pervServer = this.value;
+											}).change(function() {
+												if ($(this).val() == "addServer")
+												{
+													$("#serverSelect").val(pervServer);
+													$("#custommodal").on("shown.bs.modal", function() { $("#serverName").focus(); });
+													
+													showModalFull("Add Server", "<input type=\"text\" class=\"form-control\" id=\"serverName\" placeholder=\"Enter Server Name\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\"><br /><input type=\"text\" class=\"form-control\" id=\"serverJar\" placeholder=\"Enter Server Jar\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\">", "Add Server", true);
+													
+													$("#custommodal .btn-primary").click(function() {
+														$.post("/server/addServer", {"serverName": $("#serverName").val(), "serverJar": $("#serverJar").val()}, function(data) {
+															if (data.good != undefined)
+															{
+																location.reload(true);
+															} else if (data.error != undefined)
+															{
+																var n = noty({
+														            text        : "<b>Error: </b>" + data.error,
+														            type        : 'error',
+														            dismissQueue: true,
+														            layout      : 'bottomLeft',
+														            theme       : 'defaultTheme',
+														            timeout     : 2000
+														        });
+															}
+														});
 													});
-												});
-											} else if ($(this).val().indexOf("server") != -1)
-											{
-												$.post("/server/selectServer", {"serverId": $(this).val().replace("server", "")}, function(data) {
-													location.reload(true);
-												});
-											}
+												} else if ($(this).val().indexOf("server") != -1)
+												{
+													$.post("/server/selectServer", {"serverId": $(this).val().replace("server", "")}, function(data) {
+														location.reload(true);
+													});
+												}
+											});
 										});
-									});
-								</script>
+									</script>
+								</c:if>
 							</c:if>
 							<c:if test="${!install && !loggedIn}">
 								<form class="navbar-form navbar-right" role="form" id="loginForm" method="post" action="<%= request.getPathInfo() %>" onsubmit="$('#password').val(md5($('#opassword').val()))">
@@ -230,7 +232,7 @@
 				</div>
 			</c:if>
 			
-			<c:if test="${!install && (bukkitServer.getServerJar() == null || (bukkitServer.getServerJar() != null && !bukkitServer.getServerJar().exists()))}">
+			<c:if test="${!install && loggedIn && user.getGroup().hasPermission('server.properties.edit') && (bukkitServer.getServerJar() == null || (bukkitServer.getServerJar() != null && !bukkitServer.getServerJar().exists()))}">
 				<div class="alert alert-danger" role="alert">
 					<b>Invalid Server Jar:</b> The server jar for this server could not be found, <a href="/settings/">click here</a> to change it.
 				</div>

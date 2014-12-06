@@ -132,7 +132,7 @@ public class InstallController extends Controller
 						}).start();
 					}
 					
-					out.put("good", "Successfully saved all installation settings.");
+					out.put("good", "Successfully saved all installation settings.<br />It is recommended to create another user so you can see what they see.");
 				} else
 					out.put("error", "The passwords that you entered do not appear to match.");
 			} else

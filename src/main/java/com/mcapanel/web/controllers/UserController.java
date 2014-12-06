@@ -103,19 +103,6 @@ public class UserController extends Controller
 							u.setWhitelisted(true);
 						} else
 						{
-							/*
-							if (Bukkit.getOfflinePlayer(mcname).hasPlayedBefore())
-							{
-								u.setGroupId(db.find(Group.class).where().eq("is_existing_default", true).findUnique().getId());
-								u.setWhitelisted(true);
-							} else
-							{
-								u.setGroupId(db.find(Group.class).where().eq("is_whitelist_default", true).findUnique().getId());
-								
-								createApp = true;
-							}
-							*/
-							
 							u.setGroupId(db.find(Group.class).where().eq("is_whitelist_default", true).findUnique().getId());
 							
 							createApp = true;

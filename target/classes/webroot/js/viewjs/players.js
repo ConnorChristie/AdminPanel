@@ -79,8 +79,6 @@ function clickPlayer(that, e)
 				$.post("/player/event/" + clickedObject + "/" + act.replace("Player", ""), function(data) {
 					if (data.good != undefined)
 					{
-						//showModal(title + " Player", data.good);
-						
 						var n = noty({
 				            text        : "<b>Success: </b>" + data.good,
 				            type        : 'success',
@@ -91,8 +89,6 @@ function clickPlayer(that, e)
 				        });
 					} else if (data.error != undefined)
 					{
-						//errorModal(data.error);
-						
 						var n = noty({
 				            text        : "<b>Error: </b>" + data.error,
 				            type        : 'error',

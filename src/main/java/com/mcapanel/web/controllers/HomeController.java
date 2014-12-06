@@ -1,7 +1,10 @@
 package com.mcapanel.web.controllers;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 
 import com.mcapanel.bukkit.BukkitServer;
@@ -20,6 +23,8 @@ public class HomeController extends Controller
 			if (user.getGroup().hasPermission("server.usage"))
 				request.setAttribute("usage", ap.getUsages().getUsageJson());
 		}
+		
+		request.setAttribute("homepage", IOUtils.toString(new FileReader(new File("McAdminPanel", "webpages/homepage.html"))));
 		
 		return renderView();
 	}

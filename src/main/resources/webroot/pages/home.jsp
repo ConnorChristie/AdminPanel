@@ -127,7 +127,7 @@
 						</div>
 					</c:when>
 					<c:otherwise>
-						Stuff about the server
+						${homepage}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -167,3 +167,4 @@
 		</c:choose>
 	</div>
 </div>
+

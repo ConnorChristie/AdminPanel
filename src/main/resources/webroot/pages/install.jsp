@@ -17,7 +17,7 @@
 				</div>
 				<div class="col-sm-4 form-group">
 					<label for="webport">McAdminPanel Port (Ex: 80)</label>
-					<input type="number" class="form-control" id="webport" name="webport" placeholder="Enter McAdminPanel Port" required>
+					<input type="number" class="form-control" value="80" id="webport" name="webport" placeholder="Enter McAdminPanel Port" required>
 				</div>
 			</div>
 			<div class="row">
