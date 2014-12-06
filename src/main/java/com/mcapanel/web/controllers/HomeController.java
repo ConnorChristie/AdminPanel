@@ -17,9 +17,6 @@ public class HomeController extends Controller
 		
 		if (isLoggedIn())
 		{
-			if (user.getGroup().hasPermission("server.controls") || user.getGroup().hasPermission("server.reload"))
-				request.setAttribute("control", getControlsJson(bukkitServer));
-			
 			if (user.getGroup().hasPermission("server.usage"))
 				request.setAttribute("usage", ap.getUsages().getUsageJson());
 		}

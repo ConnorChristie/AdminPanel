@@ -67,7 +67,7 @@ public class BukkitServer
 		this.ap = AdminPanelWrapper.getInstance();
 		
 		this.serverId = id;
-		this.consoleFocus = true;
+		this.consoleFocus = false;
 		
 		this.serverJar = serverJar;
 		this.serverName = serverName;
@@ -208,6 +208,11 @@ public class BukkitServer
 		stopServerRaw(true);
 	}
 	
+	public void setConsoleFocus(boolean consoleFocus)
+	{
+		this.consoleFocus = consoleFocus;
+	}
+	
 	public boolean hasConsoleFocus()
 	{
 		return consoleFocus;
@@ -265,24 +270,19 @@ public class BukkitServer
 	
 	public void setServerJar(String jar)
 	{
-		File file = new File(jar);
+		serverJar = new File(jar);
 		
-		if (file != null && file.exists())
-		{
-			serverJar = file;
-			
-			processBuilder = new ProcessBuilder(new String[] {
-				"java",
-				"-Djline.terminal=jline.UnsupportedTerminal",
-				"-Xms" + minMemory,
-				"-Xmx" + maxMemory,
-				"-jar", serverJar.getAbsolutePath()
-			});
-			
-			processBuilder.directory(serverJar.getParentFile());
-			
-			bukkitConfig = new BukkitConfig(serverJar);
-		}
+		processBuilder = new ProcessBuilder(new String[] {
+			"java",
+			"-Djline.terminal=jline.UnsupportedTerminal",
+			"-Xms" + minMemory,
+			"-Xmx" + maxMemory,
+			"-jar", serverJar.getAbsolutePath()
+		});
+		
+		processBuilder.directory(serverJar.getParentFile());
+		
+		bukkitConfig = new BukkitConfig(serverJar);
 	}
 	
 	public File getServerJar()

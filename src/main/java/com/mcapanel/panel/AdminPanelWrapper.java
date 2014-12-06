@@ -69,42 +69,22 @@ import com.mcapanel.web.servlets.AppServlet;
 
 public class AdminPanelWrapper
 {
-	public static final String VERSION = "v1.0.1";
+	public static final String VERSION = "v1.0.0";
 	public static String VERSION_SUB = "";
 	
 	private Config config;
 	private UsageMonitor usageMonitor;
 	
-	//private Process bukkitProcess;
 	private Thread shutdownHook;
-	
 	private TinyUrl tinyUrl;
-	//private BackupHandler backupHandler;
 	
 	public Map<Integer, BukkitServer> servers = new HashMap<Integer, BukkitServer>();
 	
-	/*
-	private File serverJar;
-	private ServerStatus status = ServerStatus.STOPPED;
-	*/
-	
 	private EbeanServer ebean;
-	//private PluginConnector pluginConnector;
-	
-	//private OutputStream writer;
-	//private List<String> console = new ArrayList<String>();
-	
-	//private final ReadWriteLock consoleLock = new ReentrantReadWriteLock();
-	
-	//private BufferedReader outReader;
-	//private BufferedReader errReader;
 	
 	private Server webServer;
 	private static AdminPanelWrapper instance;
 	
-	//private boolean hasDynmap;
-	
-	//private UUIDFetcher uuidFetcher;
 	private final Timer timer = new Timer("Usage Thread", false);
 	
 	public EverythingEvent everythingEvent;
@@ -127,18 +107,12 @@ public class AdminPanelWrapper
 		setupConfig();
 		setupDatabases();
 		
-		//checkPlugin();
-		
-		//setupBackups();
 		startUsages();
 		
 		//pluginConnector = new PluginConnector(this);
 		//uuidFetcher = new UUIDFetcher();
 		
 		new Thread(new InputReader()).start();
-		
-		//startWebPanel();
-		//startBukkitServer();
 		
 		System.out.println("Loading servers...");
 		System.out.println("Loading backups...");
@@ -213,80 +187,6 @@ public class AdminPanelWrapper
 		return servers.containsKey(id);
 	}
 	
-	/*
-	public void install()
-	{
-		updateServerJar();
-		
-		if (serverJar != null && serverJar.exists())
-		{
-			copyPlugin();
-			
-			setupBackups();
-		}
-	}
-	
-	private void checkPlugin()
-	{
-		//System.out.println(Arrays.toString(ObfuscatedString.array("c8ae18a3707cc266f29553c132f44c82")));
-		
-		try
-		{
-			File pl = new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar");
-			
-			if (pl != null && pl.exists())
-			{
-				String md5 = new ObfuscatedString(new long[] {-6239580717245095042L, 7772693983827735681L, 149453379078971602L, 3225733154312424749L, 3085561093364578028L}).toString();
-				String md52 = DigestUtils.md5Hex(new FileInputStream(pl));
-				
-				if (md5.equals(md52))
-				{
-					System.out.println("Equals!");
-				} else
-				{
-					copyPlugin();
-				}
-				
-				//System.out.println("MD5: " + md5);
-				//System.out.println("MD52: " + md52);
-			} else
-			{
-				copyPlugin();
-			}
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	private void copyPlugin()
-	{
-		try
-		{
-			if (inDev())
-			{
-				//FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/plugin/McAdminPanelPlugin.jar"), new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar"));
-			} else
-			{
-				FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/resources/plugin/McAdminPanelPlugin.jar"), new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar"));
-			}
-		} catch (Exception e)
-		{
-			System.out.println("Could not copy the McAdminPanel Plugin to the plugins folder...");
-		}
-	}
-	
-	public ServerStatus getStatus()
-	{
-		return status;
-	}
-	
-	public void setStatus(ServerStatus status)
-	{
-		this.status = status;
-	}
-	*/
-	
 	private void setupConfig()
 	{
 		System.out.println("Loading config file...");
@@ -308,25 +208,6 @@ public class AdminPanelWrapper
 		return tinyUrl;
 	}
 	
-	/*
-	private void setupBackups()
-	{
-		if (config.getBoolean("installed", true) && serverJar != null && serverJar.exists())
-		{
-			System.out.println("Loading backups...");
-			
-			backupHandler = new BackupHandler(this);
-			
-			backupHandler.runSchedules();
-		}
-	}
-	
-	public BackupHandler getBackupHandler()
-	{
-		return backupHandler;
-	}
-	*/
-	
 	private void startUsages()
 	{
 		usageMonitor = new UsageMonitor();
@@ -338,36 +219,6 @@ public class AdminPanelWrapper
 	{
 		return usageMonitor;
 	}
-	
-	/*
-	public List<File> getWorlds()
-	{
-		List<File> worlds = new ArrayList<File>();
-		
-		if (getServerJar() != null && getServerJar().exists())
-		{
-			for (File f : getServerJar().getParentFile().listFiles())
-			{
-				if (f.isDirectory())
-				{
-					File file = new File(f, "level.dat");
-					
-					if (file.exists())
-					{
-						worlds.add(f);
-					}
-				}
-			}
-		}
-		
-		return worlds;
-	}
-	
-	public UUIDFetcher getUUIDFetcher()
-	{
-		return uuidFetcher;
-	}
-	*/
 	
 	private void setupDatabases()
 	{
@@ -483,18 +334,6 @@ public class AdminPanelWrapper
 		return ebean;
 	}
 	
-	/*
-	public File getServerJar()
-	{
-		return serverJar;
-	}
-	
-	public boolean hasDynmap()
-	{
-		return hasDynmap && status == ServerStatus.STARTED;
-	}
-	*/
-	
 	public User getUserFromPlayer(String player)
 	{
 		// Change to UUID
@@ -599,72 +438,6 @@ public class AdminPanelWrapper
 		}
 	}
 	
-	/*
-	public void updateServerJar()
-	{
-		serverJar = new File(config.getValue("server-jar"));
-	}
-	
-	public void startBukkitServer()
-	{
-		if (status == ServerStatus.STOPPED || status == ServerStatus.RESTARTING)
-		{
-			updateServerJar();
-			
-			if (config.getBoolean("installed", true))
-			{
-				if (serverJar != null && serverJar.exists())
-				{
-					console.clear();
-					
-					System.out.println("Starting Minecraft server...");
-					
-					status = status == ServerStatus.RESTARTING ? ServerStatus.RESTARTING : ServerStatus.STARTING;
-					
-					ProcessBuilder processBuilder = new ProcessBuilder(new String[] { 
-						"java",
-						"-Djline.terminal=jline.UnsupportedTerminal",
-						"-Xms" + config.getValue("min-memory"),
-						"-Xmx" + config.getValue("max-memory"),
-						"-jar", serverJar.getAbsolutePath()
-					});
-					
-					processBuilder.directory(serverJar.getParentFile());
-					
-					startBukkitProcess(processBuilder);
-				} else
-				{
-					System.out.println("No or invalid server jar file specified in config...");
-				}
-			} else
-			{
-				System.out.println("Navigate to " + config.getString("server-ip", "localhost") + ":" + config.getString("web-port", "80") + " to begin install!");
-			}
-		}
-	}
-	
-	private void startBukkitProcess(ProcessBuilder processBuilder)
-	{
-		try
-		{
-			bukkitProcess = processBuilder.start();
-			
-			writer = new PrintStream(bukkitProcess.getOutputStream());
-			
-			outReader = new BufferedReader(new InputStreamReader(bukkitProcess.getInputStream()));
-			errReader = new BufferedReader(new InputStreamReader(bukkitProcess.getErrorStream()));
-			
-			setShutdownHook();
-			
-			new Thread(new BukkitConsoleReader(false)).start();
-			new Thread(new BukkitConsoleReader(true)).start();
-		} catch (IOException ex)
-		{
-			System.out.println("Error starting server... Please try again.");
-		}
-	}
-	*/
-	
 	private void setShutdownHook()
 	{
 		if (shutdownHook != null)
@@ -694,95 +467,6 @@ public class AdminPanelWrapper
 		Runtime.getRuntime().addShutdownHook(shutdownHook);
 	}
 	
-	/*
-	public void stopBukkitServer(final boolean restart)
-	{
-		new Thread(new Runnable()
-		{
-			public void run()
-			{
-				stopBukkitServerRaw(restart);
-			}
-		}).start();
-	}
-	
-	public void stopBukkitServerRaw(boolean restart)
-	{
-		if (status == ServerStatus.STARTED)
-		{
-			if (restart)
-				status = ServerStatus.RESTARTING;
-			else
-				status = ServerStatus.STOPPING;
-			
-			getPluginConnector().setConnected(false);
-			
-			try
-			{
-				writer.write("stop\n".getBytes());
-				writer.flush();
-				
-				bukkitProcess.waitFor();
-				
-				writer.close();
-				
-				outReader.close();
-				errReader.close();
-				
-				if (restart)
-					startBukkitServer();
-				else
-					status = ServerStatus.STOPPED;
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void restartBukkitServer()
-	{
-		stopBukkitServer(true);
-	}
-	
-	public void reloadBukkitServer()
-	{
-		status = ServerStatus.RELOADING;
-		
-		try
-		{
-			writer.write("reload\n".getBytes());
-			writer.flush();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public PluginConnector getPluginConnector()
-	{
-		return pluginConnector;
-	}
-	
-	public List<String> getConsole()
-	{
-		return console;
-	}
-	
-	public ReadWriteLock getConsoleLock()
-	{
-		return consoleLock;
-	}
-	
-	public OutputStream getWriter()
-	{
-		return writer;
-	}
-	*/
-	
 	private class InputReader implements Runnable
 	{
 		@Override
@@ -796,22 +480,25 @@ public class AdminPanelWrapper
 				
 				while ((line = console.readLine()) != null)
 				{
-					//Check if it's a command for us
-					
-					if (parseCommand(line))
-						continue;
-					
-					for (BukkitServer serv : servers.values())
+					try
 					{
-						if (serv.hasConsoleFocus() && serv.getWriter() != null)
+						//Check if it's a command for us
+						
+						if (parseCommand(line))
+							continue;
+						
+						for (BukkitServer serv : servers.values())
 						{
-							serv.getWriter().write((line + "\n").getBytes());
-							serv.getWriter().flush();
+							if (serv.hasConsoleFocus() && serv.getWriter() != null)
+							{
+								serv.getWriter().write((line + "\n").getBytes());
+								serv.getWriter().flush();
+							}
 						}
+					} catch (Exception ex)
+					{
+						ex.printStackTrace();
 					}
-					
-					//writer.write((line + "\n").getBytes());
-					//writer.flush();
 				}
 			} catch (Exception ex)
 			{
@@ -824,12 +511,12 @@ public class AdminPanelWrapper
 	{
 		if (cmd.equalsIgnoreCase("start"))
 		{
-			//startBukkitServer();
+			getFocusedServer().startServer();
 			
 			return true;
 		} else if (cmd.equalsIgnoreCase("restart"))
 		{
-			//restartBukkitServer();
+			getFocusedServer().restartServer();
 			
 			return true;
 		} else if (cmd.equalsIgnoreCase("stop-all"))
@@ -837,9 +524,48 @@ public class AdminPanelWrapper
 			System.exit(0);
 			
 			return true;
+		} else if (cmd.startsWith("server"))
+		{
+			String[] p = cmd.split(" ");
+			String serv = "";
+			
+			for (int i = 1; i < p.length; i++)
+				serv += p[i];
+			
+			for (BukkitServer s : servers.values())
+			{
+				if (s.getName().toLowerCase().contains(serv.toLowerCase()))
+				{
+					for (BukkitServer se : servers.values())
+					{
+						se.setConsoleFocus(false);
+					}
+					
+					s.setConsoleFocus(true);
+					
+					System.out.println("Server: " + s.getName() + " is now outputting to this console.");
+					
+					break;
+				}
+			}
+			
+			return true;
 		}
 		
 		return false;
+	}
+	
+	private BukkitServer getFocusedServer()
+	{
+		for (BukkitServer serv : servers.values())
+		{
+			if (serv.hasConsoleFocus())
+			{
+				return serv;
+			}
+		}
+		
+		return null;
 	}
 	
 	public static AdminPanelWrapper getInstance()

@@ -39,6 +39,9 @@ public class IndexController extends Controller
 			if (isLoggedIn() && user.getGroup().hasPermission("server.whitelist.view"))
 				request.setAttribute("applications", db.find(Application.class).findRowCount());
 			
+			if (isLoggedIn() && (user.getGroup().hasPermission("server.controls") || user.getGroup().hasPermission("server.reload")))
+				request.setAttribute("control", HomeController.getControlsJson(bukkitServer));
+			
 			request.setAttribute("servers", getServers());
 		}
 	}

@@ -97,7 +97,7 @@ $(function() {
 				min: 0,
 				max: 100,
 				tickFormatter: function(x) {
-					return (100 - x) + "s";
+					return "-" + (100 - x) + "s";
 				}
 			},
 			yaxis: {
@@ -151,7 +151,7 @@ $(function() {
 				min: 0,
 				max: 100,
 				tickFormatter: function(x) {
-					return (100 - x) + "s";
+					return "-" + (100 - x) + "s";
 				}
 			},
 			yaxis: {
@@ -292,7 +292,7 @@ $(function() {
 			$("#chatmsg").attr("placeholder", "Console Command");
 			$("#chatbtn").text("Send");
 			
-			$(this).parent().parent().parent().parent().parent().find(".panel-body").css({"background-color":"black"});
+			$("#chatconsolebody").css({"background-color":"black"});
 		} else if ($(this).attr("forid") == "messages")
 		{
 			$("#chatform").show();
@@ -300,7 +300,7 @@ $(function() {
 			$("#chatmsg").attr("placeholder", "Chat Message");
 			$("#chatbtn").text("Chat");
 			
-			$(this).parent().parent().parent().parent().parent().find(".panel-body").css({"background-color":"white"});
+			$("#chatconsolebody").css({"background-color":"white"});
 		}
 		
 		$.cookie("messagesconsole", $(this).attr("forid"), { expires: 7, path: '/' });
@@ -326,6 +326,42 @@ $(function() {
 		
 		msgs.scrollTop(height);
 	}
+	
+	$(".actButton").click(function() {
+		$.post("/event/system/" + $(this).attr("act"), function(data) {
+			if (data.good == undefined && data.error != undefined)
+			{
+				errorModal(data.error);
+			}
+			
+			if (data.control != undefined)
+			{
+				var control = data.control;
+				
+				$("#statusTitle").html(control.statusTitle);
+				
+				if (control.startServer)
+					$("#startServer").removeAttr("disabled");
+				else
+					$("#startServer").attr("disabled", "");
+				
+				if (control.stopServer)
+					$("#stopServer").removeAttr("disabled");
+				else
+					$("#stopServer").attr("disabled", "");
+				
+				if (control.restartServer)
+					$("#restartServer").removeAttr("disabled");
+				else
+					$("#restartServer").attr("disabled", "");
+				
+				if (control.reloadServer)
+					$("#reloadServer").removeAttr("disabled");
+				else
+					$("#reloadServer").attr("disabled", "");
+			}
+		});
+	});
 	
 	if (window.location.pathname.indexOf("install") < 0)
 		loadEverything(true);
@@ -445,7 +481,7 @@ function loadEverything(doCycle)
 					{
 						var disk = disks[i];
 						
-						$("#disk" + i + "title").html("<b>Disk " + i + "</b>");
+						$("#disk" + i + "title").html("<b>Disk " + (i + 1) + "</b>");
 						$("#disk" + i + "total").html("<b>Total: " + disk.diskTotal + " GB</b>");
 						$("#disk" + i + "used").html("<b>Used: " + disk.diskUsed + " GB</b>");
 						$("#disk" + i + "free").html("<b>Free: " + disk.diskFree + " GB</b>");

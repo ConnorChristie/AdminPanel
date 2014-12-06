@@ -41,6 +41,54 @@
 			var canBan = ${user.getGroup().hasPermission("server.players.ban") == true};
 			
 			var canCommand = ${user.getGroup().hasPermission("server.console.issue") == true};
+			
+			function bugAlert()
+			{
+				$("#custommodal").on("shown.bs.modal", function() { $("#email").focus(); });
+				
+				showModalFull(
+					"Submit a Bug",
+					'<form id="bugreport"><label for="email">Email</label><input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" onkeydown="if (event.keyCode == 13) $(\'#custommodal .btn\').click();"><br><label for="description">Description of Bug</label><textarea rows="4" class="form-control" id="description" name="description" placeholder="Enter Description" onkeydown="if (event.keyCode == 13) $(\'#custommodal .btn\').click();"></textarea><br><p>Thank you for your feedback!<br />We may contact you for more information if needed.</p></form>',
+					"Submit Bug",
+					true
+				);
+				
+				var clicked;
+				
+				$("#custommodal .btn-primary").click(function() {
+					if (!clicked)
+					{
+						var data = {};
+						$("#bugreport").serializeArray().map(function(x){data[x.name] = x.value;});
+						
+						$.post("http://mcapanel.com/submitbug.php", {data: JSON.stringify(data)}, function(ret) {
+							if (ret == "good")
+							{
+								var n = noty({
+						            text        : "<b>Success: </b> Successfully submitted your bug. Thanks for helping!",
+						            type        : 'success',
+						            dismissQueue: true,
+						            layout      : 'bottomLeft',
+						            theme       : 'defaultTheme',
+						            timeout     : 3000
+						        });
+							} else
+							{
+								var n = noty({
+						            text        : "<b>Error: </b> Could not submit your bug at this time...",
+						            type        : 'error',
+						            dismissQueue: true,
+						            layout      : 'bottomLeft',
+						            theme       : 'defaultTheme',
+						            timeout     : 3000
+						        });
+							}
+						});
+						
+						clicked = true;
+					}
+				});
+			}
 		</script>
 		
 		<script src="/js/viewjs/players.js"></script>
@@ -133,7 +181,7 @@
 													$.post("/server/addServer", {"serverName": $("#serverName").val(), "serverJar": $("#serverJar").val()}, function(data) {
 														if (data.good != undefined)
 														{
-															//Good
+															location.reload(true);
 														} else if (data.error != undefined)
 														{
 															var n = noty({
@@ -176,9 +224,21 @@
 		</div>
 		
 		<div class="container marketing" style="top: 93px;">
-			<c:if test="${loggedIn && !b && user.getGroup().hasPermission('settings')}">
+			<c:if test="${loggedIn && !b && user.getGroup().hasPermission('mcapanel.properties.edit')}">
 				<div class="alert alert-warning" role="alert">
-					<b>New Version:</b> There has been a new version of McAdminPanel released! Please <a href="javascript:void;" onclick="showUpdateModal();">update</a> to the latest version!
+					<b>New Version:</b> There has been a new version of McAdminPanel released! Please <a href="javascript:void(0)" onclick="showUpdateModal();">update</a> to the latest version!
+				</div>
+			</c:if>
+			
+			<c:if test="${!install && (bukkitServer.getServerJar() == null || (bukkitServer.getServerJar() != null && !bukkitServer.getServerJar().exists()))}">
+				<div class="alert alert-danger" role="alert">
+					<b>Invalid Server Jar:</b> The server jar for this server could not be found, <a href="/settings/">click here</a> to change it.
+				</div>
+			</c:if>
+			
+			<c:if test="${versions.contains('1.0.0')}">
+				<div class="alert alert-warning" role="alert">
+					<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
 				</div>
 			</c:if>
 			
@@ -237,10 +297,41 @@
 								<h3 class="panel-title">
 									<c:choose>
 										<c:when test="${user.getGroup().hasPermission('server.console.view')}">
+											<div class="row">
+												<div class="col-sm-2"><ul id="server" class="nav nav-pills"><li class="active"><a href="#" forid="messages">Server Chat</a></li></ul></div>
+												<div class="col-sm-8" style="text-align: center;">
+													<c:if test="${loggedIn && page != 'home' && (user.getGroup().hasPermission('server.controls') || user.getGroup().hasPermission('server.reload'))}">
+														<c:choose>
+															<c:when test="${user.getGroup().hasPermission('server.controls')}">
+																<button type="button" id="startServer" act="startServer" class="actButton btn btn-sm btn-success" ${control.get("startServer") ? "" : "disabled"}>Start Server</button>
+																<button type="button" id="stopServer" act="stopServer" class="actButton btn btn-sm btn-danger" ${control.get("stopServer") ? "" : "disabled"}>Stop Server</button>
+																<button type="button" id="restartServer" act="restartServer" class="actButton btn btn-sm btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button>
+																<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>
+															</c:when>
+															<c:when test="${user.getGroup().hasPermission('server.reload')}">
+																<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>
+															</c:when>
+														</c:choose>
+													</c:if>
+												</div>
+												<div class="col-sm-2"><ul id="server" class="nav nav-pills"><li id="consolebutton" style="float: right;"><a href="#" forid="console">Server Console</a></li></ul></div>
+											</div>
+											
+											<!--
 											<ul id="server" class="nav nav-pills">
-												<li class="active"><a href="#" forid="messages">Server Chat</a></li>
-												<li id="consolebutton" style="float: right;"><a href="#" forid="console">Server Console</a></li>
+												<li class="active" style="width: 22.5%; float: left;"><a href="#" forid="messages">Server Chat</a></li>
+												
+												<li style="width: 55%; float: left;">
+													<span style="padding: 9px;">Server Status: <span id="statusTitle">${control.get("statusTitle")}</span></span>
+													<button type="button" id="startServer" act="startServer" class="actButton btn btn-sm btn-success" ${control.get("startServer") ? "" : "disabled"}>Start Server</button>
+													<button type="button" id="stopServer" act="stopServer" class="actButton btn btn-sm btn-danger" ${control.get("stopServer") ? "" : "disabled"}>Stop Server</button>
+													<button type="button" id="restartServer" act="restartServer" class="actButton btn btn-sm btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button>
+													<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>
+												</li>
+												
+												<li id="consolebutton" style="width: 22.5%; float: right;"><a href="#" forid="console">Server Console</a></li>
 											</ul>
+											-->
 										</c:when>
 										<c:otherwise>
 											Server Chat
@@ -248,7 +339,7 @@
 									</c:choose>
 								</h3>
 							</div>
-							<div class="panel-body" style="padding-top: 10px;">
+							<div id="chatconsolebody" class="panel-body" style="padding-top: 10px;">
 								<div id="messages" style="line-height: 24px; font-size: 16px; max-height: 175px; overflow-y: auto;">
 									${chats}
 								</div>

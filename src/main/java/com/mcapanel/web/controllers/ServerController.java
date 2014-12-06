@@ -40,10 +40,11 @@ public class ServerController extends Controller
 				db.save(server);
 				
 				BukkitServer bukkitServer = new BukkitServer(server);
-				
 				AdminPanelWrapper.getInstance().servers.put(server.getId(), bukkitServer);
 				
 				bukkitServer.setupBackups();
+				
+				request.getSession().setAttribute("chosenServer", server.getId());
 				
 				ret.put("good", "Successfully added your new server!");
 			} else

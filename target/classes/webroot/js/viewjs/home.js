@@ -1,40 +1,4 @@
 $(function() {
-	$(".actButton").click(function() {
-		$.post("/event/system/" + $(this).attr("act"), function(data) {
-			if (data.good == undefined && data.error != undefined)
-			{
-				errorModal(data.error);
-			}
-			
-			if (data.control != undefined)
-			{
-				var control = data.control;
-				
-				$("#statusTitle").html(control.statusTitle);
-				
-				if (control.startServer)
-					$("#startServer").removeAttr("disabled");
-				else
-					$("#startServer").attr("disabled", "");
-				
-				if (control.stopServer)
-					$("#stopServer").removeAttr("disabled");
-				else
-					$("#stopServer").attr("disabled", "");
-				
-				if (control.restartServer)
-					$("#restartServer").removeAttr("disabled");
-				else
-					$("#restartServer").attr("disabled", "");
-				
-				if (control.reloadServer)
-					$("#reloadServer").removeAttr("disabled");
-				else
-					$("#reloadServer").attr("disabled", "");
-			}
-		});
-	});
-	
 	$("#whitelistform").submit(function(e) {
 		e.preventDefault();
 		

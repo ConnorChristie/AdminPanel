@@ -36,7 +36,7 @@ public class EventController extends Controller
 			if (isHome && user.getGroup().hasPermission("server.usage"))
 				out.put("usage", AdminPanelWrapper.getInstance().getUsages().getUsageJson());
 			
-			if (isHome && (user.getGroup().hasPermission("server.controls") || user.getGroup().hasPermission("server.reload")))
+			if (user.getGroup().hasPermission("server.controls") || user.getGroup().hasPermission("server.reload"))
 				out.put("control", data.get("control"));
 			
 			if (user.getGroup().hasPermission("server.console.view"))
@@ -198,20 +198,28 @@ public class EventController extends Controller
 					{
 						bukkitServer.startServer();
 						
+						ap.everythingEvent.fetchData();
+						
 						out.put("good", "Starting the server.");
 					} else if (arguments.get(0).equalsIgnoreCase("stopServer"))
 					{
 						bukkitServer.stopServer(false);
+						
+						ap.everythingEvent.fetchData();
 						
 						out.put("good", "Stopping the server.");
 					} else if (arguments.get(0).equalsIgnoreCase("restartServer"))
 					{
 						bukkitServer.restartServer();
 						
+						ap.everythingEvent.fetchData();
+						
 						out.put("good", "Restarting the server.");
 					} else if (arguments.get(0).equalsIgnoreCase("reloadServer"))
 					{
 						bukkitServer.reloadServer();
+						
+						ap.everythingEvent.fetchData();
 						
 						out.put("good", "Reloading the server.");
 					}
@@ -227,6 +235,8 @@ public class EventController extends Controller
 					if (arguments.get(0).equalsIgnoreCase("reloadServer"))
 					{
 						bukkitServer.reloadServer();
+						
+						ap.everythingEvent.fetchData();
 						
 						out.put("good", "Reloading the server.");
 					}
