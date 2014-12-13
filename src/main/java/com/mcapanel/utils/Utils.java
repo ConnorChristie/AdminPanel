@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.ZipEntry;
@@ -23,10 +22,12 @@ public class Utils
 		{
 			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 			
-			messageDigest.reset();
-			messageDigest.update(text.getBytes());
+			byte[] array = messageDigest.digest(text.getBytes());
 			
-			md5 = new BigInteger(1, messageDigest.digest()).toString(16);
+			for (int i = 0; i < array.length; ++i)
+			{
+				md5 += Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3);
+			}
 		} catch (NoSuchAlgorithmException e)
 		{
 			e.printStackTrace();
@@ -103,15 +104,15 @@ public class Utils
 			}
 			
 			FileOutputStream fos = new FileOutputStream(f);
-			 
-            int len;
-            
-            while ((len = in.read(buffer)) > 0)
-            {
-            	fos.write(buffer, 0, len);
-            }
-            
-            fos.close();
+			
+			int len;
+			
+			while ((len = in.read(buffer)) > 0)
+			{
+				fos.write(buffer, 0, len);
+			}
+			
+			fos.close();
 			
 			ze = in.getNextEntry();
 		}

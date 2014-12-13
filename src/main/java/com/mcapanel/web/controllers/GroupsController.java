@@ -20,20 +20,20 @@ public class GroupsController extends Controller
 	{
 		WebPermission editing = null;
 		
-		perms.add(editing = new WebPermission("View Server Chats", "server.chat.view", "Gives user permission to view server chats."));
-		editing.addPermission(new WebPermission("Issue Chats", "server.chat.issue", "Gives user permission to issue chats."));
+		perms.add(editing = new WebPermission("View Server Chats", "server.chat.view", "Gives user permission to view the servers messages from players ingame."));
+		editing.addPermission(new WebPermission("Issue Chats", "server.chat.issue", "Gives user permission to send messages to players ingame."));
 		
-		perms.add(editing = new WebPermission("View Server Console", "server.console.view", "Gives user permission to view server console."));
-		editing.addPermission(new WebPermission("Issue Commands", "server.console.issue", "Gives user permission to issue commands."));
+		perms.add(editing = new WebPermission("View Server Console", "server.console.view", "Gives user permission to view the server console."));
+		editing.addPermission(new WebPermission("Issue Commands", "server.console.issue", "Gives user permission to issue server commands (Ex. help, reload, stop, ...)."));
 		
-		perms.add(editing = new WebPermission("Access Server Controls", "server.controls", "Gives user permission to control the server."));
+		perms.add(editing = new WebPermission("Access Server Controls", "server.controls", "Gives user permission to control the server (Start, Stop, Restart, Reload)."));
 		editing.addPermission(new WebPermission("Reload Only", "server.reload", "Gives user permission to only reload the server."));
 		
-		perms.add(editing = new WebPermission("View Server Usage", "server.usage", "Gives user permission to view server usage."));
+		perms.add(editing = new WebPermission("View Server Usage", "server.usage", "Gives user permission to view server usages."));
 		
-		perms.add(editing = new WebPermission("View Server Properties", "server.properties.view", "Gives user permission to view server properties."));
+		perms.add(editing = new WebPermission("View Server Properties", "server.properties.view", "Gives user permission to view server properties (Motd, Max Players, ...)."));
 		editing.addPermission(new WebPermission("Edit Properties", "server.properties.edit", "Gives user permission to edit server properties."));
-		editing.addPermission(new WebPermission("Add New Server", "server.properties.add", "Gives user permission to add a new server."));
+		editing.addPermission(new WebPermission("Add New Server", "server.properties.add", "Gives user permission to add a new server to McAdminPanel."));
 		
 		perms.add(editing = new WebPermission("View Whitelist Applications", "server.whitelist.view", "Gives user permission to view whitelist applications."));
 		editing.addPermission(new WebPermission("Accept/Deny Applications", "server.whitelist.edit", "Gives user permission to accept/deny whitelist applications."));
@@ -54,7 +54,7 @@ public class GroupsController extends Controller
 		editing.addPermission(new WebPermission("Schedule Backups", "server.backups.schedule.issue", "Gives user permission to schedule backups."));
 		editing.addPermission(new WebPermission("Delete Backup Schedules", "server.backups.schedule.delete", "Gives user permission to delete backup schedules."));
 		editing.addPermission(new WebPermission("Restore Backups", "server.backups.restore", "Gives user permission to restore backups."));
-		editing.addPermission(new WebPermission("Delete Backups", "server.backups.delete", "Gives user permission to delete backups."));
+		editing.addPermission(new WebPermission("Delete Backups", "server.backups.delete", "Gives user permission to delete backups (Caution)."));
 		
 		perms.add(editing = new WebPermission("View Web Users", "web.users.view", "Gives user permission to view web users."));
 		editing.addPermission(new WebPermission("Change User Group", "web.users.group", "Gives user permission to change users group."));
@@ -62,7 +62,7 @@ public class GroupsController extends Controller
 		editing.addPermission(new WebPermission("Delete User", "web.users.delete", "Gives user permission to delete user."));
 		
 		perms.add(editing = new WebPermission("View Web Groups", "web.groups.view", "Gives user permission to view web groups."));
-		editing.addPermission(new WebPermission("Edit Groups", "web.groups.edit", "Gives user permission to edit groups."));
+		editing.addPermission(new WebPermission("Edit Groups", "web.groups.edit", "Gives user permission to edit web groups."));
 		editing.addPermission(new WebPermission("Edit Permissions", "web.groups.permissions", "Gives user permission to edit permissions."));
 		editing.addPermission(new WebPermission("Delete Groups", "web.groups.delete", "Gives user permission to delete groups."));
 		

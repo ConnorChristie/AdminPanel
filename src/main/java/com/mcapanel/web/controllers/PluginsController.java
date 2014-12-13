@@ -4,9 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Enumeration;
+
+import javax.servlet.ServletException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.jetty.util.MultiPartInputStreamParser.MultiPart;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -25,6 +29,26 @@ public class PluginsController extends Controller
 	{
 		if (bukkitServer.getPluginConnector().connected())
 			request.setAttribute("plugins", arrayToString(getPluginsJson(true)));
+		
+		return renderView();
+	}
+	
+	public boolean upload() throws IOException, ServletException
+	{
+		if (isMethod("POST") && request.getParameter("uploadfile") != null)
+		{
+			MultiPart partFile = (MultiPart) request.getPart("pluginfile");
+			
+			if (partFile != null)
+			{
+				File file = partFile.getFile();
+				File f = new File(new File(bukkitServer.getServerJar().getParent(), "plugins"), partFile.getContentDispositionFilename());
+				
+				FileUtils.copyFile(file, f);
+				
+				System.out.println("Dir: " + f.getAbsolutePath());
+			}
+		}
 		
 		return renderView();
 	}

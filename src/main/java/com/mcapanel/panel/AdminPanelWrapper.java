@@ -36,6 +36,7 @@ import org.eclipse.jetty.annotations.ServletContainerInitializersStarter;
 import org.eclipse.jetty.apache.jsp.JettyJasperInitializer;
 import org.eclipse.jetty.plus.annotation.ContainerInitializer;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.session.HashSessionManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -65,6 +66,7 @@ import com.mcapanel.utils.UsageMonitor;
 import com.mcapanel.web.database.Group;
 import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.ControllerHandler;
+import com.mcapanel.web.handlers.MultipartConfigInjectionHandler;
 import com.mcapanel.web.servlets.AppServlet;
 
 public class AdminPanelWrapper
@@ -377,7 +379,14 @@ public class AdminPanelWrapper
 		SessionHandler sh = new SessionHandler(hsm);
 		context.setSessionHandler(sh);
 		
-		webServer.setHandler(context);
+		MultipartConfigInjectionHandler multipartConfigInjectionHandler = new MultipartConfigInjectionHandler();
+
+		HandlerCollection collection = new HandlerCollection();
+		collection.addHandler(context);
+
+		multipartConfigInjectionHandler.setHandler(collection);
+		
+		webServer.setHandler(multipartConfigInjectionHandler);
 		
 		JettyJasperInitializer sci = new JettyJasperInitializer();
 		ServletContainerInitializersStarter sciStarter = new ServletContainerInitializersStarter(context);
