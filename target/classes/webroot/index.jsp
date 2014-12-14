@@ -238,7 +238,7 @@
 				</div>
 			</c:if>
 			
-			<c:if test="${versions.contains('1.0.0')}">
+			<c:if test="${versions.contains('1.0.0') || versions.contains('1.0.1')}">
 				<div class="alert alert-warning" role="alert">
 					<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
 				</div>

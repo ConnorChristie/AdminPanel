@@ -104,7 +104,7 @@
 								
 								<div class="col-sm-6">
 									<div style="float: left;">
-										<span style="font-size: 20pt;" id="disk${d}title"><b>Disk ${d + 1}</b></span><br />
+										<span style="font-size: 16pt; display: block; width: 230px;" id="disk${d}title"><b>${usage.get('disks')[d].get("diskName")}</b></span>
 										<span style="font-size: 11pt;" id="disk${d}total"><b>Total: ${usage.get('disks')[d].get("diskTotal")} GB</b></span><br />
 										<span style="font-size: 11pt;" id="disk${d}used"><b>Used: ${usage.get('disks')[d].get("diskUsed")} GB</b></span><br />
 										<span style="font-size: 11pt;" id="disk${d}free"><b>Free: ${usage.get('disks')[d].get("diskFree")} GB</b></span>

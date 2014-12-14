@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.BindException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.jasper.servlet.JspServlet;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
@@ -71,7 +73,7 @@ import com.mcapanel.web.servlets.AppServlet;
 
 public class AdminPanelWrapper
 {
-	public static final String VERSION = "v1.0.0";
+	public static final String VERSION = "v1.0.1";
 	public static String VERSION_SUB = "";
 	
 	private Config config;
@@ -196,6 +198,22 @@ public class AdminPanelWrapper
 		config = new Config();
 		
 		tinyUrl = new TinyUrl(config.getString("server-ip", "localhost") + ":" + config.getString("web-port", "80"));
+		
+		File webPages = new File("McAdminPanel/webpages");
+		
+		if (webPages == null || (webPages != null && !webPages.exists()))
+		{
+			try
+			{
+				FileUtils.copyDirectory(new File(getClass().getResource("/webpages").toURI()), webPages);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			} catch (URISyntaxException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		
 		//updateServerJar();
 	}

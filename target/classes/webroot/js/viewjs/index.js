@@ -481,7 +481,7 @@ function loadEverything(doCycle)
 					{
 						var disk = disks[i];
 						
-						$("#disk" + i + "title").html("<b>Disk " + (i + 1) + "</b>");
+						$("#disk" + i + "title").html("<b>" + disk.diskName + "</b>");
 						$("#disk" + i + "total").html("<b>Total: " + disk.diskTotal + " GB</b>");
 						$("#disk" + i + "used").html("<b>Used: " + disk.diskUsed + " GB</b>");
 						$("#disk" + i + "free").html("<b>Free: " + disk.diskFree + " GB</b>");

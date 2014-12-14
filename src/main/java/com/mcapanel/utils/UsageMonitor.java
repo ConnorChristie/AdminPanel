@@ -167,6 +167,7 @@ public class UsageMonitor extends TimerTask
 	    {
 	    	JSONObject obj2 = new JSONObject();
 	    	
+	    	obj2.put("diskName", fsv.getSystemDisplayName(f));
 	    	obj2.put("diskUsed", Double.parseDouble(df.format((f.getTotalSpace() - f.getFreeSpace()) / 1024.0 / 1024.0 / 1024.0)));
 	    	obj2.put("diskTotal", Double.parseDouble(df.format(f.getTotalSpace() / 1024.0 / 1024.0 / 1024.0)));
 	    	obj2.put("diskFree", Double.parseDouble(df.format(((Double) obj2.get("diskTotal")) - ((Double) obj2.get("diskUsed")))));
