@@ -3,7 +3,6 @@ package com.mcapanel.panel;
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -30,7 +29,6 @@ import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.jasper.servlet.JspServlet;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
