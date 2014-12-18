@@ -186,17 +186,20 @@ public class BukkitServer
 	
 	public void reloadServer()
 	{
-		serverStatus = ServerStatus.RELOADING;
-		
-		try
+		if (serverStatus == ServerStatus.STARTED)
 		{
-			writer.write("reload\n".getBytes());
-			writer.flush();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
+			serverStatus = ServerStatus.RELOADING;
 			
-			serverStatus = ServerStatus.STOPPED;
+			try
+			{
+				writer.write("reload\n".getBytes());
+				writer.flush();
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+				
+				serverStatus = ServerStatus.STOPPED;
+			}
 		}
 	}
 	

@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Enumeration;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -37,20 +38,29 @@ public class PluginsController extends Controller
 	{
 		if (isMethod("POST") && request.getParameter("uploadfile") != null)
 		{
-			MultiPart partFile = (MultiPart) request.getPart("pluginfile");
-			
-			if (partFile != null)
+			for (Part p : request.getParts())
 			{
-				File file = partFile.getFile();
-				File f = new File(new File(bukkitServer.getServerJar().getParent(), "plugins"), partFile.getContentDispositionFilename());
-				
-				FileUtils.copyFile(file, f);
-				
-				System.out.println("Dir: " + f.getAbsolutePath());
+				if (p.getName().equalsIgnoreCase("pluginfile"))
+				{
+					MultiPart partFile = (MultiPart) p;
+					
+					File file = partFile.getFile();
+					
+					if (file != null)
+					{
+						File f = new File(new File(bukkitServer.getServerJar().getParent(), "plugins"), partFile.getContentDispositionFilename());
+						
+						FileUtils.copyFile(file, f);
+					}
+				}
 			}
+			
+			bukkitServer.reloadServer();
 		}
 		
-		return renderView();
+		response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
