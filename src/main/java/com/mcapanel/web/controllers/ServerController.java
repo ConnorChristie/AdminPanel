@@ -36,17 +36,21 @@ public class ServerController extends Controller
 				String serverName = request.getParameter("serverName");
 				String serverJar = request.getParameter("serverJar");
 				
-				Server server = new Server(serverName, serverJar);
-				db.save(server);
-				
-				BukkitServer bukkitServer = new BukkitServer(server);
-				AdminPanelWrapper.getInstance().servers.put(server.getId(), bukkitServer);
-				
-				bukkitServer.setupBackups();
-				
-				request.getSession().setAttribute("chosenServer", server.getId());
-				
-				ret.put("good", "Successfully added your new server!");
+				if (serverName.length() != 0 && serverJar.length() != 0)
+				{
+					Server server = new Server(serverName, serverJar);
+					db.save(server);
+					
+					BukkitServer bukkitServer = new BukkitServer(server);
+					AdminPanelWrapper.getInstance().servers.put(server.getId(), bukkitServer);
+					
+					bukkitServer.setupBackups();
+					
+					request.getSession().setAttribute("chosenServer", server.getId());
+					
+					ret.put("good", "Successfully added your new server!");
+				} else
+					ret.put("error", "Please enter a server name and jar.");
 			} else
 				ret.put("error", "You do not have permission to do that.");
 			
@@ -78,6 +82,36 @@ public class ServerController extends Controller
 			}
 			
 			response.getWriter().println("good");
+			
+			return true;
+		}
+		
+		return error();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean deleteServer() throws IOException
+	{
+		if (isMethod("POST"))
+		{
+			includeIndex(false);
+			mimeType("application/json");
+			
+			JSONObject ret = new JSONObject();
+			
+			if (ap.servers.size() > 1)
+			{
+				//Can delete
+				
+				ap.deleteServer(bukkitServer.getId());
+				
+				request.getSession().setAttribute("chosenServer", ap.servers.keySet().toArray(new Integer[ap.servers.keySet().size()])[0]);
+				
+				ret.put("success", "Successfully deleted server!");
+			} else
+				ret.put("error", "This is the only server, please create a new server before deleting this one.");
+			
+			response.getWriter().println(ret.toJSONString());
 			
 			return true;
 		}

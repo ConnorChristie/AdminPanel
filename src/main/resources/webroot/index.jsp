@@ -176,7 +176,7 @@
 													$("#serverSelect").val(pervServer);
 													$("#custommodal").on("shown.bs.modal", function() { $("#serverName").focus(); });
 													
-													showModalFull("Add Server", "<input type=\"text\" class=\"form-control\" id=\"serverName\" placeholder=\"Enter Server Name\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\"><br /><input type=\"text\" class=\"form-control\" id=\"serverJar\" placeholder=\"Enter Server Jar\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\">", "Add Server", true);
+													showModalFull("Add Server", "<input type=\"text\" class=\"form-control\" id=\"serverName\" placeholder=\"Enter Server Name\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\" required><br /><input type=\"text\" class=\"form-control\" id=\"serverJar\" placeholder=\"Enter Server Jar\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\" required>", "Add Server", true);
 													
 													$("#custommodal .btn-primary").click(function() {
 														$.post("/server/addServer", {"serverName": $("#serverName").val(), "serverJar": $("#serverJar").val()}, function(data) {
@@ -238,12 +238,6 @@
 				</div>
 			</c:if>
 			
-			<c:if test="${versions.contains('1.0.0') || versions.contains('1.0.1')}">
-				<div class="alert alert-warning" role="alert">
-					<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
-				</div>
-			</c:if>
-			
 			<c:choose>
 				<c:when test="${page != null && page != '404'}">
 					<div id="mainpage" class="row">
@@ -290,6 +284,12 @@
 					<jsp:include page="/errors/404.jsp" flush="true" />
 				</c:otherwise>
 			</c:choose>
+			
+			<c:if test="${versions.contains('1.0.0') || versions.contains('1.0.1')}">
+				<div class="alert alert-warning" role="alert">
+					<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
+				</div>
+			</c:if>
 			
 			<c:if test="${!install && (!loggedIn || user.getGroup().hasPermission('server.chat.view'))}">
 				<div class="row">

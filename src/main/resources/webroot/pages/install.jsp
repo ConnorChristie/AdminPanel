@@ -23,11 +23,11 @@
 			<div class="row">
 				<div class="col-sm-6 form-group">
 					<label for="cbname">Server Name</label>
-					<input type="text" class="form-control" id="cbname" name="cbname" placeholder="Enter Server Name">
+					<input type="text" class="form-control" id="cbname" name="cbname" placeholder="Enter Server Name" required>
 				</div>
 				<div class="col-sm-6 form-group">
 					<label for="cbfile">Server Jar File (Ex: C:\Users\Connor\Desktop\McAdminPanel\craftbukkit.jar)</label>
-					<input type="text" class="form-control" id="cbfile" name="cbfile" placeholder="Enter Server Jar File">
+					<input type="text" class="form-control" id="cbfile" name="cbfile" placeholder="Enter Server Jar File" required>
 				</div>
 				<!--
 				<div class="col-sm-4 form-group">

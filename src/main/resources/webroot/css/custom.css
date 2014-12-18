@@ -75,7 +75,7 @@ form {
 	
 	border-radius: 0px;
 	border: none;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 .navbar-wrapper .navbar {
@@ -121,7 +121,8 @@ form {
 }
 
 .alert-warning {
-	background-color: #FFF9DA;
+	background-color: #FFF5BE;
+	border-color: #FCD88E;
 }
 
 table.dataTable thead .sorting_asc {

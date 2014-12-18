@@ -1,9 +1,6 @@
 package com.mcapanel.web.servlets;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mcapanel.bukkit.BukkitServer;
 import com.mcapanel.panel.AdminPanelWrapper;
+import com.mcapanel.utils.Utils;
 import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.ControllerHandler;
 
@@ -138,7 +136,7 @@ public class AppServlet extends HttpServlet
 		{
 			String userHash = (String) request.getSession().getAttribute("userHash");
 			
-			if (userHash.equals(md5(u.getId() + ip)))
+			if (userHash.equals(Utils.md5(u.getId() + ip)))
 			{
 				request.setAttribute("loggedIn", true);
 				
@@ -147,25 +145,5 @@ public class AppServlet extends HttpServlet
 		}
 		
 		return null;
-	}
-	
-	public String md5(String text)
-	{
-		String md5 = "";
-		
-		try
-		{
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-			
-			messageDigest.reset();
-			messageDigest.update(text.getBytes());
-			
-			md5 = new BigInteger(1, messageDigest.digest()).toString(16);
-		} catch (NoSuchAlgorithmException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return md5;
 	}
 }

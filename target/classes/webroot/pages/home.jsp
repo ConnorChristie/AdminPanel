@@ -9,7 +9,7 @@
 <script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/jquery.effects.slide.js"></script>
 <script src="/js/viewjs/home.js"></script>
 
-<div class="panel panel-default" style="margin-bottom: 30px;">
+<div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">
 			<c:choose>

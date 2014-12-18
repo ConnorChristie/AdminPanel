@@ -228,6 +228,39 @@ function saveMcAdminSettings()
 		}
 	});
 }
+
+function deleteServer(e)
+{
+	e.preventDefault();
+	
+	showModalFull("Delete Server", "Are you sure you want to delete this server? This cannot be undone.", "Delete", "Close");
+	
+	var clicked = false;
+	
+	$("#custommodalButton").click(function() {
+		if (!clicked)
+		{
+			$.post("/server/deleteServer", function(data) {
+				if (data.error != undefined)
+				{
+					var n = noty({
+			            text        : "<b>Error: </b>" + data.error,
+			            type        : 'error',
+			            dismissQueue: true,
+			            layout      : 'bottomLeft',
+			            theme       : 'defaultTheme',
+			            timeout     : 5000
+			        });
+				} else
+				{
+					window.location = "/";
+				}
+			});
+			
+			clicked = true;
+		}
+	});
+}
 </script>
 
 <div class="panel panel-default">
@@ -244,7 +277,8 @@ function saveMcAdminSettings()
 			<div id="serversettings" style="padding-left: 0px; padding-right: 0px;">
 				<div class="panel panel-default" style="box-shadow: none; border: 1px solid #DADADA; margin-bottom: 15px;">
 	            	<div class="panel-heading" style="height: 38px;">
-	              		<h3 class="panel-title">Server Settings</h3>
+	              		<h3 class="panel-title" style="float: left;">Server Settings</h3>
+	              		<span style="float: right;"><a href="/server/deleteServer" onclick="deleteServer(event);" style="color: red !important;">Delete Server</a></span>
 	            	</div>
 	            	<div class="panel-body">
 						<form id="settingsform" role="form" method="post" action="/">

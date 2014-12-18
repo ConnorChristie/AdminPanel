@@ -82,12 +82,14 @@ public class ErrorHandler
 			}
 		} catch (SocketException e) { }
 		
+		/*
 		if (d.size() == 0)
 		{
 			System.out.println(m.toString());
 			
 			System.exit(-1);
 		}
+		*/
 		
 		new Timer().schedule(new TimerTask() {
 			public void run()

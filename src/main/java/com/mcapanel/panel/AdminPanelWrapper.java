@@ -3,13 +3,13 @@ package com.mcapanel.panel;
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.BindException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.SimpleDateFormat;
@@ -65,6 +65,7 @@ import com.mcapanel.config.Config;
 import com.mcapanel.log.NoLogging;
 import com.mcapanel.utils.TinyUrl;
 import com.mcapanel.utils.UsageMonitor;
+import com.mcapanel.utils.Utils;
 import com.mcapanel.web.database.Group;
 import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.ControllerHandler;
@@ -191,6 +192,20 @@ public class AdminPanelWrapper
 		return servers.containsKey(id);
 	}
 	
+	public void deleteServer(int id)
+	{
+		if (hasServer(id))
+		{
+			final BukkitServer serv = getServer(id);
+			
+			servers.remove(id);
+			
+			serv.stopServer(false);
+			
+			ebean.delete(com.mcapanel.web.database.Server.class, id);
+		}
+	}
+	
 	private void setupConfig()
 	{
 		System.out.println("Loading config file...");
@@ -199,20 +214,58 @@ public class AdminPanelWrapper
 		
 		tinyUrl = new TinyUrl(config.getString("server-ip", "localhost") + ":" + config.getString("web-port", "80"));
 		
-		File webPages = new File("McAdminPanel/webpages");
+		File webPages = new File("McAdminPanel", "webpages/");
+		webPages.mkdirs();
 		
-		if (webPages == null || (webPages != null && !webPages.exists()))
+		if (webPages.isDirectory() && webPages.list().length == 0)
 		{
 			try
 			{
-				FileUtils.copyDirectory(new File(getClass().getResource("/webpages").toURI()), webPages);
-			} catch (IOException e)
+				Utils.copyResourcesToDirectory(Utils.jarForClass(getClass(), null), "webpages", "McAdminPanel/webpages");
+			} catch (Exception e)
 			{
-				e.printStackTrace();
-			} catch (URISyntaxException e)
-			{
-				e.printStackTrace();
+				System.out.println("Could not copy the webpages folder over...");
 			}
+			
+			/*
+			try
+		     {
+		          String path = System.getProperty("java.io.tmpdir");
+		          File dir = new File(path+"\\folder");  
+		          dir.mkdirs();                    
+		          File resource = new File(new URI(Main.class.getClass().getResource("/input/folder").toString()));
+		          File[] listResource = resource.listFiles();
+		          String[] files=resource.list();
+		          for (int i = 0; i < files.length; i++) 
+		          {
+		               File dstfile1=new File(dir,files);
+
+		               FileInputStream is1 = new FileInputStream(listResource[i]);
+
+		               FileOutputStream fos1 = new FileOutputStream(dstfile1);
+
+		               int b1;
+
+		               while((b1 = is1.read()) != -1) 
+
+		               {
+
+		                    fos1.write(b1);
+
+		               }
+
+		               fos1.close();
+
+		          } 
+
+		     }
+
+		     catch(Exception e)
+
+		     {
+
+		     }
+		     */
 		}
 		
 		//updateServerJar();
