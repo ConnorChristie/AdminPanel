@@ -1,6 +1,6 @@
 <script src="/js/viewjs/install.js"></script>
 
-<div class="panel panel-default" style="margin-bottom: 0px;">
+<div class="panel panel-default" style="margin-bottom: 20px;">
 	<div class="panel-heading">
 		<h3 class="panel-title">
 			Install McAdminPanel
