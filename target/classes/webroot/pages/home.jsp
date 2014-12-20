@@ -19,7 +19,7 @@
 						<span style="float: right;"><a href="/" onclick="return showPercents();" id="apercents">Percents</a> | <a href="/" onclick="return showCharts();" id="acharts">Charts</a></span>
 					</c:if>
 				</c:when>
-				<c:when test="${loggedIn}">
+				<c:when test="${loggedIn || !config.getBoolean('enable-whitelist', true)}">
 					Server Info
 				</c:when>
 				<c:otherwise>
@@ -30,7 +30,7 @@
 	</div>
 	<div id="homepanel" class="panel-body" style="padding-top: 10px;">
 		<c:choose>
-			<c:when test="${loggedIn}">
+			<c:when test="${loggedIn || !config.getBoolean('enable-whitelist', true)}">
 				<c:choose>
 					<c:when test="${user.getGroup().hasPermission('server.controls')}">
 						<div class="row" style="padding-bottom: 12px; border-bottom: 1px solid #ddd;">

@@ -672,12 +672,20 @@ function deleteServer(e)
 									<input type="text" class="form-control" id="adminport" name="adminport" placeholder="Enter McAdminPanel Port" value="${config.getString('web-port', '')}" required="" ${user.getGroup().hasPermission("mcapanel.properties.edit") ? "" : "disabled"}>
 								</div>
 								<div class="form-group">
+									<label for=enablewhitelist>Enable Whitelist</label>
+									<select class="form-control" id="enablewhitelist" name="enablewhitelist" ${user.getGroup().hasPermission("mcapanel.properties.edit") ? "" : "disabled"}>
+										<option value="true">Yes</option>
+										<option value="false">No</option>
+									</select>
+									<script>$("#enablewhitelist").val("${config.getString('enable-whitelist', 'true')}");</script>
+								</div>
+								<div class="form-group">
 									<label for="errorrestart">Restart on Error</label>
 									<select class="form-control" id="errorrestart" name="errorrestart" ${user.getGroup().hasPermission("mcapanel.properties.edit") ? "" : "disabled"}>
 										<option value="true">Yes</option>
 										<option value="false">No</option>
 									</select>
-									<script>$("#errorrestart").val("${config.getString('restart-on-error', 'false')}");</script>
+									<script>$("#errorrestart").val("${config.getString('restart-on-error', 'true')}");</script>
 								</div>
 								<div class="form-group">
 									<label for="autorestart">Auto Restart (Restarts on stops)</label>
@@ -685,7 +693,7 @@ function deleteServer(e)
 										<option value="true">Yes</option>
 										<option value="false">No</option>
 									</select>
-									<script>$("#autorestart").val("${config.getString('auto-restart', 'false')}");</script>
+									<script>$("#autorestart").val("${config.getString('auto-restart', 'true')}");</script>
 								</div>
 							</form>
 						</div>

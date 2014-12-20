@@ -18,9 +18,7 @@ public class SettingsController extends Controller
 	
 	public boolean index()
 	{
-		request.setAttribute("bukkitServer", bukkitServer);
 		request.setAttribute("bukkitConfig", bukkitServer.getConfig());
-		request.setAttribute("config", config);
 		
 		return renderView();
 	}
@@ -200,12 +198,14 @@ public class SettingsController extends Controller
 				String serverip = request.getParameter("serverip");
 				String adminport = request.getParameter("adminport");
 				
+				String enablewhitelist = request.getParameter("enablewhitelist");
 				String errorrestart = request.getParameter("errorrestart");
 				String autorestart = request.getParameter("autorestart");
 				
 				config.setValue("server-ip", serverip);
 				config.setValue("web-port", adminport);
 				
+				config.setValue("enable-whitelist", enablewhitelist);
 				config.setValue("restart-on-error", errorrestart);
 				config.setValue("auto-restart", autorestart);
 				

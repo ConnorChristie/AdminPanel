@@ -80,6 +80,7 @@ public class ControllerHandler
 			request.setAttribute("b", ap.getTinyUrl().getHelper().cd);
 			request.setAttribute("tinyUrl", ap.getTinyUrl());
 			request.setAttribute("versions", ap.getVersion());
+			request.setAttribute("config", co.config);
 			
 			Method m = co.getClass().getMethod(method);
 			

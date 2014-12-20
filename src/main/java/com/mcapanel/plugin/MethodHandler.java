@@ -83,6 +83,7 @@ public class MethodHandler
 			out.add(obj);
 		}
 		
+		objOut.put("whitelist", ap.getConfig().getBoolean("enable-whitelist", true));
 		objOut.put("appCount", ap.getDatabase().find(Application.class).findIds().size());
 		objOut.put("hasTinyUrl", !ap.getTinyUrl().getHelper().c());
 		objOut.put("tinyUrl", ap.getTinyUrl().shortUrl());

@@ -25,7 +25,9 @@ public class Config
         configDefaults.put("web-port", "80");
         
         configDefaults.put("installed", "false");
+        configDefaults.put("enable-whitelist", "true");
         configDefaults.put("restart-on-error", "true");
+        configDefaults.put("auto-restart", "true");
         
         loadConfig();
         copyDefaults();
