@@ -30,6 +30,7 @@ public class EventController extends Controller
 			isHome = true;
 		
 		out.put("time", System.currentTimeMillis());
+		out.put("loggedIn", isLoggedIn());
 		
 		if (isLoggedIn())
 		{

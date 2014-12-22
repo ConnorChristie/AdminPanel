@@ -121,7 +121,7 @@
 										</c:when>
 									</c:choose>
 								</c:forEach>
-								<c:if test="${webTabs != null}">
+								<c:if test="${serverTabs != null}">
 									<li id="serverTab" class="dropdown">
 					                	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Server <span class="caret"></span></a>
 					               		<ul class="dropdown-menu" role="menu">

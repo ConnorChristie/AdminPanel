@@ -1,6 +1,7 @@
 package com.mcapanel.web.controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -44,6 +45,71 @@ public class IndexController extends Controller
 			
 			request.setAttribute("servers", getServers());
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean tabs() throws IOException
+	{
+		includeIndex(false);
+		
+		PrintWriter pw = response.getWriter();
+		
+		int applications = db.find(Application.class).findRowCount();
+		
+		List<String> tabs = getTabs();
+		Object serverTabsO = request.getAttribute("serverTabs");
+		Object webTabsO = request.getAttribute("webTabs");
+		
+		for (String tab : tabs)
+		{
+			if (tab == "home")
+			{
+				pw.println("<li id=\"home\"><a href=\"/\">Home</a></li>");
+			} else if (tab != "settings")
+			{
+				pw.println("<li id=\"" + tab + "\"><a href=\"/" + tab + "/\">" + tab.substring(0, 1).toUpperCase() + tab.substring(1) + ((tab == "applications" && applications > 0) ? " <span id=\"appBadge\" class=\"badge\" style=\"margin-left: 5px; background-color: rgb(229, 91, 91);\">${applications}</span>" : "") + "</a></li>");
+			}
+		}
+		
+		if (serverTabsO != null)
+		{
+			List<String> serverTabs = (List<String>) serverTabsO;
+			
+			pw.println("<li id=\"serverTab\" class=\"dropdown\">");
+				pw.println("<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Server <span class=\"caret\"></span></a>");
+				pw.println("<ul class=\"dropdown-menu\" role=\"menu\">");
+					for (String serverTab : serverTabs)
+					{
+						pw.println("<li><a href=\"/" + serverTab + "/\">" + serverTab.substring(0, 1).toUpperCase() + serverTab.substring(1) + "</a></li>");
+					}
+				pw.println("</ul>");
+			pw.println("</li>");
+		}
+		
+		if (webTabsO != null)
+		{
+			List<String> webTabs = (List<String>) webTabsO;
+			
+			pw.println("<li id=\"webTab\" class=\"dropdown\">");
+				pw.println("<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Web <span class=\"caret\"></span></a>");
+				pw.println("<ul class=\"dropdown-menu\" role=\"menu\">");
+					for (String webTab : webTabs)
+					{
+						pw.println("<li><a href=\"/" + webTab + "/\">" + webTab.substring(0, 1).toUpperCase() + webTab.substring(1) + "</a></li>");
+					}
+				pw.println("</ul>");
+			pw.println("</li>");
+		}
+		
+		for (String tab : tabs)
+		{
+			if (tab == "settings")
+			{
+				pw.println("<li><a href=\"/" + tab + "/\">" + tab.substring(0, 1).toUpperCase() + tab.substring(1) + "</a></li>");
+			}
+		}
+		
+		return true;
 	}
 	
 	private List<String> getTabs()

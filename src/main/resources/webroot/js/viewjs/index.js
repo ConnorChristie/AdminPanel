@@ -419,6 +419,9 @@ function issueCommand()
 var prevTime = 0;
 var everyOther = false;
 
+var loggedIn = false;
+var hadFirst = false;
+
 function loadEverything(doCycle)
 {
 	var oldChats   = $("#messages").html();
@@ -438,6 +441,24 @@ function loadEverything(doCycle)
 				{
 					return;
 				}
+				
+				/*
+				if (data.loggedIn != loggedIn && hadFirst)
+				{
+					window.location = "/";
+				}
+				
+				loggedIn = data.loggedIn;
+				hadFirst = true;
+				
+				var activeId = $("#nav").find(".active").attr("id");
+				var openId = $("#nav").find(".open").attr("id");
+				
+				$("#nav").load("/index/tabs", function() {
+					$("#nav").find("#" + activeId).addClass("active");
+					$("#nav").find("#" + openId).addClass("open");
+				});
+				*/
 				
 				if (data.usage != undefined)
 				{
