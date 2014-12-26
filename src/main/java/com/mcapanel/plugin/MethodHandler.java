@@ -1,12 +1,8 @@
 package com.mcapanel.plugin;
 
-import java.util.List;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.mcapanel.panel.AdminPanelWrapper;
-import com.mcapanel.web.database.Application;
 import com.mcapanel.web.database.Group;
 import com.mcapanel.web.database.PasswordReset;
 import com.mcapanel.web.database.User;
@@ -50,47 +46,9 @@ public class MethodHandler
 		return out.toJSONString();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String getInitial()
 	{
-		JSONObject objOut = new JSONObject();
-		JSONArray out = new JSONArray();
-		
-		List<User> us = ap.getDatabase().find(User.class).findList();
-		
-		for (User u : us)
-		{
-			JSONObject obj = new JSONObject();
-			
-			Group group = ap.getDatabase().find(Group.class, u.getGroupId());
-			
-			if (group != null)
-			{
-				JSONObject gro = new JSONObject();
-				
-				gro.put("ghost", group.isGhost());
-				gro.put("permissions", group.getPermissions());
-				
-				obj.put("group", gro);
-			}
-			
-			obj.put("uuid", u.getUuid());
-			obj.put("username", u.getUsername());
-			obj.put("ipAddress", u.getIpAddress());
-			
-			obj.put("whitelisted", u.isWhitelisted());
-			obj.put("blacklisted", u.isBlacklisted());
-			
-			out.add(obj);
-		}
-		
-		objOut.put("whitelist", ap.getConfig().getBoolean("enable-whitelist", true));
-		objOut.put("appCount", ap.getDatabase().find(Application.class).findIds().size());
-		objOut.put("hasTinyUrl", !ap.getTinyUrl().getHelper().c());
-		objOut.put("tinyUrl", ap.getTinyUrl().shortUrl());
-		objOut.put("users", out);
-		
-		return objOut.toJSONString();
+		return ap.initialEvent.getData();
 	}
 	
 	//Change to uuid
@@ -108,8 +66,6 @@ public class MethodHandler
 	
 	public void passwordCode(String name, String code)
 	{
-		System.out.println("Name: " + name + ", " + code);
-		
 		PasswordReset pwr = new PasswordReset(name, code);
 		ap.getDatabase().save(pwr);
 	}

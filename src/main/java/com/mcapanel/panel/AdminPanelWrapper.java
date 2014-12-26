@@ -48,14 +48,20 @@ import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.ServerConfig;
+import com.avaje.ebean.config.dbplatform.DatabasePlatform;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
+import com.avaje.ebeaninternal.server.ddl.AddForeignKeysVisitor;
+import com.avaje.ebeaninternal.server.ddl.CreateSequenceVisitor;
 import com.avaje.ebeaninternal.server.ddl.CreateTableVisitor;
+import com.avaje.ebeaninternal.server.ddl.DdlGenContext;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
+import com.avaje.ebeaninternal.server.ddl.VisitorUtil;
 import com.avaje.ebeaninternal.server.deploy.BeanDescriptorManager;
 import com.avaje.ebeaninternal.server.deploy.parse.DeployCreateProperties;
 import com.avaje.ebeaninternal.server.lib.sql.DataSourcePool;
 import com.avaje.ebeaninternal.server.lib.sql.PooledConnection;
+import com.avaje.ebeaninternal.server.lib.sql.PooledConnectionQueue;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.avaje.ebeaninternal.server.subclass.SubClassManager;
 import com.mcapanel.bukkit.BukkitServer;
@@ -90,6 +96,7 @@ public class AdminPanelWrapper
 	
 	private final Timer timer = new Timer("Usage Thread", false);
 	
+	public InitialEvent initialEvent;
 	public EverythingEvent everythingEvent;
 	
 	public static void main(String[] args) throws Exception
@@ -133,6 +140,9 @@ public class AdminPanelWrapper
 		
 		everythingEvent = new EverythingEvent();
 		everythingEvent.start();
+		
+		initialEvent = new InitialEvent();
+		initialEvent.start();
 		
 		startWebPanel();
 		setShutdownHook();
@@ -300,14 +310,15 @@ public class AdminPanelWrapper
 		System.out.println("Loading databases...");
 		
 		//Disable annoying log messages...
-		Logger.getLogger(DdlGenerator.class.getName()).setLevel(Level.OFF);
-		Logger.getLogger(DataSourcePool.class.getName()).setLevel(Level.OFF);
-		Logger.getLogger(SubClassManager.class.getName()).setLevel(Level.OFF);
-		Logger.getLogger(PooledConnection.class.getName()).setLevel(Level.OFF);
-		Logger.getLogger(CreateTableVisitor.class.getName()).setLevel(Level.OFF);
-		Logger.getLogger(BeanDescriptorManager.class.getName()).setLevel(Level.OFF);
-		Logger.getLogger(DeployCreateProperties.class.getName()).setLevel(Level.OFF);
-		Logger.getLogger("com.avaje.ebean.config.PropertyMapLoader").setLevel(Level.OFF);
+		Logger.getLogger(DdlGenerator.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(DataSourcePool.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(SubClassManager.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(PooledConnection.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(CreateTableVisitor.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(BeanDescriptorManager.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(PooledConnectionQueue.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(DeployCreateProperties.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger("com.avaje.ebean.config.PropertyMapLoader").setLevel(Level.WARNING);
 		
 		ServerConfig db = new ServerConfig();
 		
@@ -322,6 +333,8 @@ public class AdminPanelWrapper
 		ds.setUrl("jdbc:sqlite:McAdminPanel/McAdminPanel.db");
 		ds.setUsername("adminpanel");
 		ds.setPassword("SeaFishRawr");
+		ds.setMaxInactiveTimeSecs(10);
+		ds.setMaxConnections(100);
 		ds.setIsolationLevel(TransactionIsolation.getLevel("SERIALIZABLE"));
 		
 		if (ds.getDriver().contains("sqlite"))
@@ -334,33 +347,28 @@ public class AdminPanelWrapper
 		
 		ebean = EbeanServerFactory.create(db);
 		
-		try
+		int errorCount = 0;
+		
+		for (Class<?> c : getDatabaseClasses())
 		{
-			for (Class<?> c : getDatabaseClasses())
+			try
 			{
 				getDatabase().find(c).findRowCount();
+			} catch (PersistenceException e)
+			{
+				errorCount++;
 			}
+		}
+		
+		if (errorCount == 1)
+		{
+			SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
+			DdlGenerator gen = serv.getDdlGenerator();
 			
-			/*
-			new Thread(new Runnable() {
-				public void run()
-				{
-					System.out.println("Fetching UUIDs for all users...");
-					
-					List<UUID> uuids = new ArrayList<UUID>();
-					
-					for (User u : getDatabase().find(User.class).findList())
-					{
-						uuids.add(UUID.fromString(u.getUuid()));
-					}
-					
-					uuidFetcher.setUUIDs(uuids).runUUIDs();
-					
-					System.out.println("Done fetching UUIDs!");
-				}
-			}).start();
-			*/
-		} catch (PersistenceException e)
+			String resetCodes = "CREATE TABLE resetcodes (id integer primary key, username varchar(255), reset_code varchar(255));";
+			
+			gen.runScript(true, resetCodes);
+		} else if (errorCount > 1)
 		{
 			System.out.println("Initializing database...");
 			
