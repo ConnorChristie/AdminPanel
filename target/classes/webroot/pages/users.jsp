@@ -18,6 +18,22 @@ $(function() {
 		});
 	}
 	
+	if (${user.getGroup().hasPermission("web.users.changePassword")})
+	{
+		$(".changePassword").click(function() {
+			$("#custommodal").on("shown.bs.modal", function() { $("#password").focus(); });
+			
+			showModalFull("Change Password", "<label for='password'>New Password</label><input type='text' id='password' class='form-control' /><br /><label for='confpassword'>Confirm Password</label><input type='text' id='confpassword' class='form-control' />", "Change", true);
+			
+			/*
+			$.post($(this).attr("href"), function() {
+				window.location = "/users/";
+			});
+			*/
+			return false;
+		});
+	}
+	
 	if (${user.getGroup().hasPermission("web.users.delete")})
 	{
 		$(".deleteUser").click(function() {

@@ -14,7 +14,6 @@ $(function() {
 		
 		return false;
 	});
-	
 	$("#playersusers a").click(function(e) {
 		var oldId = $("#" + $("#playersusers li.active a").attr("forid"));
 		var newId = $("#" + $(this).attr("forid"));

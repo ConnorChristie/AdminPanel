@@ -4,22 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.avaje.ebean.validation.NotNull;
+import com.mcapanel.web.database.base.BaseModel;
 
-@Entity()
+@Entity
 @Table(name = "messages")
-public class Message
+public class Message extends BaseModel
 {
-	@Id
-	private int id;
-	
-	@NotNull
 	private String username;
 	
-	@NotNull
 	private String subject;
 	
-	@NotNull
 	private String message;
 	
 	public Message() {}
@@ -29,16 +23,6 @@ public class Message
 		this.username = username;
 		this.subject = subject;
 		this.message = message;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
 	}
 
 	public String getUsername()

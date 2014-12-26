@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import com.mcapanel.panel.AdminPanelWrapper;
 import com.mcapanel.web.database.Application;
 import com.mcapanel.web.database.Group;
+import com.mcapanel.web.database.PasswordReset;
 import com.mcapanel.web.database.User;
 
 public class MethodHandler
@@ -103,5 +104,13 @@ public class MethodHandler
 			
 			ap.getDatabase().save(u);
 		}
+	}
+	
+	public void passwordCode(String name, String code)
+	{
+		System.out.println("Name: " + name + ", " + code);
+		
+		PasswordReset pwr = new PasswordReset(name, code);
+		ap.getDatabase().save(pwr);
 	}
 }

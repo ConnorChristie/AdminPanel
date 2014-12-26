@@ -7,21 +7,20 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.mcapanel.panel.AdminPanelWrapper;
+
 public class TinyUrl
 {
 	private static String startUrl = "http://tinyurl.com/api-create.php?url=";
 	
-	private String url = "";
-	
-	public TinyUrl(String url)
+	public TinyUrl()
 	{
-		this.url = url;
-		
 		tinyUrlHelper = new ErrorHandler();
 	}
 	
 	public String shortUrl()
 	{
+		String url = AdminPanelWrapper.getInstance().getServerUrl();
 		String tinyUrl = "";
 		
 		try

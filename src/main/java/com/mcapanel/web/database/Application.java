@@ -1,52 +1,35 @@
 package com.mcapanel.web.database;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.avaje.ebean.validation.NotNull;
+import com.mcapanel.web.database.base.BaseModel;
 
-@Entity()
+@Entity
 @Table(name = "applications")
-public class Application
+public class Application extends BaseModel
 {
-	@Id
-	private int id;
+	private Long userId;
 	
-	@NotNull
-	private int userId;
-	
-	@NotNull
 	private String description;
 	
-	@NotNull
 	private Long date;
 	
 	public Application() {}
 	
-	public Application(int userId, String description)
+	public Application(Long userId, String description)
 	{
 		this.userId = userId;
 		this.description = description;
 		this.date = System.currentTimeMillis();
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getUserId()
+	public Long getUserId()
 	{
 		return userId;
 	}
 
-	public void setUserId(int userId)
+	public void setUserId(Long userId)
 	{
 		this.userId = userId;
 	}

@@ -4,25 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.avaje.ebean.validation.NotNull;
+import com.mcapanel.web.database.base.BaseModel;
 
-@Entity()
+@Entity
 @Table(name = "servers")
-public class Server
+public class Server extends BaseModel
 {
-	@Id
-	private int id;
-	
-	@NotNull
 	private String name;
 	
-	@NotNull
 	private String serverJar;
 	
-	@NotNull
 	private String minMemory;
 	
-	@NotNull
 	private String maxMemory;
 	
 	public Server() { }
@@ -34,16 +27,6 @@ public class Server
 		
 		this.minMemory = "1024m";
 		this.maxMemory = "2048m";
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
 	}
 
 	public String getName()

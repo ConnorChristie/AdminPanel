@@ -22,10 +22,12 @@ public class UsersController extends Controller
 	
 	public boolean index()
 	{
-		request.setAttribute("userGroups", getUserGroups());
-		
-		request.setAttribute("users", arrayToString(getUsersJson(true)));
-		
+		if (isLoggedIn())
+		{
+			request.setAttribute("userGroups", getUserGroups());
+			
+			request.setAttribute("users", arrayToString(getUsersJson(true)));
+		}
 		return renderView();
 	}
 	
@@ -142,7 +144,7 @@ public class UsersController extends Controller
 			ar.add(b + "<span class=\"gname\" style=\"cursor: pointer;\">" + u.getGroup().getGroupName() + "</span>" + e);
 			ar.add(b + "<span uid=\"u" + u.getId() + "\" class=\"label clickLabel u" + u.getId() + " label-" + (u.isWhitelisted() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + "<span uid=\"u" + u.getId() + "\" class=\"label clickLabel u" + u.getId() + " label-" + (u.isBlacklisted() ? "success\">true" : "danger\">false") + "</span>" + e);
-			ar.add(b + (user.getGroup().hasPermission("web.users.delete") ? ("<a href=\"/users/delete/" + u.getId() + "\" class=\"deleteUser\" style=\"color: #428bca !important;\">Delete</a>") : "-") + e);
+			ar.add(b + (user.getGroup().hasPermission("web.users.changePassword") ? ("<a href=\"/users/changePassword/" + u.getId() + "\" class=\"changePassword\" style=\"color: #428bca !important;\">Change Password</a>") : "") + " | " + (user.getGroup().hasPermission("web.users.delete") ? ("<a href=\"/users/delete/" + u.getId() + "\" class=\"deleteUser\" style=\"color: #428bca !important;\">Delete</a>") : "") + e);
 			if (raw) ar.add("</tr>");
 			
 			s.add(ar);

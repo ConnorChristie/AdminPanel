@@ -55,6 +55,48 @@ $(function() {
 		    increaseArea: '10%'
 	  	});
 	});
+	
+	$(".delgroup").on("click", function() {
+		showModalFull("Delete Group", "<form><label>Move everybody to this group:</label><select id='delgroupSelect' class='form-control'>${groupsStr}</select></form>", "Delete Group", true);
+		
+		var cled = false;
+		var bttn = $(this);
+		
+		$("#custommodalButton").click(function() {
+			if (!cled)
+			{
+				$.post("/groups/deleteGroup", {"groupid": bttn.attr("groupid"), "moveto": $("#delgroupSelect").val()}, function(data) {
+					if (data.good != undefined)
+					{
+						var n = noty({
+				            text        : "<b>Success: </b>" + data.good,
+				            type        : 'success',
+				            dismissQueue: true,
+				            layout      : 'bottomLeft',
+				            theme       : 'defaultTheme',
+				            timeout     : 2000
+				        });
+						
+						clicked = false;
+					} else if (data.error != undefined)
+					{
+						var n = noty({
+				            text        : "<b>Error: </b>" + data.error,
+				            type        : 'error',
+				            dismissQueue: true,
+				            layout      : 'bottomLeft',
+				            theme       : 'defaultTheme',
+				            timeout     : 2000
+				        });
+						
+						clicked = false;
+					}
+				});
+				
+				cled = true;
+			}
+		});
+	});
 });
 
 function savePermissions()

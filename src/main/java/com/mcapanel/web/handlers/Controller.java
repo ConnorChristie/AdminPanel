@@ -107,6 +107,6 @@ public abstract class Controller
 	{
 		request.getSession().setAttribute("userId", u.getId());
 		request.getSession().setAttribute("userAddr", u.getIpAddress());
-		request.getSession().setAttribute("userHash", Utils.md5(u.getId() + u.getIpAddress()));
+		request.getSession().setAttribute("userHash", Utils.md5(u.getId() + u.getPassSalt()));
 	}
 }

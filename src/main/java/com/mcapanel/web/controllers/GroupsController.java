@@ -8,8 +8,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import com.avaje.ebean.ExpressionList;
 import com.mcapanel.utils.WebPermission;
 import com.mcapanel.web.database.Group;
+import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.Controller;
 
 public class GroupsController extends Controller
@@ -59,6 +61,7 @@ public class GroupsController extends Controller
 		perms.add(editing = new WebPermission("View Web Users", "web.users.view", "Gives user permission to view web users."));
 		editing.addPermission(new WebPermission("Change User Group", "web.users.group", "Gives user permission to change users group."));
 		editing.addPermission(new WebPermission("Whitelist/Blacklist Users", "web.users.whiteblack", "Gives user permission to whitelist/blacklist users."));
+		editing.addPermission(new WebPermission("Change User's Password", "web.users.changePassword", "Gives user permission to change another user's password."));
 		editing.addPermission(new WebPermission("Delete User", "web.users.delete", "Gives user permission to delete user."));
 		
 		perms.add(editing = new WebPermission("View Web Groups", "web.groups.view", "Gives user permission to view web groups."));
@@ -81,6 +84,17 @@ public class GroupsController extends Controller
 	public boolean index()
 	{
 		request.setAttribute("groups", arrayToString(getGroupsJson(true)));
+		
+		String gStr = "";
+		
+		List<Group> groupList = db.find(Group.class).findList();
+		
+		for (Group g : groupList)
+		{
+			gStr += "<option value='" + g.getId() + "'>" + g.getGroupName() + "</option>";
+		}
+		
+		request.setAttribute("groupsStr", gStr);
 		
 		return renderView();
 	}
@@ -121,7 +135,7 @@ public class GroupsController extends Controller
 			ar.add(b + (canEdit ? "<input class=\"ghostcheck\" type=\"checkbox\" " + (g.isGhost() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isGhost() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"existingradio\" type=\"radio\" " + (g.isExistingDefault() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isExistingDefault() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"whitelistradio\" type=\"radio\" " + (g.isWhitelistDefault() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isWhitelistDefault() ? "success\">true" : "danger\">false") + "</span>" + e);
-			ar.add(b + (canEdit ? ((isLoggedIn() && user.getGroup().hasPermission("web.groups.permissions") ? ("<button type=\"button\" class=\"editperms btn btn-xs btn-info\" permissions=\"" + permissionsHtml + "\">Edit Permissions</button>") : "") + (isLoggedIn() && user.getGroup().hasPermission("web.groups.delete") ? ("<button type=\"button\" id=\"delgroup\" class=\"btn btn-xs btn-danger\" style=\"margin-left: 10px;\">Delete Group</button>") : "")) : "-") + e);
+			ar.add(b + (canEdit ? ((isLoggedIn() && user.getGroup().hasPermission("web.groups.permissions") ? ("<button type=\"button\" class=\"editperms btn btn-xs btn-info\" permissions=\"" + permissionsHtml + "\">Edit Permissions</button>") : "") + (isLoggedIn() && user.getGroup().hasPermission("web.groups.delete") ? ("<button type=\"button\" groupid=\"" + g.getId() + "\" class=\"delgroup btn btn-xs btn-danger\" style=\"margin-left: 10px;\">Delete Group</button>") : "")) : "-") + e);
 			if (raw) ar.add("</tr>");
 			
 			groups.add(ar);
@@ -283,6 +297,57 @@ public class GroupsController extends Controller
 					db.save(group);
 					
 					obj.put("good", "Successfully added the group: " + groupName + ".");
+				} else
+					obj.put("error", "Error parsing your request.");
+			} else
+				obj.put("error", "You do not have permission to do that.");
+			
+			response.getWriter().println(obj.toJSONString());
+			
+			return true;
+		}
+		
+		return error();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean deleteGroup() throws IOException
+	{
+		if (isMethod("POST"))
+		{
+			includeIndex(false);
+			mimeType("application/json");
+			
+			JSONObject obj = new JSONObject();
+			
+			if (canView())
+			{
+				String groupId = request.getParameter("groupid");
+				String moveTo = request.getParameter("moveto");
+				
+				if (groupId != null && moveTo != null)
+				{
+					Group g = db.find(Group.class, groupId);
+					Group g2 = db.find(Group.class, moveTo);
+					
+					if (g != null && g2 != null)
+					{
+						ExpressionList<User> uList = db.find(User.class).where().eq("group_id", groupId);
+						
+						if (uList.findRowCount() > 0)
+						{
+							for (User u : uList.findList())
+							{
+								u.setGroupId(g2.getId());
+								db.save(u);
+							}
+						}
+						
+						db.delete(Group.class, groupId);
+						
+						obj.put("good", "Successfully deleted the group: " + g.getGroupName() + ".");
+					} else
+						obj.put("error", "Error finding the requested group.");
 				} else
 					obj.put("error", "Error parsing your request.");
 			} else

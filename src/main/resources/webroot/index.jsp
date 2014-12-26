@@ -241,11 +241,11 @@
 			<c:choose>
 				<c:when test="${page != null && page != '404'}">
 					<div id="mainpage" class="row">
-						<div class="col-sm-${(includeSidebar && !install && (!loggedIn || user.getGroup().hasPermission('server.players.view'))) ? '8' : '12'}">
+						<div class="col-sm-${(includeSidebar && !install && ((!loggedIn && ap.getGlobalGroup().hasPermission('server.players.view')) || user.getGroup().hasPermission('server.players.view'))) ? '8' : '12'}">
 							<jsp:include page="/pages/${page}.jsp" flush="true" />
 						</div>
 						
-						<c:if test="${includeSidebar && !install && (!loggedIn || user.getGroup().hasPermission('server.players.view'))}">
+						<c:if test="${includeSidebar && !install && ((!loggedIn && ap.getGlobalGroup().hasPermission('server.players.view')) || user.getGroup().hasPermission('server.players.view'))}">
 							<div class="col-sm-4">
 								<div class="panel panel-default">
 									<div class="panel-heading">
@@ -285,13 +285,13 @@
 				</c:otherwise>
 			</c:choose>
 			
-			<c:if test="${versions.contains('1.0.0') || versions.contains('1.0.1') || versions.contains('1.0.2')}">
+			<c:if test="${versions.contains('1.0.0') || versions.contains('1.0.1') || versions.contains('1.0.2') || versions.contains('1.0.3')}">
 				<div class="alert alert-warning" role="alert">
 					<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
 				</div>
 			</c:if>
 			
-			<c:if test="${!install && (!loggedIn || user.getGroup().hasPermission('server.chat.view'))}">
+			<c:if test="${!install && ((!loggedIn && ap.getGlobalGroup().hasPermission('server.chat.view')) || user.getGroup().hasPermission('server.chat.view'))}">
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="panel panel-default" style="margin-bottom: 0px;">

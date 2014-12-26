@@ -44,14 +44,12 @@ $(function() {
 		$("#backuplist li.active").removeClass("active");
 		$(this).parent().addClass("active");
 		
-		oldId.slideUp(function() {
-			newId.slideDown(function() {
-				var height = newId[0].scrollHeight;
-				newId.scrollTop(height);
-				
-				resize();
-			});
-		});
+		if (oldId.attr("id") != newId.attr("id"))
+		{
+			oldId.fadeOut(400, function(){
+				newId.fadeIn(400);
+		    });
+		}
 		
 		return false;
 	});

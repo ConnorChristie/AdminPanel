@@ -4,20 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.avaje.ebean.validation.NotNull;
+import com.mcapanel.web.database.base.BaseModel;
 
-@Entity()
+@Entity
 @Table(name = "backup_schedules")
-public class BackupSchedule
+public class BackupSchedule extends BaseModel
 {
-	@Id
-	private int id;
-	
-	private int serverId;
+	private Long serverId;
 	
 	private int interval;
 	
-	@NotNull
 	private String intervalString;
 	
 	private long lastBackup = -1;
@@ -30,7 +26,7 @@ public class BackupSchedule
 	
 	public BackupSchedule() {}
 	
-	public BackupSchedule(int serverId, String desc, String worlds, String iText, int i)
+	public BackupSchedule(Long serverId, String desc, String worlds, String iText, int i)
 	{
 		this.serverId = serverId;
 		
@@ -65,22 +61,12 @@ public class BackupSchedule
 		return desc;
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getServerId()
+	public Long getServerId()
 	{
 		return serverId;
 	}
 
-	public void setServerId(int serverId)
+	public void setServerId(Long serverId)
 	{
 		this.serverId = serverId;
 	}

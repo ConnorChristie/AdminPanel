@@ -72,7 +72,7 @@ import com.mcapanel.web.servlets.AppServlet;
 
 public class AdminPanelWrapper
 {
-	public static final String VERSION = "v1.0.3";
+	public static final String VERSION = "v1.0.4";
 	public static String VERSION_SUB = "";
 	
 	private Config config;
@@ -81,7 +81,7 @@ public class AdminPanelWrapper
 	private Thread shutdownHook;
 	private TinyUrl tinyUrl;
 	
-	public Map<Integer, BukkitServer> servers = new HashMap<Integer, BukkitServer>();
+	public Map<Long, BukkitServer> servers = new HashMap<Long, BukkitServer>();
 	
 	private EbeanServer ebean;
 	
@@ -175,7 +175,7 @@ public class AdminPanelWrapper
 		}));
 	}
 	
-	public BukkitServer getServer(int id)
+	public BukkitServer getServer(Long id)
 	{
 		return servers.get(id);
 	}
@@ -185,12 +185,12 @@ public class AdminPanelWrapper
 		return servers.values();
 	}
 	
-	public boolean hasServer(int id)
+	public boolean hasServer(Long id)
 	{
 		return servers.containsKey(id);
 	}
 	
-	public void deleteServer(int id)
+	public void deleteServer(Long id)
 	{
 		if (hasServer(id))
 		{
@@ -209,8 +209,7 @@ public class AdminPanelWrapper
 		System.out.println("Loading config file...");
 		
 		config = new Config();
-		
-		tinyUrl = new TinyUrl(config.getString("server-ip", "localhost") + ":" + config.getString("web-port", "80"));
+		tinyUrl = new TinyUrl();
 		
 		File webPages = new File("McAdminPanel", "webpages/");
 		webPages.mkdirs();
@@ -279,6 +278,11 @@ public class AdminPanelWrapper
 		return tinyUrl;
 	}
 	
+	public String getServerUrl()
+	{
+		return config.getString("server-ip", "localhost") + ":" + config.getString("web-port", "80");
+	}
+	
 	private void startUsages()
 	{
 		usageMonitor = new UsageMonitor();
@@ -296,12 +300,13 @@ public class AdminPanelWrapper
 		System.out.println("Loading databases...");
 		
 		//Disable annoying log messages...
-		Logger.getLogger(DataSourcePool.class.getName()).setLevel(Level.WARNING);
-		Logger.getLogger(SubClassManager.class.getName()).setLevel(Level.WARNING);
-		Logger.getLogger(PooledConnection.class.getName()).setLevel(Level.WARNING);
-		Logger.getLogger(CreateTableVisitor.class.getName()).setLevel(Level.SEVERE);
-		Logger.getLogger(BeanDescriptorManager.class.getName()).setLevel(Level.WARNING);
-		Logger.getLogger(DeployCreateProperties.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(DdlGenerator.class.getName()).setLevel(Level.OFF);
+		Logger.getLogger(DataSourcePool.class.getName()).setLevel(Level.OFF);
+		Logger.getLogger(SubClassManager.class.getName()).setLevel(Level.OFF);
+		Logger.getLogger(PooledConnection.class.getName()).setLevel(Level.OFF);
+		Logger.getLogger(CreateTableVisitor.class.getName()).setLevel(Level.OFF);
+		Logger.getLogger(BeanDescriptorManager.class.getName()).setLevel(Level.OFF);
+		Logger.getLogger(DeployCreateProperties.class.getName()).setLevel(Level.OFF);
 		Logger.getLogger("com.avaje.ebean.config.PropertyMapLoader").setLevel(Level.OFF);
 		
 		ServerConfig db = new ServerConfig();
@@ -361,7 +366,11 @@ public class AdminPanelWrapper
 			
 			installDDL();
 			
-			Group g = new Group("Ghost");
+			Group g = new Group("Global");
+			g.setPermissions("server.chat.view;server.players.view;");
+			getDatabase().save(g);
+			
+			g = new Group("Ghost");
 			g.setGhost(true);
 			g.setWhitelistDefault(true);
 			g.setPermissions("server.chat.view;server.players.view;");
@@ -380,6 +389,13 @@ public class AdminPanelWrapper
 			g.setPermissions("server.chat.view;server.chat.issue;server.console.view;server.console.issue;server.controls;server.reload;server.usage;server.properties.view;server.properties.edit;server.properties.add;server.whitelist.view;server.whitelist.edit;server.players.view;server.players.healfeed;server.players.kill;server.players.kick;server.plugins.view;server.plugins.control;server.plugins.edit;server.plugins.install;server.plugins.delete;server.backups.view;server.backups.schedule.issue;server.backups.schedule.delete;server.backups.restore;server.backups.delete;web.users.view;web.users.group;web.users.whiteblack;web.users.delete;web.groups.view;web.groups.edit;web.groups.permissions;web.groups.delete;web.messages.view;web.messages.respond;mcapanel.properties.view;mcapanel.properties.edit;");
 			getDatabase().save(g);
 		}
+		
+		if (getDatabase().find(Group.class).where().ieq("group_name", "Global").findRowCount() == 0)
+		{
+			Group g = new Group("Global");
+			g.setPermissions("server.chat.view;server.players.view;");
+			getDatabase().save(g);
+		}
 	}
 	
 	private void installDDL()
@@ -387,7 +403,7 @@ public class AdminPanelWrapper
 		SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
 		DdlGenerator gen = serv.getDdlGenerator();
 		
-		gen.runScript(false, gen.generateCreateDdl());
+		gen.runScript(true, gen.generateCreateDdl());
 	}
 	
 	public List<Class<?>> getDatabaseClasses()
@@ -403,6 +419,11 @@ public class AdminPanelWrapper
 	public EbeanServer getDatabase()
 	{
 		return ebean;
+	}
+	
+	public Group getGlobalGroup()
+	{
+		return getDatabase().find(Group.class).where().ieq("group_name", "Global").findUnique();
 	}
 	
 	public User getUserFromPlayer(String player)

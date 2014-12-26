@@ -4,23 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.avaje.ebean.validation.NotNull;
+import com.mcapanel.web.database.base.BaseModel;
 
-@Entity()
+@Entity
 @Table(name = "groups")
-public class Group
+public class Group extends BaseModel
 {
-	@Id
-	private int id;
-	
 	private boolean isGhost = false;
 	private boolean isExistingDefault = false;
 	private boolean isWhitelistDefault = false;
 	
-	@NotNull
 	private String groupName;
 	
-	@NotNull
 	private String permissions;
 	
 	public Group() { }
@@ -29,16 +24,6 @@ public class Group
 	{
 		this.groupName = groupName;
 		this.permissions = "";
-	}
-	
-	public int getId()
-	{
-		return id;
-	}
-	
-	public void setId(int id)
-	{
-		this.id = id;
 	}
 	
 	public boolean isGhost()

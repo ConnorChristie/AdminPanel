@@ -39,7 +39,7 @@ $(function() {
 			
 			var category = $(this).text();
 			
-			$.get("http://api.bukget.org/3/categories/" + category + "?start=0&size=40", function(data) {
+			$.get("http://api.bukget.org/3/categories/" + category + "?start=0&size=40&fields=slug,plugin_name,description,authors", function(data) {
 				$("#pluginsview").html("");
 				
 				setPlugins(data);
@@ -58,16 +58,16 @@ $(function() {
 		$("a[href='/plugins/admin-tools']").trigger("click");
 		
 		$("#pluginsearch").keydown(function(e) {
-		    if (e.keyCode == 13)
+			var search = $(this).val();
+			
+		    if (e.keyCode == 13 && search != "")
 		    {
 		    	$(".plugincat").each(function() {
 					$(this).removeClass("active");
 					this.style.setProperty("color", "#5a5a5a", "important");
 				});
 		    	
-		    	var search = $(this).val();
-				
-				$.get("http://api.bukget.org/3/search/plugin_name/like/" + search + "?start=0&size=40", function(data) {
+				$.get("http://api.bukget.org/3/search/plugin_name/like/" + search + "?start=0&size=40&fields=slug,plugin_name,description,authors", function(data) {
 					$("#pluginsview").html("");
 					
 					setPlugins(data);
@@ -136,14 +136,12 @@ $(function() {
 		$("#pluginlist li.active").removeClass("active");
 		$(this).parent().addClass("active");
 		
-		oldId.slideUp(function() {
-			newId.slideDown(function() {
-				var height = newId[0].scrollHeight;
-				newId.scrollTop(height);
-				
-				resize();
-			});
-		});
+		if (oldId.attr("id") != newId.attr("id"))
+		{
+			oldId.fadeOut(400, function(){
+				newId.fadeIn(400);
+		    });
+		}
 		
 		return false;
 	});
@@ -160,7 +158,7 @@ function loadMore(search, category)
 		if (search == null) url = "http://api.bukget.org/3/categories/" + category;
 		
 		$("#moreresults").click(function() {
-			$.get(url + "?start=" + $("#pluginsview").children().length + "&size=40", function(data) {
+			$.get(url + "?start=" + $("#pluginsview").children().length + "&size=40&fields=slug,plugin_name,description,authors", function(data) {
 				$("#moreresults").remove();
 				
 				setPlugins(data);
@@ -180,10 +178,18 @@ function setPlugins(data)
 		var slug = data[plugin].slug;
 		var name = data[plugin].plugin_name;
 		var desc = data[plugin].description;
+		var authors = data[plugin].authors;
 		
 		if (name.length == 0) continue;
 		
-		$("#pluginsview").append("<a href='/plugins/' onclick='return clickPlugin($(this), event);' class='list-group-item pluginview' name='" + name + "' slug='" + slug + "'>" + name + "<br /><span style='font-size: 8pt;'>" + desc + "</span></a>");
+		var authorStr = "";
+		
+		for (var a = 0; a < authors.length; a++)
+		{
+			authorStr += authors[a] + (a != authors.length - 1 ? ", " : "");
+		}
+		
+		$("#pluginsview").append("<a href='/plugins/' onclick='return clickPlugin($(this), event);' class='list-group-item pluginview' name='" + name + "' slug='" + slug + "'>" + name + " " + (authors.length != 0 ? ("<span style='font-size: 9pt; color: gray;'> - " + authorStr) + "</span>" : "") + "<br /><span style='font-size: 8pt;'>" + desc + "</span></a>");
 	}
 }
 
@@ -389,7 +395,7 @@ function clickPluginMenu(item)
 						body = body + "<hr />";
 				}
 				
-				showModal(item.attr("name") + " Plugin", body);
+				showModal(item.attr("name") + " Plugin", body, "Close", false);
 				
 				//$("#custommodal .modal-body").html($("#custommodal .modal-body").html() + "");
 				

@@ -9,31 +9,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.avaje.ebean.validation.NotNull;
 import com.mcapanel.panel.AdminPanelWrapper;
+import com.mcapanel.web.database.base.BaseModel;
 
-@Entity()
+@Entity
 @Table(name = "users")
-public class User
+public class User extends BaseModel
 {
-	@Id
-	private int id;
+	private Long groupId;
 	
-	private int groupId;
-	
-	@NotNull
 	private String uuid;
 	
-	@NotNull
 	private String username;
 	
-	@NotNull
 	private String passHash;
 	
-	@NotNull
 	private String passSalt;
 	
-	@NotNull
 	private String ipAddress;
 	
 	private boolean whitelisted = false;
@@ -71,19 +63,14 @@ public class User
 		this.ipAddress = ipAddress;
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getGroupId()
+	public Long getGroupId()
 	{
 		return groupId;
+	}
+	
+	public void setGroupId(Long groupId)
+	{
+		this.groupId = groupId;
 	}
 	
 	public Group getGroup()
@@ -91,11 +78,6 @@ public class User
 		if (group == null) group = AdminPanelWrapper.getInstance().getDatabase().find(Group.class, groupId);
 		
 		return group;
-	}
-
-	public void setGroupId(int groupId)
-	{
-		this.groupId = groupId;
 	}
 
 	public String getUuid()

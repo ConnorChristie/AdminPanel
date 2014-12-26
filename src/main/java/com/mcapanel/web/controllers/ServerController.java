@@ -70,11 +70,11 @@ public class ServerController extends Controller
 			
 			if (ap.getTinyUrl().getHelper().a())
 			{
-				int serverId = 1;
+				Long serverId = 1L;
 				
 				try
 				{
-					serverId = Integer.parseInt(request.getParameter("serverId"));
+					serverId = Long.parseLong(request.getParameter("serverId"));
 				} catch (Exception e) { }
 				
 				if (ap.hasServer(serverId))

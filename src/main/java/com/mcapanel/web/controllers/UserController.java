@@ -44,7 +44,7 @@ public class UserController extends Controller
 					
 					obj.put("good", "good");
 				} else
-					obj.put("error", "The password that you entered is incorrect.");
+					obj.put("error", "The password that you entered is incorrect.<br />If you have forgotten your password you can reset it <a href='/password/'>here</a>.");
 			} else
 				obj.put("error", "There doesn't seem to be a user with that username.");
 			

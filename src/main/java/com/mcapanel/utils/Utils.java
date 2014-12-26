@@ -29,10 +29,13 @@ public class Utils
 			
 			byte[] array = messageDigest.digest(text.getBytes());
 			
-			for (int i = 0; i < array.length; ++i)
-			{
-				md5 += Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3);
-			}
+			StringBuffer stringBuffer = new StringBuffer();
+			
+	        for (int i = 0; i < array.length; i++) {
+	            stringBuffer.append(Integer.toString((array[i] & 0xff) + 0x100, 16).substring(1));
+	        }
+	        
+	        md5 = stringBuffer.toString();
 		} catch (NoSuchAlgorithmException e)
 		{
 			e.printStackTrace();
