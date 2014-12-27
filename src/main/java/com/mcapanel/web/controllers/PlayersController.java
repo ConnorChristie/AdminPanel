@@ -46,7 +46,7 @@ public class PlayersController extends Controller
 					User u = ap.getUserFromPlayer((String) obj.get("name"));
 					
 					if (raw) ar.add("<tr>");
-					ar.add(b + "<img src=\"https://minotar.net/helm/" + obj.get("name") + "/15\" />" + e);
+					ar.add(b + "<img src=\"https://crafatar.com/avatars/" + obj.get("name") + "?size=15&helm\" />" + e);
 					ar.add(b + obj.get("name") + e);
 					ar.add(b + "<span class=\"label label-" + ((Boolean) obj.get("online") ? "success\">Online" : "danger\">Offline") + "</span>" + e);
 					ar.add(b + ((Boolean) obj.get("banned") ? "<span style=\"color: red;\">Banned</span>" : (u != null ? u.getGroup().getGroupName() : "<span style=\"color: #AFAFAF;\">Not Registered</span>")) + e);

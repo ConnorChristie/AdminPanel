@@ -293,7 +293,7 @@ public class IndexController extends Controller
 						User user = AdminPanelWrapper.getInstance().getDatabase().find(User.class).where().ieq("username", ps[0]).findUnique();
 						
 						plist += "<tr>";
-						plist += "<td><img style=\"margin-top: 4px; margin-left: 4px;\" src=\"https://minotar.net/helm/" + ps[0] + "/15\" /></td>";
+						plist += "<td><img style=\"margin-top: 4px; margin-left: 4px;\" src=\"https://crafatar.com/avatars/" + ps[0] + "?size=15&helm\" /></td>";
 						plist += "<td>" + ps[0] + "</td>";
 						plist += "<td>" + (user != null ? user.getGroup().getGroupName() : "Not Registered") + "</td>";
 						plist += "<td>" + ps[1] + "</td>";

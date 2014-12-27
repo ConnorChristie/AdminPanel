@@ -5,7 +5,7 @@
 		</h3>
 	</div>
 	<div class="panel-body">
-		<img src="http://cravatar.eu/helmhead/${player}/72" style="float: left;" />
+		<img src="https://crafatar.com/avatars/${player}?size=65&helm" style="float: left;" />
 		<div style="margin-left: 12px; margin-top: -2px; float: left;">
 			<span style="font-size: 14pt;"><b>${player}</b></span><br />
 			<span style="font-size: 11pt;"><b>Joined: ${firstPlayed}</b></span><br />
