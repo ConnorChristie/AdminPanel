@@ -228,43 +228,6 @@ public class AdminPanelWrapper
 			{
 				System.out.println("Could not copy the webpages folder over...");
 			}
-			
-			/*
-			try
-		     {
-		          String path = System.getProperty("java.io.tmpdir");
-		          File dir = new File(path+"\\folder");  
-		          dir.mkdirs();                    
-		          File resource = new File(new URI(Main.class.getClass().getResource("/input/folder").toString()));
-		          File[] listResource = resource.listFiles();
-		          String[] files=resource.list();
-		          for (int i = 0; i < files.length; i++) 
-		          {
-		               File dstfile1=new File(dir,files);
-		               FileInputStream is1 = new FileInputStream(listResource[i]);
-		               FileOutputStream fos1 = new FileOutputStream(dstfile1);
-
-		               int b1;
-
-		               while((b1 = is1.read()) != -1) 
-		               {
-
-		                    fos1.write(b1);
-
-		               }
-
-		               fos1.close();
-
-		          } 
-
-		     }
-
-		     catch(Exception e)
-
-		     {
-
-		     }
-		     */
 		}
 		
 		//updateServerJar();
