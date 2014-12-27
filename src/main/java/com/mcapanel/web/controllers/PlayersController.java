@@ -12,7 +12,7 @@ public class PlayersController extends Controller
 {
 	public boolean canView()
 	{
-		return bukkitServer.getPluginConnector().connected();
+		return ((!isLoggedIn() && ap.getGlobalGroup().hasPermission("server.players.view")) || (isLoggedIn() && user.getGroup().hasPermission("server.players.view"))) && bukkitServer.getPluginConnector().connected();
 	}
 	
 	public boolean index()

@@ -118,76 +118,66 @@ public class IndexController extends Controller
 		
 		tabs.add("home");
 		
-		if (isLoggedIn())
+		boolean noPerm = false;
+		
+		List<String> serverTabs = new ArrayList<String>();
+		
+		if (isLoggedIn() && (user.getGroup().hasPermission("server.players.view") || user.getGroup().hasPermission("server.plugins.view") || user.getGroup().hasPermission("server.backups.view")))
 		{
-			boolean noPerm = false;
+			if (user.getGroup().hasPermission("server.players.view") && bukkitServer.getPluginConnector().connected())
+				serverTabs.add("players");
 			
-			if (user.getGroup().hasPermission("server.players.view") || user.getGroup().hasPermission("server.plugins.view") || user.getGroup().hasPermission("server.backups.view"))
-			{
-				List<String> serverTabs = new ArrayList<String>();
-				
-				if (user.getGroup().hasPermission("server.players.view") && bukkitServer.getPluginConnector().connected())
-					serverTabs.add("players");
-				
-				if (user.getGroup().hasPermission("server.plugins.view"))
-					serverTabs.add("plugins");
-				else
-					noPerm = true;
-				
-				if (user.getGroup().hasPermission("server.backups.view"))
-					serverTabs.add("backups");
-				else
-					noPerm = true;
-				
-				if (serverTabs.size() > 1)
-					request.setAttribute("serverTabs", serverTabs);
-				else if (serverTabs.size() == 1)
-					tabs.add(serverTabs.get(0));
-			} else
-				noPerm = true;
-			
-			if (user.getGroup().hasPermission("server.whitelist.view"))
-				tabs.add("applications");
+			if (user.getGroup().hasPermission("server.plugins.view"))
+				serverTabs.add("plugins");
 			else
 				noPerm = true;
 			
-			if (bukkitServer.hasDynmap())
-				tabs.add("dynmap");
-			
-			if (user.getGroup().hasPermission("web.users.view") || user.getGroup().hasPermission("web.groups.view") || user.getGroup().hasPermission("web.messages.view"))
-			{
-				List<String> webTabs = new ArrayList<String>();
-				
-				if (user.getGroup().hasPermission("web.users.view"))
-					webTabs.add("users");
-				
-				if (user.getGroup().hasPermission("web.groups.view"))
-					webTabs.add("groups");
-				
-				if (user.getGroup().hasPermission("web.messages.view"))
-					webTabs.add("messages");
-				
-				request.setAttribute("webTabs", webTabs);
-			} else
+			if (user.getGroup().hasPermission("server.backups.view"))
+				serverTabs.add("backups");
+			else
 				noPerm = true;
-			
-			if (user.getGroup().hasPermission("server.properties.view") || user.getGroup().hasPermission("server.properties.edit")
-					|| user.getGroup().hasPermission("mcapanel.properties.view")|| user.getGroup().hasPermission("mcapanel.properties.edit"))
-				tabs.add("settings");
-			
-			if (noPerm)
-			{
-				tabs.add("about");
-				tabs.add("contact");
-			}
 		} else
+			noPerm = true;
+		
+		if (!isLoggedIn() && ap.getGlobalGroup().hasPermission("server.players.view") && bukkitServer.getPluginConnector().connected())
+			serverTabs.add("players");
+		
+		if (serverTabs.size() > 1)
+			request.setAttribute("serverTabs", serverTabs);
+		else if (serverTabs.size() == 1)
+			tabs.add(serverTabs.get(0));
+		
+		if (isLoggedIn() && user.getGroup().hasPermission("server.whitelist.view"))
+			tabs.add("applications");
+		else
+			noPerm = true;
+		
+		if (bukkitServer.hasDynmap())
+			tabs.add("dynmap");
+		
+		if (isLoggedIn() && (user.getGroup().hasPermission("web.users.view") || user.getGroup().hasPermission("web.groups.view") || user.getGroup().hasPermission("web.messages.view")))
 		{
-			if (bukkitServer.getPluginConnector().connected())
-				tabs.add("players");
+			List<String> webTabs = new ArrayList<String>();
 			
-			if (bukkitServer.hasDynmap())
-				tabs.add("dynmap");
+			if (user.getGroup().hasPermission("web.users.view"))
+				webTabs.add("users");
 			
+			if (user.getGroup().hasPermission("web.groups.view"))
+				webTabs.add("groups");
+			
+			if (user.getGroup().hasPermission("web.messages.view"))
+				webTabs.add("messages");
+			
+			request.setAttribute("webTabs", webTabs);
+		} else
+			noPerm = true;
+		
+		if (isLoggedIn() && (user.getGroup().hasPermission("server.properties.view") || user.getGroup().hasPermission("server.properties.edit")
+				|| user.getGroup().hasPermission("mcapanel.properties.view")|| user.getGroup().hasPermission("mcapanel.properties.edit")))
+			tabs.add("settings");
+		
+		if (noPerm)
+		{
 			tabs.add("about");
 			tabs.add("contact");
 		}
