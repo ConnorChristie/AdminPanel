@@ -247,7 +247,6 @@ public class AdminPanelWrapper
 		               int b1;
 
 		               while((b1 = is1.read()) != -1) 
-
 		               {
 
 		                    fos1.write(b1);
