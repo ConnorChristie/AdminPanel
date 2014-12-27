@@ -241,9 +241,7 @@ public class AdminPanelWrapper
 		          for (int i = 0; i < files.length; i++) 
 		          {
 		               File dstfile1=new File(dir,files);
-
 		               FileInputStream is1 = new FileInputStream(listResource[i]);
-
 		               FileOutputStream fos1 = new FileOutputStream(dstfile1);
 
 		               int b1;
