@@ -1,7 +1,6 @@
 package com.mcapanel.web.database;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.mcapanel.web.database.base.BaseModel;
