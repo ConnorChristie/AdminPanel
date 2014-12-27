@@ -1,6 +1,0 @@
-#Config file now when you type /ab it will look like this [Admin]: Admin is in gold.
-# 120 is 2 min 60 * 2 
-# 0 = false 1 = true
-Prefix: '&f[&6Admin&f]:&7 '
-time-in-sec: 120
-Is-Update-notifier-Enable: true
