@@ -48,15 +48,10 @@ import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.ServerConfig;
-import com.avaje.ebean.config.dbplatform.DatabasePlatform;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
 import com.avaje.ebeaninternal.api.SpiEbeanServer;
-import com.avaje.ebeaninternal.server.ddl.AddForeignKeysVisitor;
-import com.avaje.ebeaninternal.server.ddl.CreateSequenceVisitor;
 import com.avaje.ebeaninternal.server.ddl.CreateTableVisitor;
-import com.avaje.ebeaninternal.server.ddl.DdlGenContext;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
-import com.avaje.ebeaninternal.server.ddl.VisitorUtil;
 import com.avaje.ebeaninternal.server.deploy.BeanDescriptorManager;
 import com.avaje.ebeaninternal.server.deploy.parse.DeployCreateProperties;
 import com.avaje.ebeaninternal.server.lib.sql.DataSourcePool;
@@ -78,7 +73,7 @@ import com.mcapanel.web.servlets.AppServlet;
 
 public class AdminPanelWrapper
 {
-	public static final String VERSION = "v1.0.4";
+	public static final String VERSION = "v1.0.5";
 	public static String VERSION_SUB = "";
 	
 	private Config config;

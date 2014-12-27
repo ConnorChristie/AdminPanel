@@ -285,11 +285,9 @@
 				</c:otherwise>
 			</c:choose>
 			
-			<c:if test="${versions.contains('1.0.0') || versions.contains('1.0.1') || versions.contains('1.0.2') || versions.contains('1.0.3')}">
-				<div class="alert alert-warning" role="alert">
-					<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
-				</div>
-			</c:if>
+			<div class="alert alert-warning" role="alert">
+				<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
+			</div>
 			
 			<c:if test="${!install && ((!loggedIn && ap.getGlobalGroup().hasPermission('server.chat.view')) || user.getGroup().hasPermission('server.chat.view'))}">
 				<div class="row">
