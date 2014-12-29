@@ -15,17 +15,29 @@ public class EverythingEvent extends Thread
 	private Map<Long, JSONObject> data = new HashMap<Long, JSONObject>();
 	
 	private boolean isRunning = false;
+	
 	private int unreadApps = 0;
+	private int apps = 0;
 	
 	public void run()
 	{
 		isRunning = true;
 		
-		unreadApps = AdminPanelWrapper.getInstance().getDatabase().find(Application.class).findRowCount();
+		AdminPanelWrapper.executeMain(new Runnable() {
+			public void run()
+			{
+				unreadApps = AdminPanelWrapper.getInstance().getDatabase().find(Application.class).findRowCount();
+			}
+		});
 		
 		while (isRunning)
 		{
-			fetchData();
+			AdminPanelWrapper.executeMain(new Runnable() {
+				public void run()
+				{
+					fetchData();
+				}
+			});
 			
 			try
 			{
@@ -42,7 +54,7 @@ public class EverythingEvent extends Thread
 	@SuppressWarnings("unchecked")
 	public void fetchData()
 	{
-		int apps = AdminPanelWrapper.getInstance().getDatabase().find(Application.class).findRowCount();
+		apps = AdminPanelWrapper.getInstance().getDatabase().find(Application.class).findRowCount();
 		
 		for (BukkitServer bukkitServer : AdminPanelWrapper.getInstance().getServers())
 		{
@@ -52,7 +64,7 @@ public class EverythingEvent extends Thread
 			datas.put("playersObj", IndexController.getOnlinePlayers(bukkitServer));
 			datas.put("chats",      IndexController.getChats(bukkitServer));
 			datas.put("console",    IndexController.getConsole(bukkitServer));
-			if (apps > unreadApps) datas.put("applications", apps);
+			if (apps != unreadApps) datas.put("applications", apps);
 			
 			data.put(bukkitServer.getId(), datas);
 		}

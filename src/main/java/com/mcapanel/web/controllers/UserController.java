@@ -103,7 +103,19 @@ public class UserController extends Controller
 							u.setWhitelisted(true);
 						} else
 						{
-							u.setGroupId(db.find(Group.class).where().eq("is_whitelist_default", true).findUnique().getId());
+							try
+							{
+								u.setGroupId(db.find(Group.class).where().eq("is_whitelist_default", true).findUnique().getId());
+							} catch (Exception e)
+							{
+								e.printStackTrace();
+								
+								out.put("error", "We are having trouble with the whitelist right now, please come back later.");
+								
+								response.getWriter().println(out.toJSONString());
+						        
+								return true;
+							}
 							
 							createApp = true;
 						}
@@ -118,10 +130,13 @@ public class UserController extends Controller
 							
 							db.save(a);
 							
-							bukkitServer.getPluginConnector().sendMethod("doAppNotice",
-									"" + a.getId(),
-									ap.getDatabase().find(User.class, a.getUserId()).getUsername(),
-									a.getDescription());
+							String username = ap.getDatabase().find(User.class, a.getUserId()).getUsername();
+							
+							System.out.println("Id: " + a.getId());
+							System.out.println("Username: " + username);
+							System.out.println("Description: " + a.getDescription());
+							
+							bukkitServer.getPluginConnector().sendMethod("doAppNotice", "" + a.getId(), username, a.getDescription());
 							
 							out.put("good", "Your whitelist application has successfully been submitted!<br />You will now be able to join the server but you will be a ghost until your application has been approved.");
 						} else

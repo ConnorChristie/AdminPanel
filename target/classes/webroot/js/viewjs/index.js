@@ -540,22 +540,28 @@ function loadEverything(doCycle)
 				
 				if (data.applications != undefined)
 				{
-					if ($("#appBadge").length != 0)
+					if (data.applications > 0)
 					{
-						$("#appBadge").text(data.applications);
+						if ($("#appBadge").length != 0)
+						{
+							$("#appBadge").text(data.applications);
+						} else
+						{
+							$("#applications > a").append($("<span id='appBadge' class='badge' style='margin-left: 5px; background-color: rgb(229, 91, 91);'>" + data.applications + "</span>"));
+						}
+						
+						var n = noty({
+				            text        : "<b>New Application: </b>You have " + data.applications + " awaiting applications.",
+				            type        : 'warning',
+				            dismissQueue: true,
+				            layout      : 'bottomLeft',
+				            theme       : 'defaultTheme',
+				            timeout     : 5000
+				        });
 					} else
 					{
-						$("#applications > a").append($("<span id='appBadge' class='badge' style='margin-left: 5px; background-color: rgb(229, 91, 91);'>" + data.applications + "</span>"));
+						$("#appBadge").remove();
 					}
-					
-					var n = noty({
-			            text        : "<b>New Application: </b>You have " + data.applications + " awaiting applications.",
-			            type        : 'warning',
-			            dismissQueue: true,
-			            layout      : 'bottomLeft',
-			            theme       : 'defaultTheme',
-			            timeout     : 5000
-			        });
 				}
 				
 				$("#messages").html(data.chats);

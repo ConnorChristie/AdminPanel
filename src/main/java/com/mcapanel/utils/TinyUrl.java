@@ -1,10 +1,8 @@
 package com.mcapanel.utils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.mcapanel.panel.AdminPanelWrapper;
@@ -12,6 +10,9 @@ import com.mcapanel.panel.AdminPanelWrapper;
 public class TinyUrl
 {
 	private static String startUrl = "http://tinyurl.com/api-create.php?url=";
+	
+	private String url = "";
+	private String tinyUrl = "";
 	
 	public TinyUrl()
 	{
@@ -21,21 +22,19 @@ public class TinyUrl
 	public String shortUrl()
 	{
 		String url = AdminPanelWrapper.getInstance().getServerUrl();
-		String tinyUrl = "";
 		
-		try
+		if (!this.url.equals(url))
 		{
-			String tinyUrlLookup = startUrl + (!url.startsWith("http://") ? "http://" : "") + url;
-			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(tinyUrlLookup).openStream()));
-			
-			tinyUrl = reader.readLine().replace("http://", "");
-		} catch (MalformedURLException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
+			try
+			{
+				String tinyUrlLookup = startUrl + (!url.startsWith("http://") ? "http://" : "") + url;
+				
+				BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(tinyUrlLookup).openStream()));
+				
+				tinyUrl = reader.readLine().replace("http://", "");
+				
+				this.url = url;
+			} catch (Exception e) { System.out.println("Error getting new TinyUrl... Using old one."); e.printStackTrace(); }
 		}
 		
 		return tinyUrl;

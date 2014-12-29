@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -94,6 +96,8 @@ public class AdminPanelWrapper
 	public InitialEvent initialEvent;
 	public EverythingEvent everythingEvent;
 	
+	public static final BlockingQueue<Runnable> queue = new LinkedBlockingQueue<Runnable>();
+	
 	public static void main(String[] args) throws Exception
 	{
 		new AdminPanelWrapper();
@@ -142,6 +146,11 @@ public class AdminPanelWrapper
 		startWebPanel();
 		setShutdownHook();
 		
+		while (true)
+		{
+			queue.take().run();
+		}
+		
 		//servers.get(1).startServer();
 	}
 	
@@ -178,6 +187,11 @@ public class AdminPanelWrapper
 				}
 			}
 		}));
+	}
+	
+	public static void executeMain(Runnable run)
+	{
+		queue.add(run);
 	}
 	
 	public BukkitServer getServer(Long id)
@@ -551,6 +565,8 @@ public class AdminPanelWrapper
 						
 						for (BukkitServer serv : servers.values())
 						{
+							System.out.println("Server: " + serv.getName() + ", " + serv.hasConsoleFocus());
+							
 							if (serv.hasConsoleFocus() && serv.getWriter() != null)
 							{
 								serv.getWriter().write((line + "\n").getBytes());

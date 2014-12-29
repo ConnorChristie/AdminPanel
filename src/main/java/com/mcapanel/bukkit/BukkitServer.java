@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -12,8 +13,6 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import net.java.truelicense.obfuscate.ObfuscatedString;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -314,7 +313,11 @@ public class BukkitServer
 	
 	private void println(String line)
 	{
-		if (consoleFocus) System.out.println(line);
+		if (consoleFocus || !consoleFocus)
+		{
+			System.err.print("[" + getName() + "] " + line);
+			System.err.flush();
+		}
 	}
 	
 	private class BukkitConsoleReader implements Runnable
@@ -356,8 +359,7 @@ public class BukkitServer
 						{
 							line = line.replaceAll("[ ]{5,}", "");
 							
-							System.err.print(line);
-							System.err.flush();
+							println(line);
 							
 							final Lock wLock = consoleLock.writeLock();
 							wLock.lock();
@@ -444,44 +446,16 @@ public class BukkitServer
 		}
 	}
 	
-	private void checkPlugin()
+	private void copyPlugin()
 	{
-		//System.out.println(Arrays.toString(ObfuscatedString.array("c8ae18a3707cc266f29553c132f44c82")));
-		
-		try
-		{
-			File pl = new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar");
-			
-			if (pl != null && pl.exists())
-			{
-				String md5 = new ObfuscatedString(new long[] {-6239580717245095042L, 7772693983827735681L, 149453379078971602L, 3225733154312424749L, 3085561093364578028L}).toString();
-				String md52 = DigestUtils.md5Hex(new FileInputStream(pl));
-				
-				if (md5.equals(md52))
-				{
-					System.out.println("Equals!");
-				} else
-				{
-					copyPlugin();
-				}
-				
-				//System.out.println("MD5: " + md5);
-				//System.out.println("MD52: " + md52);
-			} else
-			{
-				copyPlugin();
-			}
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		copyPlugin(false);
 	}
 	
-	private void copyPlugin()
+	private void copyPlugin(boolean force)
 	{
 		File pluginFile = new File(serverJar.getParentFile(), "plugins/McAdminPanelPlugin.jar");
 		
-		if (pluginFile == null || (pluginFile != null && !pluginFile.exists()))
+		if (pluginFile == null || (pluginFile != null && !pluginFile.exists()) || force)
 		{
 			try
 			{
@@ -489,6 +463,30 @@ public class BukkitServer
 			} catch (Exception e)
 			{
 				System.out.println("Could not copy the McAdminPanel Plugin to the plugins folder...");
+			}
+		} else if (pluginFile != null && pluginFile.exists())
+		{
+			try
+			{
+				InputStream fis = getClass().getResourceAsStream("/plugin/McAdminPanelPlugin.jar");
+				String md5 = DigestUtils.md5Hex(fis);
+				
+				fis.close();
+				
+				FileInputStream ifis = new FileInputStream(pluginFile);
+				String imd5 = DigestUtils.md5Hex(ifis);
+				
+				ifis.close();
+				
+				if (!md5.equals(imd5))
+				{
+					copyPlugin(true);
+					
+					System.out.println("Copying updated plugin...");
+				}
+			} catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 	}
