@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,73 +20,90 @@ public class AppServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	
-	private HttpServletRequest request = null;
-	private HttpServletResponse response = null;
-	
 	@Override
-	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	public void service(final HttpServletRequest request, final HttpServletResponse response)
 	{
-		if (request == null || request.getPathInfo() == null) return;
+		final CountDownLatch latch = new CountDownLatch(1);
 		
-		if (!request.getPathInfo().contains("install") && !AdminPanelWrapper.getInstance().getConfig().getBoolean("installed", false))
-		{
-			response.getWriter().print("<script>document.location = '/install/';</script>");
-			
-			return;
-		}
-		
-		this.request = request;
-		this.response = response;
-		
-		Long id = 1L;
+		AdminPanelWrapper.executeMain(new Runnable() {
+			public void run()
+			{
+				if (request == null || request.getPathInfo() == null) return;
+				
+				if (!request.getPathInfo().contains("install") && !AdminPanelWrapper.getInstance().getConfig().getBoolean("installed", false))
+				{
+					try
+					{
+						response.getWriter().print("<script>document.location = '/install/';</script>");
+					} catch (IOException e) { e.printStackTrace(); }
+					
+					return;
+				}
+				
+				Long id = 1L;
+				
+				try
+				{
+					id = (Long) request.getSession().getAttribute("chosenServer");
+				} catch (Exception e) { id = 1L; }
+				
+				BukkitServer bukkitServer = AdminPanelWrapper.getInstance().getServer(id);
+				
+				if (bukkitServer == null)
+				{
+					if (AdminPanelWrapper.getInstance().servers.size() > 0)
+					{
+						bukkitServer = AdminPanelWrapper.getInstance().getServer(id = AdminPanelWrapper.getInstance().servers.keySet().toArray(new Long[AdminPanelWrapper.getInstance().servers.keySet().size()])[0]);
+					} else if (!request.getPathInfo().contains("install"))
+					{
+						AdminPanelWrapper.getInstance().getConfig().setValue("installed", "false");
+						AdminPanelWrapper.getInstance().getConfig().saveConfig();
+						
+						try
+						{
+							response.getWriter().print("<script>document.location = '/install/';</script>");
+						} catch (IOException e) { e.printStackTrace(); }
+						
+						return;
+					}
+				}
+				request.getSession().setAttribute("chosenServer", id);
+				
+				request.setAttribute("ap", AdminPanelWrapper.getInstance());
+				request.setAttribute("user", getUser(request, response));
+				request.setAttribute("connected", bukkitServer != null ? bukkitServer.getPluginConnector().connected() : false);
+				request.setAttribute("bukkitServer", bukkitServer);
+				
+				try
+				{
+					boolean[] retBools = callController(bukkitServer, request, response);
+					
+					if (retBools.length == 2)
+					{
+						Object page = request.getAttribute("page");
+						
+						if (!retBools[0])
+							handleError("404", bukkitServer, request, response);
+						
+						if (retBools[1])
+							request.getRequestDispatcher("/index.jsp").include(request, response);
+						else if (page != null)
+							request.getRequestDispatcher((String) page).include(request, response);
+					} else
+						request.getRequestDispatcher("/index.jsp").include(request, response);
+				} catch (Exception e) { e.printStackTrace(); }
+				
+				latch.countDown();
+			}
+		});
 		
 		try
 		{
-			id = (Long) request.getSession().getAttribute("chosenServer");
-		} catch (Exception e) { id = 1L; }
-		
-		BukkitServer bukkitServer = AdminPanelWrapper.getInstance().getServer(id);
-		
-		if (bukkitServer == null)
-		{
-			if (AdminPanelWrapper.getInstance().servers.size() > 0)
-			{
-				bukkitServer = AdminPanelWrapper.getInstance().getServer(id = AdminPanelWrapper.getInstance().servers.keySet().toArray(new Long[AdminPanelWrapper.getInstance().servers.keySet().size()])[0]);
-			} else if (!request.getPathInfo().contains("install"))
-			{
-				AdminPanelWrapper.getInstance().getConfig().setValue("installed", "false");
-				AdminPanelWrapper.getInstance().getConfig().saveConfig();
-				
-				response.getWriter().print("<script>document.location = '/install/';</script>");
-				
-				return;
-			}
-		}
-		request.getSession().setAttribute("chosenServer", id);
-		
-		request.setAttribute("ap", AdminPanelWrapper.getInstance());
-		request.setAttribute("user", getUser());
-		request.setAttribute("connected", bukkitServer != null ? bukkitServer.getPluginConnector().connected() : false);
-		request.setAttribute("bukkitServer", bukkitServer);
-		
-		boolean[] retBools = callController(bukkitServer);
-		
-		if (retBools.length == 2)
-		{
-			Object page = request.getAttribute("page");
-			
-			if (!retBools[0])
-				handleError("404", bukkitServer);
-			
-			if (retBools[1])
-				request.getRequestDispatcher("/index.jsp").include(request, response);
-			else if (page != null)
-				request.getRequestDispatcher((String) page).include(request, response);
-		} else
-			request.getRequestDispatcher("/index.jsp").include(request, response);
+			latch.await();
+		} catch (InterruptedException e) { e.printStackTrace(); }
 	}
 	
-	private boolean[] callController(BukkitServer bukkitServer) throws IOException
+	private boolean[] callController(BukkitServer bukkitServer, HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		List<String> path = new ArrayList<String>(Arrays.asList(request.getPathInfo().split("/")));
 		path.removeAll(Arrays.asList("", null));
@@ -116,17 +133,15 @@ public class AppServlet extends HttpServlet
 		return ControllerHandler.callController(cont, method, path, request, response, bukkitServer);
 	}
 	
-	private void handleError(String err, BukkitServer bukkitServer)
+	private void handleError(String err, BukkitServer bukkitServer, HttpServletRequest request, HttpServletResponse response)
 	{
 		request.setAttribute("page", err);
 		
 		ControllerHandler.callController("index", "index", new ArrayList<String>(), request, response, bukkitServer);
 	}
 	
-	private User getUser()
+	private User getUser(HttpServletRequest request, HttpServletResponse response)
 	{
-		//String ip = request.getRemoteAddr().equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : request.getRemoteAddr();
-		
 		if (request.getSession() == null || request.getSession().getAttribute("userId") == null)
 			return null;
 		

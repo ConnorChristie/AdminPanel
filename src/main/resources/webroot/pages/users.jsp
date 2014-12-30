@@ -23,13 +23,42 @@ $(function() {
 		$(".changePassword").click(function() {
 			$("#custommodal").on("shown.bs.modal", function() { $("#password").focus(); });
 			
-			showModalFull("Change Password", "<label for='password'>New Password</label><input type='text' id='password' class='form-control' /><br /><label for='confpassword'>Confirm Password</label><input type='text' id='confpassword' class='form-control' />", "Change", true);
+			showModalFull("Change Password", "<form id='changePassword'><label for='password'>New Password</label><input type='password' id='password' class='form-control' /><br /><label for='confpassword'>Confirm Password</label><input type='password' id='confpassword' class='form-control' /></form>", "Change", true);
 			
-			/*
-			$.post($(this).attr("href"), function() {
-				window.location = "/users/";
+			var userId = $(this).attr("userid");
+			var clicked;
+			
+			$("#custommodal .btn-primary").click(function() {
+				if (!clicked)
+				{
+					$.post("/users/changePassword/" + userId, {"password":md5($("#changePassword").find("#password").val()), "confpassword":md5($("#changePassword").find("#confpassword").val())}, function(ret) {
+						if (ret.good != undefined)
+						{
+							var n = noty({
+					            text        : "<b>Success: </b>" + ret.good,
+					            type        : 'success',
+					            dismissQueue: true,
+					            layout      : 'bottomLeft',
+					            theme       : 'defaultTheme',
+					            timeout     : 2000
+					        });
+						} else if (ret.error != undefined)
+						{
+							var n = noty({
+					            text        : "<b>Error: </b>" + ret.error,
+					            type        : 'error',
+					            dismissQueue: true,
+					            layout      : 'bottomLeft',
+					            theme       : 'defaultTheme',
+					            timeout     : 2000
+					        });
+						}
+					});
+					
+					clicked = true;
+				}
 			});
-			*/
+			
 			return false;
 		});
 	}
@@ -37,7 +66,7 @@ $(function() {
 	if (${user.getGroup().hasPermission("web.users.delete")})
 	{
 		$(".deleteUser").click(function() {
-			$.post($(this).attr("href"), function() {
+			$.post("/users/delete/" + $(this).attr("userid"), function() {
 				window.location = "/users/";
 			});
 			

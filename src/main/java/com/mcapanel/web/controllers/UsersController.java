@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import com.mcapanel.utils.Utils;
 import com.mcapanel.web.database.Group;
 import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.Controller;
@@ -125,6 +126,43 @@ public class UsersController extends Controller
 	}
 	
 	@SuppressWarnings("unchecked")
+	public boolean changePassword() throws IOException
+	{
+		if (isMethod("POST"))
+		{
+			includeIndex(false);
+			mimeType("application/json");
+			
+			JSONObject obj = new JSONObject();
+			
+			if (isLoggedIn() && user.getGroup().hasPermission("web.users.changePassword") && arguments.size() == 1)
+			{
+				String pass = request.getParameter("password");
+				String cpass = request.getParameter("confpassword");
+				
+				if (pass.equals(cpass))
+				{
+					User us = db.find(User.class, arguments.get(0));
+					
+					us.setPassHash(Utils.md5(pass + Utils.md5(us.getPassSalt())));
+					
+					db.save(us);
+					
+					obj.put("good", "Successfully changed " + us.getUsername() + "'s password!");
+				} else
+					obj.put("error", "The passwords you entered do not match.");
+			} else
+				obj.put("error", "You do not have permission to do that.");
+			
+			response.getWriter().println(obj.toJSONString());
+			
+			return true;
+		}
+		
+		return error();
+	}
+	
+	@SuppressWarnings("unchecked")
 	private JSONArray getUsersJson(boolean raw)
 	{
 		JSONArray s = new JSONArray();
@@ -144,7 +182,7 @@ public class UsersController extends Controller
 			ar.add(b + "<span class=\"gname\" style=\"cursor: pointer;\">" + u.getGroup().getGroupName() + "</span>" + e);
 			ar.add(b + "<span uid=\"u" + u.getId() + "\" class=\"label clickLabel u" + u.getId() + " label-" + (u.isWhitelisted() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + "<span uid=\"u" + u.getId() + "\" class=\"label clickLabel u" + u.getId() + " label-" + (u.isBlacklisted() ? "success\">true" : "danger\">false") + "</span>" + e);
-			ar.add(b + (user.getGroup().hasPermission("web.users.changePassword") ? ("<a href=\"/users/changePassword/" + u.getId() + "\" class=\"changePassword\" style=\"color: #428bca !important;\">Change Password</a>") : "") + " | " + (user.getGroup().hasPermission("web.users.delete") ? ("<a href=\"/users/delete/" + u.getId() + "\" class=\"deleteUser\" style=\"color: #428bca !important;\">Delete</a>") : "") + e);
+			ar.add(b + ((user.getGroup().hasPermission("web.users.changePassword") || user.getGroup().hasPermission("web.users.delete")) ? (user.getGroup().hasPermission("web.users.changePassword") ? ("<button type=\"button\" userid=\"" + u.getId() + "\" class=\"changePassword btn btn-xs btn-info\">Change Password</button>") : "") + (user.getGroup().hasPermission("web.users.delete") ? ("<button type=\"button\" userid=\"" + u.getId() + "\" class=\"deleteUser btn btn-xs btn-danger\" style=\"margin-left: 10px;\">Delete User</button>") : "") : "-") + e);
 			if (raw) ar.add("</tr>");
 			
 			s.add(ar);
