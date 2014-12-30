@@ -1,13 +1,16 @@
 package com.mcapanel.web.database;
 
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.mcapanel.bukkit.utils.UUIDFetcher;
 import com.mcapanel.panel.AdminPanelWrapper;
 import com.mcapanel.web.database.base.BaseModel;
 
@@ -35,7 +38,7 @@ public class User extends BaseModel
 	
 	public User() { }
 	
-	public User(String username, String passHash, String passSalt, String ipAddress)
+	public User(String usernameLocal, String passHash, String passSalt, String ipAddress)
 	{
 		try
 		{
@@ -55,11 +58,35 @@ public class User extends BaseModel
 			e.printStackTrace();
 		}
 		
-		this.uuid      = "";//AdminPanelWrapper.getInstance().getUUIDFetcher().getUUIDOf(username).toString();
-		this.username  = username;
+		this.uuid      = "";
+		this.username  = usernameLocal;
 		this.passHash  = passHash;
 		this.passSalt  = passSalt;
 		this.ipAddress = ipAddress;
+		
+		new Thread(new Runnable() {
+			public void run()
+			{
+				try
+				{
+					final UUID uuidLocal = UUIDFetcher.getUUIDOf(username);
+					
+					AdminPanelWrapper.executeMain(new Runnable() {
+						public void run()
+						{
+							uuid = uuidLocal.toString() + "," + UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charset.forName("UTF-8"))).toString();
+							
+							saveUser();
+						}
+					});
+				} catch (Exception e) { e.printStackTrace(); }
+			}
+		}).start();
+	}
+	
+	private void saveUser()
+	{
+		AdminPanelWrapper.getInstance().getDatabase().save(this);
 	}
 
 	public Long getGroupId()

@@ -10,6 +10,7 @@
 		<table id="playertable" class="table table-striped" style="margin-bottom: 0px; border-bottom: 1px solid lightgray;">
 			<thead>
 				<tr>
+					<th>UUID</th>
 					<th class="img" style="min-width: 0px;"></th>
 					<th>Minecraft Username</th>
 					<th>Status</th>

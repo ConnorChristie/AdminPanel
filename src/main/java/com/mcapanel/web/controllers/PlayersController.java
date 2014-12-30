@@ -43,9 +43,10 @@ public class PlayersController extends Controller
 					
 					JSONArray ar = new JSONArray();
 					
-					User u = ap.getUserFromPlayer((String) obj.get("name"));
+					User u = ap.getUserFromPlayer(obj.get("uuid"));
 					
 					if (raw) ar.add("<tr>");
+					ar.add(b + obj.get("uuid") + e);
 					ar.add(b + "<img src=\"https://crafatar.com/avatars/" + obj.get("name") + "?size=15&helm\" />" + e);
 					ar.add(b + obj.get("name") + e);
 					ar.add(b + "<span class=\"label label-" + ((Boolean) obj.get("online") ? "success\">Online" : "danger\">Offline") + "</span>" + e);

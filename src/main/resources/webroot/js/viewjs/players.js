@@ -2,18 +2,29 @@ $(function() {
 	$("#playertable").dataTable({
 		"bLengthChange": false,
 		stateSave: true,
-		"order": [[ 1, "asc" ]],
+		"order": [[ 2, "asc" ]],
 		"aoColumnDefs": [
-			{ 'bSortable': false, 'aTargets': [ 0 ] }
+			{
+				"bSortable": false,
+				"aTargets": [ 1 ]
+			},
+			{
+              "targets": [ 0 ],
+              "visible": false,
+              "searchable": false
+           }
 		]
 	});
 	
 	$("#playertable tbody").on("click", "tr", function(e) {
 		if ($("#playertable").dataTable().fnGetData().length > 0)
-			clickPlayer($(this), e);
+		{
+			clickPlayer($("#playertable").DataTable().row(this).data()[0], e);
+		}
 		
 		return false;
 	});
+	
 	$("#playersusers a").click(function(e) {
 		var oldId = $("#" + $("#playersusers li.active a").attr("forid"));
 		var newId = $("#" + $(this).attr("forid"));
@@ -35,18 +46,16 @@ $(function() {
 	
 });
 
-function clickPlayer(that, e)
+function clickPlayer(uuid, e)
 {
 	contextClick = true;
 
 	var $contextMenu = $("#contextMenu");
 	
-	clickedObject = that.find("td:nth-child(2)").text();
-	
 	if (canHealfeed || canKill || canKick || canBan)
 	{
 		$contextMenu.find(".dropdown-menu").html(""
-			+ "<li><a action=\"viewPlayer\" href=\"/player/view/" + clickedObject + "\">View Player</a></li>"
+			+ "<li><a action=\"viewPlayer\" href=\"/player/view/" + uuid + "\">View Player</a></li>"
 			+ "<li class=\"divider\"></li>"
 			+ (canHealfeed ? "<li><a action=\"healPlayer\" href=\"/\">Heal Player</a></li>"
 			+ "<li><a action=\"feedPlayer\" href=\"/\">Feed Player</a></li>" : "")
@@ -75,7 +84,7 @@ function clickPlayer(that, e)
 			{
 				var title = (act == "killPlayer" ? "Killed" : (act == "healPlayer" ? "Healed" : "Fed"));
 				
-				$.post("/player/event/" + clickedObject + "/" + act.replace("Player", ""), function(data) {
+				$.post("/player/event/" + uuid + "/" + act.replace("Player", ""), function(data) {
 					if (data.good != undefined)
 					{
 						var n = noty({
@@ -129,7 +138,7 @@ function clickPlayer(that, e)
 					if (!clicked)
 					{
 						setTimeout(function() {
-							$.post("/player/event/" + clickedObject + "/" + type.toLowerCase() + "/" + $("#" + type.toLowerCase() + "Message").val(), function(data) {
+							$.post("/player/event/" + uuid + "/" + type.toLowerCase() + "/" + $("#" + type.toLowerCase() + "Message").val(), function(data) {
 								if (data.good != undefined)
 								{
 									//showModal((type == "Ban" ? "Bann" : "Kick") + "ed Player", data.good);
@@ -184,7 +193,7 @@ function clickPlayer(that, e)
 		});
 	} else
 	{
-		document.location = "/player/view/" + clickedObject;
+		document.location = "/player/view/" + uuid;
 	}
 	
 	contextClick = false;

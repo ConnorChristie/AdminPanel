@@ -4,115 +4,80 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.google.common.collect.ImmutableList;
+
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.concurrent.Callable;
 
-public class UUIDFetcher
+/**
+ * Interface to Mojang's API to fetch player UUIDs from player names.
+ *
+ * Thanks to evilmidget38:
+ * http://forums.bukkit.org/threads/player-name-uuid-fetcher.250926/
+ */
+public class UUIDFetcher implements Callable<Map<String, UUID>>
 {
 	private static final double PROFILES_PER_REQUEST = 100;
-	private static final String NAME_PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
-	private static final String UUID_PROFILE_URL = "https://sessionserver.mojang.com/session/minecraft/profile/";
+	private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
 	
-	private JSONParser jsonParser = new JSONParser();
+	private final JSONParser jsonParser = new JSONParser();
+	private final List<String> names;
 	
-	private List<String> names = new ArrayList<String>();
-	private List<UUID> uuids = new ArrayList<UUID>();
+	private final boolean rateLimiting;
 	
-	private Map<String, UUID> playerToUUID = new HashMap<String, UUID>();
-	private Map<UUID, String> uuidToPlayer = new HashMap<UUID, String>();
-	
-	public UUIDFetcher()
+	public UUIDFetcher(List<String> names, boolean rateLimiting)
 	{
-		System.setProperty("http.agent", "McAdminPanel-Minecraft");
+		this.names = ImmutableList.copyOf(names);
+		this.rateLimiting = rateLimiting;
 	}
 	
-	public UUIDFetcher setNames(List<String> names)
+	public UUIDFetcher(List<String> names)
 	{
-		this.names = names;
+		this(names, true);
+	}
+	
+	public Map<String, UUID> call() throws Exception
+	{
+		Map<String, UUID> uuidMap = new HashMap<String, UUID>();
 		
-		return this;
-	}
-	
-	public UUIDFetcher setUUIDs(List<UUID> uuids)
-	{
-		this.uuids = uuids;
+		int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
 		
-		return this;
-	}
-	
-	public void runNames()
-	{
-		try
+		for (int i = 0; i < requests; i++)
 		{
-			int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
+			HttpURLConnection connection = createConnection();
+			String body = JSONArray.toJSONString(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
 			
-			for (int i = 0; i < requests; i++)
+			writeBody(connection, body);
+			
+			JSONArray array = (JSONArray) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
+			
+			for (Object profile : array)
 			{
-				HttpURLConnection connection = createConnection();
+				JSONObject jsonProfile = (JSONObject) profile;
 				
-				String body = JSONArray.toJSONString(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
+				String id = (String) jsonProfile.get("id");
+				String name = (String) jsonProfile.get("name");
 				
-				writeBody(connection, body);
+				UUID uuid = UUIDFetcher.getUUID(id);
 				
-				JSONArray array = (JSONArray) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
-				
-				for (Object profile : array)
-				{
-					JSONObject jsonProfile = (JSONObject) profile;
-					String id = (String) jsonProfile.get("id");
-					String name = (String) jsonProfile.get("name");
-					
-					UUID uuid = getUUID(id);
-					
-					playerToUUID.put(name, uuid);
-					uuidToPlayer.put(uuid, name);
-				}
+				uuidMap.put(name, uuid);
 			}
-		} catch (Exception e)
-		{
-			e.printStackTrace();
+			
+			if (rateLimiting && i != requests - 1)
+			{
+				Thread.sleep(100L);
+			}
 		}
 		
-		names.clear();
+		return uuidMap;
 	}
 	
-	public void runUUIDs()
-	{
-		try
-		{
-			for (UUID uuid : uuids)
-			{
-				HttpURLConnection connection = (HttpURLConnection) new URL(UUID_PROFILE_URL + uuid.toString().replace("-", "")).openConnection();
-				JSONObject response = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
-				
-				String name = (String) response.get("name");
-				
-				if (name == null) continue;
-				
-				String cause = (String) response.get("cause");
-				String errorMessage = (String) response.get("errorMessage");
-				
-				if (cause != null && cause.length() > 0)
-				{
-					throw new IllegalStateException(errorMessage);
-				}
-				
-				playerToUUID.put(name, uuid);
-				uuidToPlayer.put(uuid, name);
-			}
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		uuids.clear();
-	}
-	
-	private void writeBody(HttpURLConnection connection, String body) throws Exception
+	private static void writeBody(HttpURLConnection connection, String body) throws Exception
 	{
 		OutputStream stream = connection.getOutputStream();
 		
@@ -121,9 +86,9 @@ public class UUIDFetcher
 		stream.close();
 	}
 	
-	private HttpURLConnection createConnection() throws Exception
+	private static HttpURLConnection createConnection() throws Exception
 	{
-		URL url = new URL(NAME_PROFILE_URL);
+		URL url = new URL(PROFILE_URL);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		
 		connection.setRequestMethod("POST");
@@ -135,12 +100,12 @@ public class UUIDFetcher
 		return connection;
 	}
 	
-	private UUID getUUID(String id)
+	private static UUID getUUID(String id)
 	{
 		return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
 	}
 	
-	public byte[] toBytes(UUID uuid)
+	public static byte[] toBytes(UUID uuid)
 	{
 		ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[16]);
 		
@@ -150,7 +115,7 @@ public class UUIDFetcher
 		return byteBuffer.array();
 	}
 	
-	public UUID fromBytes(byte[] array)
+	public static UUID fromBytes(byte[] array)
 	{
 		if (array.length != 16)
 		{
@@ -165,27 +130,8 @@ public class UUIDFetcher
 		return new UUID(mostSignificant, leastSignificant);
 	}
 	
-	public UUID getUUIDOf(String name)
+	public static UUID getUUIDOf(String name) throws Exception
 	{
-		if (!playerToUUID.containsKey(name))
-		{
-			names.add(name);
-			
-			runNames();
-		}
-		
-		return playerToUUID.get(name);
-	}
-	
-	public String getNameOf(UUID uuid)
-	{
-		if (!uuidToPlayer.containsKey(uuid))
-		{
-			uuids.add(uuid);
-			
-			runUUIDs();
-		}
-		
-		return uuidToPlayer.get(uuid);
+		return new UUIDFetcher(Arrays.asList(name)).call().get(name);
 	}
 }

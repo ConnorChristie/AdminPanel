@@ -34,7 +34,7 @@ public class PlayerController extends Controller
 					if (!(Boolean) player.get("exists"))
 						return error();
 					
-					User u = ap.getUserFromPlayer((String) player.get("name"));
+					User u = ap.getUserFromPlayer(arguments.get(0));
 					
 					request.setAttribute("player", player.get("name"));
 					request.setAttribute("group", u != null ? u.getGroup().getGroupName() : "Not Registered");

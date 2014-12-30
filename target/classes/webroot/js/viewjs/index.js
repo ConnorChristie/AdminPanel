@@ -183,10 +183,12 @@ $(function() {
 	});
 	
 	if (!foundId && window.location.pathname != "/"  && window.location.pathname != "/index.html")
+	{
 		$("#home").removeClass("active");
+	}
 	
 	$("#oplayertable tbody").on("click", "tr", function(e) {
-		clickPlayer($(this), e);
+		clickPlayer($(this).attr("uuid"), e);
 		
 		return false;
 	});
@@ -422,6 +424,8 @@ var everyOther = false;
 var loggedIn = false;
 var hadFirst = false;
 
+var oldStatus = "";
+
 function loadEverything(doCycle)
 {
 	var oldChats   = $("#messages").html();
@@ -516,6 +520,21 @@ function loadEverything(doCycle)
 					var control = data.control;
 					
 					$("#statusTitle").html(control.statusTitle);
+					
+					if (oldStatus.length != 0 && oldStatus != control.statusTitle)
+					{
+						//Get new tabs
+						
+						var activeId = $("#nav").find(".active").attr("id");
+						var openId = $("#nav").find(".open").attr("id");
+						
+						$("#nav").load("/index/tabs", function() {
+							$("#nav").find("#" + activeId).addClass("active");
+							$("#nav").find("#" + openId).addClass("open");
+						});
+					}
+					
+					oldStatus = control.statusTitle;
 					
 					if (control.startServer)
 						$("#startServer").removeAttr("disabled");

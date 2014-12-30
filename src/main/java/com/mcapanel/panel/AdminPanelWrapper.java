@@ -11,6 +11,7 @@ import java.net.BindException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.ConsoleHandler;
@@ -48,6 +50,7 @@ import org.reflections.Reflections;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.SQLitePlatform;
@@ -62,6 +65,7 @@ import com.avaje.ebeaninternal.server.lib.sql.PooledConnectionQueue;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import com.avaje.ebeaninternal.server.subclass.SubClassManager;
 import com.mcapanel.bukkit.BukkitServer;
+import com.mcapanel.bukkit.utils.UUIDFetcher;
 import com.mcapanel.config.Config;
 import com.mcapanel.log.NoLogging;
 import com.mcapanel.utils.TinyUrl;
@@ -86,7 +90,7 @@ public class AdminPanelWrapper
 	
 	public Map<Long, BukkitServer> servers = new HashMap<Long, BukkitServer>();
 	
-	private EbeanServer ebean;
+	private EbeanServer db;
 	
 	private Server webServer;
 	private static AdminPanelWrapper instance;
@@ -118,15 +122,12 @@ public class AdminPanelWrapper
 		
 		startUsages();
 		
-		//pluginConnector = new PluginConnector(this);
-		//uuidFetcher = new UUIDFetcher();
-		
 		new Thread(new InputReader()).start();
 		
 		System.out.println("Loading servers...");
 		System.out.println("Loading backups...");
 		
-		List<com.mcapanel.web.database.Server> servs = ebean.find(com.mcapanel.web.database.Server.class).findList();
+		List<com.mcapanel.web.database.Server> servs = db.find(com.mcapanel.web.database.Server.class).findList();
 		
 		for (com.mcapanel.web.database.Server serv : servs)
 		{
@@ -150,8 +151,6 @@ public class AdminPanelWrapper
 		{
 			queue.take().run();
 		}
-		
-		//servers.get(1).startServer();
 	}
 	
 	private void setupLogger()
@@ -219,7 +218,7 @@ public class AdminPanelWrapper
 			
 			serv.stopServer(false);
 			
-			ebean.delete(com.mcapanel.web.database.Server.class, id);
+			db.delete(com.mcapanel.web.database.Server.class, id);
 		}
 	}
 	
@@ -289,32 +288,32 @@ public class AdminPanelWrapper
 		Logger.getLogger(DeployCreateProperties.class.getName()).setLevel(Level.WARNING);
 		Logger.getLogger("com.avaje.ebean.config.PropertyMapLoader").setLevel(Level.WARNING);
 		
-		ServerConfig db = new ServerConfig();
+		ServerConfig serverConfig = new ServerConfig();
 		
-		db.setDefaultServer(false);
-		db.setRegister(false);
-		db.setClasses(getDatabaseClasses());
-		db.setName("McAdminPanel");
+		serverConfig.setDefaultServer(false);
+		serverConfig.setRegister(false);
+		serverConfig.setClasses(getDatabaseClasses());
+		serverConfig.setName("McAdminPanel");
 		
-		DataSourceConfig ds = new DataSourceConfig();
+		DataSourceConfig sourceConfig = new DataSourceConfig();
 		
-		ds.setDriver("org.sqlite.JDBC");
-		ds.setUrl("jdbc:sqlite:McAdminPanel/McAdminPanel.db");
-		ds.setUsername("adminpanel");
-		ds.setPassword("SeaFishRawr");
-		ds.setMaxInactiveTimeSecs(10);
-		ds.setMaxConnections(100);
-		ds.setIsolationLevel(TransactionIsolation.getLevel("SERIALIZABLE"));
+		sourceConfig.setDriver("org.sqlite.JDBC");
+		sourceConfig.setUrl("jdbc:sqlite:McAdminPanel/McAdminPanel.db");
+		sourceConfig.setUsername("adminpanel");
+		sourceConfig.setPassword("SeaFishRawr");
+		sourceConfig.setMaxInactiveTimeSecs(10);
+		sourceConfig.setMaxConnections(100);
+		sourceConfig.setIsolationLevel(TransactionIsolation.getLevel("SERIALIZABLE"));
 		
-		if (ds.getDriver().contains("sqlite"))
+		if (sourceConfig.getDriver().contains("sqlite"))
 		{
-			db.setDatabasePlatform(new SQLitePlatform());
-			db.getDatabasePlatform().getDbDdlSyntax().setIdentity("");
+			serverConfig.setDatabasePlatform(new SQLitePlatform());
+			serverConfig.getDatabasePlatform().getDbDdlSyntax().setIdentity("");
 		}
 		
-		db.setDataSourceConfig(ds);
+		serverConfig.setDataSourceConfig(sourceConfig);
 		
-		ebean = EbeanServerFactory.create(db);
+		db = EbeanServerFactory.create(serverConfig);
 		
 		int errorCount = 0;
 		
@@ -373,6 +372,45 @@ public class AdminPanelWrapper
 			g.setPermissions("server.chat.view;server.players.view;");
 			getDatabase().save(g);
 		}
+		
+		ExpressionList<User> users = getDatabase().find(User.class).where().eq("uuid", "");
+		
+		if (users.findRowCount() > 0)
+		{
+			final List<User> userList = users.findList();
+			
+			new Thread(new Runnable() {
+				public void run()
+				{
+					try
+					{
+						List<String> userNames = new ArrayList<String>();
+						
+						for (User u : userList)
+						{
+							userNames.add(u.getUsername());
+						}
+						
+						final Map<String, UUID> uuids = new UUIDFetcher(userNames).call();
+						
+						for (final User u : userList)
+						{
+							AdminPanelWrapper.executeMain(new Runnable() {
+								public void run()
+								{
+									if (uuids.containsKey(u.getUsername()))
+									{
+										u.setUuid(uuids.get(u.getUsername()).toString() + "," + UUID.nameUUIDFromBytes(("OfflinePlayer:" + u.getUsername()).getBytes(Charset.forName("UTF-8"))).toString());
+										
+										getDatabase().save(u);
+									}
+								}
+							});
+						}
+					} catch (Exception e) { e.printStackTrace(); }
+				}
+			}).start();
+		}
 	}
 	
 	private void installDDL()
@@ -395,7 +433,7 @@ public class AdminPanelWrapper
 	
 	public EbeanServer getDatabase()
 	{
-		return ebean;
+		return db;
 	}
 	
 	public Group getGlobalGroup()
@@ -403,10 +441,9 @@ public class AdminPanelWrapper
 		return getDatabase().find(Group.class).where().ieq("group_name", "Global").findUnique();
 	}
 	
-	public User getUserFromPlayer(String player)
+	public User getUserFromPlayer(Object uuid)
 	{
-		// Change to UUID
-		return instance.getDatabase().find(User.class).where().ieq("username", player).findUnique();
+		return instance.getDatabase().find(User.class).where().contains("uuid", uuid.toString()).findUnique();
 	}
 	
 	private void startWebPanel() throws Exception

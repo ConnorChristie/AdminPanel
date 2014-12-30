@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -269,26 +270,20 @@ public class IndexController extends Controller
 			{
 				JSONObject obj = (JSONObject) new JSONParser().parse(pret);
 				
-				String playersStr = (String) obj.get("players");
+				JSONArray players = (JSONArray) obj.get("players");
 				
-				if (playersStr.length() != 0)
+				for (Object ob : players)
 				{
-					String[] players = playersStr.split(";");
+					JSONObject player = (JSONObject) ob;
 					
-					for (String p : players)
-					{
-						String[] ps = p.split("\\|");
-						
-						//Change to UUID
-						User user = AdminPanelWrapper.getInstance().getDatabase().find(User.class).where().ieq("username", ps[0]).findUnique();
-						
-						plist += "<tr>";
-						plist += "<td><img style=\"margin-top: 4px; margin-left: 4px;\" src=\"https://crafatar.com/avatars/" + ps[0] + "?size=15&helm\" /></td>";
-						plist += "<td>" + ps[0] + "</td>";
-						plist += "<td>" + (user != null ? user.getGroup().getGroupName() : "Not Registered") + "</td>";
-						plist += "<td>" + ps[1] + "</td>";
-						plist += "</tr>";
-					}
+					User user = AdminPanelWrapper.getInstance().getUserFromPlayer(player.get("uuid"));
+					
+					plist += "<tr uuid=\"" + player.get("uuid") + "\">";
+					plist += "<td><img style=\"margin-top: 4px; margin-left: 4px;\" src=\"https://crafatar.com/avatars/" + player.get("name") + "?size=15&helm\" /></td>";
+					plist += "<td>" + player.get("name") + "</td>";
+					plist += "<td>" + (user != null ? user.getGroup().getGroupName() : "Not Registered") + "</td>";
+					plist += "<td>" + player.get("world") + "</td>";
+					plist += "</tr>";
 				}
 				
 				online = (Long) obj.get("online");
