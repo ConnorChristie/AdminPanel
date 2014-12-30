@@ -75,7 +75,7 @@ import com.mcapanel.web.servlets.AppServlet;
 
 public class AdminPanelWrapper
 {
-	public static final String VERSION = "v1.0.6";
+	public static final String VERSION = "v1.0.7";
 	public static String VERSION_SUB = "";
 	
 	private Config config;
