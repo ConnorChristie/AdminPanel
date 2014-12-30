@@ -8,6 +8,18 @@ $(function() {
 	{
 		$("#scheduledbackups_wrapper .col-xs-6:first").html('<button type="button" id="newbackupschedule" class="btn btn-xs btn-success">Schedule Backup</button>');
 	}
+	
+	$("#newbackupschedule").click(function() {
+		$("#backupmodal").modal();
+		
+		$('input[name="desc"]').bind('click', function() {
+			$('input[name="desc"]').not($(this)).trigger('deselect');
+		});
+		
+		$('input[name="interval"]').bind('click', function() {
+			$('input[name="interval"]').not($(this)).trigger('deselect');
+		});
+	});
 });
 </script>
 

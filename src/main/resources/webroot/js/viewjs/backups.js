@@ -25,18 +25,6 @@ $(function() {
        ]
 	});
 	
-	$("#newbackupschedule").click(function() {
-		$("#backupmodal").modal();
-		
-		$('input[name="desc"]').bind('click', function() {
-			$('input[name="desc"]').not($(this)).trigger('deselect');
-		});
-		
-		$('input[name="interval"]').bind('click', function() {
-			$('input[name="interval"]').not($(this)).trigger('deselect');
-		});
-	});
-	
 	$("#backuplist a").click(function(e) {
 		var oldId = $("#" + $("#backuplist li.active a").attr("forid"));
 		var newId = $("#" + $(this).attr("forid"));
