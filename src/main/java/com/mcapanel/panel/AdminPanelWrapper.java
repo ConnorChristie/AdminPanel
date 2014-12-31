@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -122,8 +123,6 @@ public class AdminPanelWrapper
 		
 		startUsages();
 		
-		new Thread(new InputReader()).start();
-		
 		System.out.println("Loading servers...");
 		System.out.println("Loading backups...");
 		
@@ -146,6 +145,8 @@ public class AdminPanelWrapper
 		
 		startWebPanel();
 		setShutdownHook();
+		
+		new Thread(new InputReader()).start();
 		
 		while (true)
 		{
@@ -191,6 +192,24 @@ public class AdminPanelWrapper
 	public static void executeMain(Runnable run)
 	{
 		queue.add(run);
+	}
+	
+	public void restartWebServer()
+	{
+		new Thread(new Runnable() {
+			public void run()
+			{
+				try
+				{
+					webServer.stop();
+					
+					startWebPanel();
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 	
 	public BukkitServer getServer(int id)
@@ -453,19 +472,18 @@ public class AdminPanelWrapper
 	
 	private void startWebPanel() throws Exception
 	{
-		/*
 		if (!config.getBoolean("installed", false))
 		{
 			Scanner in = new Scanner(System.in);
 			
-	        System.err.print("Enter Port: ");
+	        Logger.getLogger(getClass().getName()).info("Enter Port: ");
 	        
 	        String s = in.next();
 	        
 	        config.setValue("web-port", s);
 	        config.saveConfig();
 		}
-		*/
+		
 		System.out.println("Starting web server on port " + config.getString("web-port", "80") + "...");
 		
 		ControllerHandler.loadControllers();

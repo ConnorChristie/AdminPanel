@@ -51,6 +51,8 @@ public class InstallController extends Controller
 			includeIndex(false);
 			mimeType("application/json");
 			
+			boolean samePort = true;
+			
 			JSONObject out = new JSONObject();
 			
 			if (!config.getBoolean("installed", false))
@@ -73,8 +75,6 @@ public class InstallController extends Controller
 				{
 					User u = new User(mcname, mcpass, RandomStringUtils.randomAlphanumeric(8), request.getRemoteAddr().equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : request.getRemoteAddr());
 					
-					
-					
 					u.setGroupId(db.find(Group.class).where().ieq("group_name", "Admin").findUnique().getId());
 					u.setWhitelisted(true);
 					
@@ -91,6 +91,8 @@ public class InstallController extends Controller
 					request.getSession().setAttribute("chosenServer", server.getId());
 					bukkitServer.setupBackups();
 					
+					samePort = (config.getString("web-port", "80").equals(webPort));
+					
 					config.setValue("installed", "true");
 					config.setValue("server-ip", serverIp);
 					config.setValue("web-port", webPort);
@@ -99,8 +101,6 @@ public class InstallController extends Controller
 					config.setValue("license-key", lickey);
 					
 					config.saveConfig();
-					
-					//ap.install();
 					
 					final BukkitVersion bv = BukkitVersion.getVersion(cbInstall);
 					
@@ -120,8 +120,6 @@ public class InstallController extends Controller
 									config.setValue("server-jar", cbFile.getAbsolutePath());
 									config.saveConfig();
 									
-									//ap.install();
-									
 									System.out.println("Done downloading CraftBukkit!");
 								} catch (MalformedURLException e)
 								{
@@ -134,13 +132,19 @@ public class InstallController extends Controller
 						}).start();
 					}
 					
-					out.put("good", "Successfully saved all installation settings.<br />It is recommended to create another user so you can see what they see.");
+					out.put("good", "Successfully saved all installation settings.<br />It is recommended to create another user so you can see what they see." + (!samePort ? "<br />Since you changed the web port, we are going to restart the panel." : ""));
+					out.put("redirect", "http://localhost:" + webPort);
 				} else
 					out.put("error", "The passwords that you entered do not appear to match.");
 			} else
 				out.put("error", "You are not allowed to do that.");
 			
 			response.getWriter().println(out.toJSONString());
+			
+			if (!samePort)
+			{
+				ap.restartWebServer();
+			}
 			
 			return true;
 		}

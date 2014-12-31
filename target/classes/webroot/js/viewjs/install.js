@@ -19,7 +19,7 @@ $(function() {
 					showModal("Done Installing", data.good);
 					
 					$("#custommodal .btn").click(function() {
-						document.location = "/";
+						document.location = data.redirect;
 					});
 				} else if (data.error != undefined)
 				{
