@@ -1,12 +1,14 @@
 package com.mcapanel.web.database;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "messages")
 public class Message
 {
+	@Id
 	private Long id;
 	
 	private String username;

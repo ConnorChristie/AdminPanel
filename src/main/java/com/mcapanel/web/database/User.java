@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -17,6 +18,7 @@ import com.mcapanel.panel.AdminPanelWrapper;
 @Table(name = "users")
 public class User
 {
+	@Id
 	private Long id;
 	
 	private Long groupId;

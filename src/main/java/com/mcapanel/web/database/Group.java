@@ -1,12 +1,14 @@
 package com.mcapanel.web.database;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "groups")
 public class Group
 {
+	@Id
 	private Long id;
 	
 	private boolean isGhost = false;

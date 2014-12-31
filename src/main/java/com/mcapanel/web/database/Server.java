@@ -1,12 +1,14 @@
 package com.mcapanel.web.database;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "servers")
 public class Server
 {
+	@Id
 	private Long id;
 	
 	private String name;
