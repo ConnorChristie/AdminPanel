@@ -3,12 +3,12 @@ package com.mcapanel.web.database;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.mcapanel.web.database.base.BaseModel;
-
 @Entity
 @Table(name = "applications")
-public class Application extends BaseModel
+public class Application
 {
+	private Long id;
+	
 	private Long userId;
 	
 	private String description;
@@ -22,6 +22,16 @@ public class Application extends BaseModel
 		this.userId = userId;
 		this.description = description;
 		this.date = System.currentTimeMillis();
+	}
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 
 	public Long getUserId()

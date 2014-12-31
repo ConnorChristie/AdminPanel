@@ -3,16 +3,14 @@ package com.mcapanel.web.database;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.mcapanel.web.database.base.BaseModel;
-
 @Entity
 @Table(name = "messages")
-public class Message extends BaseModel
+public class Message
 {
+	private Long id;
+	
 	private String username;
-	
 	private String subject;
-	
 	private String message;
 	
 	public Message() {}
@@ -22,6 +20,16 @@ public class Message extends BaseModel
 		this.username = username;
 		this.subject = subject;
 		this.message = message;
+	}
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 
 	public String getUsername()

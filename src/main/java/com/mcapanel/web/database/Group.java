@@ -3,12 +3,12 @@ package com.mcapanel.web.database;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.mcapanel.web.database.base.BaseModel;
-
 @Entity
 @Table(name = "groups")
-public class Group extends BaseModel
+public class Group
 {
+	private Long id;
+	
 	private boolean isGhost = false;
 	private boolean isExistingDefault = false;
 	private boolean isWhitelistDefault = false;
@@ -23,6 +23,16 @@ public class Group extends BaseModel
 	{
 		this.groupName = groupName;
 		this.permissions = "";
+	}
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 	
 	public boolean isGhost()

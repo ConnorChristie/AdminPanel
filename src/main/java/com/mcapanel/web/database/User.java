@@ -12,20 +12,19 @@ import javax.persistence.Transient;
 
 import com.mcapanel.bukkit.utils.UUIDFetcher;
 import com.mcapanel.panel.AdminPanelWrapper;
-import com.mcapanel.web.database.base.BaseModel;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseModel
+public class User
 {
+	private Long id;
+	
 	private Long groupId;
 	
 	private String uuid;
-	
 	private String username;
 	
 	private String passHash;
-	
 	private String passSalt;
 	
 	private String ipAddress;
@@ -74,7 +73,7 @@ public class User extends BaseModel
 					AdminPanelWrapper.executeMain(new Runnable() {
 						public void run()
 						{
-							uuid = uuidLocal.toString() + "," + UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charset.forName("UTF-8"))).toString();
+							uuid = (uuidLocal != null ? (uuidLocal.toString() + ",") : "") + UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charset.forName("UTF-8"))).toString();
 							
 							saveUser();
 						}
@@ -87,6 +86,16 @@ public class User extends BaseModel
 	private void saveUser()
 	{
 		AdminPanelWrapper.getInstance().getDatabase().save(this);
+	}
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 
 	public Long getGroupId()

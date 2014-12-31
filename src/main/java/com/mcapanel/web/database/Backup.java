@@ -3,12 +3,12 @@ package com.mcapanel.web.database;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.mcapanel.web.database.base.BaseModel;
-
 @Entity
 @Table(name = "backups")
-public class Backup extends BaseModel
+public class Backup
 {
+	private Long id;
+	
 	private Long schedule;
 	private Long serverId;
 	
@@ -30,6 +30,16 @@ public class Backup extends BaseModel
 		this.size = size;
 		
 		date = System.currentTimeMillis();
+	}
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 
 	public Long getSchedule()

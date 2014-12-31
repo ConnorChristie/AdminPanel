@@ -3,18 +3,15 @@ package com.mcapanel.web.database;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.mcapanel.web.database.base.BaseModel;
-
 @Entity
 @Table(name = "servers")
-public class Server extends BaseModel
+public class Server
 {
+	private Long id;
+	
 	private String name;
-	
 	private String serverJar;
-	
 	private String minMemory;
-	
 	private String maxMemory;
 	
 	public Server() { }
@@ -26,6 +23,16 @@ public class Server extends BaseModel
 		
 		this.minMemory = "1024m";
 		this.maxMemory = "2048m";
+	}
+	
+	public Long getId()
+	{
+		return id;
+	}
+	
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 
 	public String getName()

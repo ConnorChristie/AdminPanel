@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -282,7 +283,7 @@ public class AdminPanelWrapper
 		Logger.getLogger(DataSourcePool.class.getName()).setLevel(Level.WARNING);
 		Logger.getLogger(SubClassManager.class.getName()).setLevel(Level.WARNING);
 		Logger.getLogger(PooledConnection.class.getName()).setLevel(Level.WARNING);
-		Logger.getLogger(CreateTableVisitor.class.getName()).setLevel(Level.WARNING);
+		Logger.getLogger(CreateTableVisitor.class.getName()).setLevel(Level.SEVERE);
 		Logger.getLogger(BeanDescriptorManager.class.getName()).setLevel(Level.WARNING);
 		Logger.getLogger(PooledConnectionQueue.class.getName()).setLevel(Level.WARNING);
 		Logger.getLogger(DeployCreateProperties.class.getName()).setLevel(Level.WARNING);
@@ -313,7 +314,12 @@ public class AdminPanelWrapper
 		
 		serverConfig.setDataSourceConfig(sourceConfig);
 		
+		PrintStream out = System.out;
+		System.setOut(new PrintStream(new OutputStream() { public void write(int b) throws IOException { } }));
+		
 		db = EbeanServerFactory.create(serverConfig);
+		
+		System.setOut(out);
 		
 		int errorCount = 0;
 		
@@ -448,6 +454,19 @@ public class AdminPanelWrapper
 	
 	private void startWebPanel() throws Exception
 	{
+		/*
+		if (!config.getBoolean("installed", false))
+		{
+			Scanner in = new Scanner(System.in);
+			
+	        System.err.print("Enter Port: ");
+	        
+	        String s = in.next();
+	        
+	        config.setValue("web-port", s);
+	        config.saveConfig();
+		}
+		*/
 		System.out.println("Starting web server on port " + config.getString("web-port", "80") + "...");
 		
 		ControllerHandler.loadControllers();
@@ -541,7 +560,7 @@ public class AdminPanelWrapper
 			{
 				System.out.println("Goto http://localhost:" + config.getString("web-port", "80") + " in a browser to start the setup.");
 				
-				Desktop.getDesktop().browse(URI.create("http://localhost"));
+				Desktop.getDesktop().browse(URI.create("http://localhost:" + config.getString("web-port", "80") + "/install"));
 			}
 		} catch (BindException e)
 		{
