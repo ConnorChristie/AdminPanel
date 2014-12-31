@@ -40,12 +40,12 @@ public class AppServlet extends HttpServlet
 					return;
 				}
 				
-				Long id = 1L;
+				int id = 1;
 				
 				try
 				{
-					id = (Long) request.getSession().getAttribute("chosenServer");
-				} catch (Exception e) { id = 1L; }
+					id = (Integer) request.getSession().getAttribute("chosenServer");
+				} catch (Exception e) { id = 1; }
 				
 				BukkitServer bukkitServer = AdminPanelWrapper.getInstance().getServer(id);
 				
@@ -53,7 +53,7 @@ public class AppServlet extends HttpServlet
 				{
 					if (AdminPanelWrapper.getInstance().servers.size() > 0)
 					{
-						bukkitServer = AdminPanelWrapper.getInstance().getServer(id = AdminPanelWrapper.getInstance().servers.keySet().toArray(new Long[AdminPanelWrapper.getInstance().servers.keySet().size()])[0]);
+						bukkitServer = AdminPanelWrapper.getInstance().getServer(id = AdminPanelWrapper.getInstance().servers.keySet().toArray(new Integer[AdminPanelWrapper.getInstance().servers.keySet().size()])[0]);
 					} else if (!request.getPathInfo().contains("install"))
 					{
 						AdminPanelWrapper.getInstance().getConfig().setValue("installed", "false");

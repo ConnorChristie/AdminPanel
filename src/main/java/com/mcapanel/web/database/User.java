@@ -19,9 +19,9 @@ import com.mcapanel.panel.AdminPanelWrapper;
 public class User
 {
 	@Id
-	private Long id;
+	private int id;
 	
-	private Long groupId;
+	private int groupId;
 	
 	private String uuid;
 	private String username;
@@ -87,25 +87,25 @@ public class User
 	
 	private void saveUser()
 	{
-		AdminPanelWrapper.getInstance().getDatabase().save(this);
+		AdminPanelWrapper.getInstance().getDatabase().update(this);
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	public void setId(Long id)
+	public void setId(int id)
 	{
 		this.id = id;
 	}
 
-	public Long getGroupId()
+	public int getGroupId()
 	{
 		return groupId;
 	}
 	
-	public void setGroupId(Long groupId)
+	public void setGroupId(int groupId)
 	{
 		this.groupId = groupId;
 	}

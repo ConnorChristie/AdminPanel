@@ -9,7 +9,7 @@ import javax.persistence.Table;
 public class Server
 {
 	@Id
-	private Long id;
+	private int id;
 	
 	private String name;
 	private String serverJar;
@@ -27,12 +27,12 @@ public class Server
 		this.maxMemory = "2048m";
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	public void setId(Long id)
+	public void setId(int id)
 	{
 		this.id = id;
 	}

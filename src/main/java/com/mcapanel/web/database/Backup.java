@@ -9,10 +9,10 @@ import javax.persistence.Table;
 public class Backup
 {
 	@Id
-	private Long id;
+	private int id;
 	
-	private Long schedule;
-	private Long serverId;
+	private int schedule;
+	private int serverId;
 	
 	private String description;
 	
@@ -23,7 +23,7 @@ public class Backup
 	
 	public Backup() {}
 	
-	public Backup(Long schedId, Long serverId, String description, String filename, long size)
+	public Backup(int schedId, int serverId, String description, String filename, long size)
 	{
 		this.schedule = schedId;
 		this.serverId = serverId;
@@ -34,32 +34,32 @@ public class Backup
 		date = System.currentTimeMillis();
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	public void setId(Long id)
+	public void setId(int id)
 	{
 		this.id = id;
 	}
 
-	public Long getSchedule()
+	public int getSchedule()
 	{
 		return schedule;
 	}
 
-	public void setSchedule(Long schedule)
+	public void setSchedule(int schedule)
 	{
 		this.schedule = schedule;
 	}
 
-	public Long getServerId()
+	public int getServerId()
 	{
 		return serverId;
 	}
 
-	public void setServerId(Long serverId)
+	public void setServerId(int serverId)
 	{
 		this.serverId = serverId;
 	}

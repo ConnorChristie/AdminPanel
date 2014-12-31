@@ -12,7 +12,7 @@ import com.mcapanel.web.database.Application;
 
 public class EverythingEvent extends Thread
 {
-	private Map<Long, JSONObject> data = new HashMap<Long, JSONObject>();
+	private Map<Integer, JSONObject> data = new HashMap<Integer, JSONObject>();
 	
 	private boolean isRunning = false;
 	
@@ -72,7 +72,7 @@ public class EverythingEvent extends Thread
 		unreadApps = apps;
 	}
 	
-	public JSONObject getData(Long serverId)
+	public JSONObject getData(int serverId)
 	{
 		return data.get(serverId);
 	}

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 public class Group
 {
 	@Id
-	private Long id;
+	private int id;
 	
 	private boolean isGhost = false;
 	private boolean isExistingDefault = false;
@@ -27,12 +27,12 @@ public class Group
 		this.permissions = "";
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	public void setId(Long id)
+	public void setId(int id)
 	{
 		this.id = id;
 	}

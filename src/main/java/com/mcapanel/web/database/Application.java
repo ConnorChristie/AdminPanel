@@ -9,9 +9,9 @@ import javax.persistence.Table;
 public class Application
 {
 	@Id
-	private Long id;
+	private int id;
 	
-	private Long userId;
+	private int userId;
 	
 	private String description;
 	
@@ -19,29 +19,29 @@ public class Application
 	
 	public Application() {}
 	
-	public Application(Long userId, String description)
+	public Application(int userId, String description)
 	{
 		this.userId = userId;
 		this.description = description;
 		this.date = System.currentTimeMillis();
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	public void setId(Long id)
+	public void setId(int id)
 	{
 		this.id = id;
 	}
 
-	public Long getUserId()
+	public int getUserId()
 	{
 		return userId;
 	}
 
-	public void setUserId(Long userId)
+	public void setUserId(int userId)
 	{
 		this.userId = userId;
 	}

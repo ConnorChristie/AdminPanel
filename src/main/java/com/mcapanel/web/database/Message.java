@@ -9,7 +9,7 @@ import javax.persistence.Table;
 public class Message
 {
 	@Id
-	private Long id;
+	private int id;
 	
 	private String username;
 	private String subject;
@@ -24,12 +24,12 @@ public class Message
 		this.message = message;
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	public void setId(Long id)
+	public void setId(int id)
 	{
 		this.id = id;
 	}

@@ -28,7 +28,7 @@ public class BukkitServer
 {
 	private AdminPanelWrapper ap;
 	
-	private Long serverId;
+	private int serverId;
 	private boolean consoleFocus;
 	
 	private File serverJar;
@@ -60,7 +60,7 @@ public class BukkitServer
 		this(server.getId(), server.getName(), new File(server.getServerJar()), server.getMinMemory(), server.getMaxMemory());
 	}
 	
-	private BukkitServer(Long id, String serverName, File serverJar, String minMemory, String maxMemory)
+	private BukkitServer(int id, String serverName, File serverJar, String minMemory, String maxMemory)
 	{
 		this.ap = AdminPanelWrapper.getInstance();
 		
@@ -91,7 +91,7 @@ public class BukkitServer
 		copyPlugin();
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return serverId;
 	}

@@ -9,9 +9,9 @@ import javax.persistence.Table;
 public class BackupSchedule
 {
 	@Id
-	private Long id;
+	private int id;
 	
-	private Long serverId;
+	private int serverId;
 	
 	private int interval;
 	
@@ -27,7 +27,7 @@ public class BackupSchedule
 	
 	public BackupSchedule() {}
 	
-	public BackupSchedule(Long serverId, String desc, String worlds, String iText, int i)
+	public BackupSchedule(int serverId, String desc, String worlds, String iText, int i)
 	{
 		this.serverId = serverId;
 		
@@ -48,12 +48,12 @@ public class BackupSchedule
 		interval = i;
 	}
 	
-	public Long getId()
+	public int getId()
 	{
 		return id;
 	}
 	
-	public void setId(Long id)
+	public void setId(int id)
 	{
 		this.id = id;
 	}
@@ -72,12 +72,12 @@ public class BackupSchedule
 		return desc;
 	}
 
-	public Long getServerId()
+	public int getServerId()
 	{
 		return serverId;
 	}
 
-	public void setServerId(Long serverId)
+	public void setServerId(int serverId)
 	{
 		this.serverId = serverId;
 	}

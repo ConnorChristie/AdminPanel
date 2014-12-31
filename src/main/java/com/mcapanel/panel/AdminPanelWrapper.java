@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -89,7 +88,7 @@ public class AdminPanelWrapper
 	private Thread shutdownHook;
 	private TinyUrl tinyUrl;
 	
-	public Map<Long, BukkitServer> servers = new HashMap<Long, BukkitServer>();
+	public Map<Integer, BukkitServer> servers = new HashMap<Integer, BukkitServer>();
 	
 	private EbeanServer db;
 	
@@ -194,7 +193,7 @@ public class AdminPanelWrapper
 		queue.add(run);
 	}
 	
-	public BukkitServer getServer(Long id)
+	public BukkitServer getServer(int id)
 	{
 		return servers.get(id);
 	}
@@ -204,12 +203,12 @@ public class AdminPanelWrapper
 		return servers.values();
 	}
 	
-	public boolean hasServer(Long id)
+	public boolean hasServer(int id)
 	{
 		return servers.containsKey(id);
 	}
 	
-	public void deleteServer(Long id)
+	public void deleteServer(int id)
 	{
 		if (hasServer(id))
 		{
