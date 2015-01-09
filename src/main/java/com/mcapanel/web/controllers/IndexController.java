@@ -68,7 +68,7 @@ public class IndexController extends Controller
 				pw.println("<li id=\"home\"><a href=\"/\">Home</a></li>");
 			} else if (tab != "settings")
 			{
-				pw.println("<li id=\"" + tab + "\"><a href=\"/" + tab + "/\">" + tab.substring(0, 1).toUpperCase() + tab.substring(1) + ((tab == "applications" && applications > 0) ? " <span id=\"appBadge\" class=\"badge\" style=\"margin-left: 5px; background-color: rgb(229, 91, 91);\">${applications}</span>" : "") + "</a></li>");
+				pw.println("<li id=\"" + tab + "\"><a href=\"/" + tab + "/\">" + tab.substring(0, 1).toUpperCase() + tab.substring(1) + ((tab == "applications" && applications > 0) ? " <span id=\"appBadge\" class=\"badge\" style=\"margin-left: 5px; background-color: rgb(229, 91, 91);\">" + applications + "</span>" : "") + "</a></li>");
 			}
 		}
 		

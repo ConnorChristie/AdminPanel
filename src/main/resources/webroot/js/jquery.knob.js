@@ -177,7 +177,7 @@
             }
 
             !this.o.displayInput && this.$.hide();
-
+            
             // adds needed DOM elements (canvas, div)
             this.$c = $(document.createElement('canvas')).attr({
                 width: this.o.width,
@@ -278,7 +278,7 @@
                 'width': this.w + 'px',
                 'height': this.h + 'px'
             });
-
+            
             // finalize canvas with computed width
             this.$c.attr({
                 width: this.w,

@@ -1,5 +1,4 @@
 <%@page pageEncoding="UTF-8" %>
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <jsp:useBean id="now" class="java.util.Date" />
@@ -305,8 +304,8 @@
 															<c:when test="${user.getGroup().hasPermission('server.controls')}">
 																<button type="button" id="startServer" act="startServer" class="actButton btn btn-sm btn-success" ${control.get("startServer") ? "" : "disabled"}>Start Server</button>
 																<button type="button" id="stopServer" act="stopServer" class="actButton btn btn-sm btn-danger" ${control.get("stopServer") ? "" : "disabled"}>Stop Server</button>
-																<button type="button" id="restartServer" act="restartServer" class="actButton btn btn-sm btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button>
 																<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>
+																<button type="button" id="restartServer" act="restartServer" class="actButton btn btn-sm btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button>
 															</c:when>
 															<c:when test="${user.getGroup().hasPermission('server.reload')}">
 																<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>

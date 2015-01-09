@@ -409,7 +409,7 @@ public class BukkitServer
 							}).start();
 						}
 						
-						if ((line.contains("Done") && line.contains("For help, type \"help\" or \"?\"")) || line.contains("CONSOLE: Reload complete."))
+						if ((line.contains("Done") && line.contains("For help, type \"help\" or \"?\"")) || line.contains("Reload complete."))
 						{
 							serverStatus = ServerStatus.STARTED;
 							
@@ -420,7 +420,7 @@ public class BukkitServer
 						} else if (line.contains("Stopping server") && serverStatus != ServerStatus.STOPPING && serverStatus != ServerStatus.RESTARTING)
 						{
 							serverStatus = ServerStatus.STOPPED;
-						} else if (line.contains("**** FAILED TO BIND TO PORT!"))
+						} else if (line.contains("FAILED TO BIND TO PORT!"))
 						{
 							serverStatus = ServerStatus.STOPPED;
 						} else if (line.contains("Unable to access jarfile"))

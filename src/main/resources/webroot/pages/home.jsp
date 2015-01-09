@@ -36,8 +36,8 @@
 						<div class="row" style="padding-bottom: 12px; border-bottom: 1px solid #ddd;">
 							<div class="col-sm-3"><button type="button" id="startServer" act="startServer" class="actButton btn btn-lg btn-success" ${control.get("startServer") ? "" : "disabled"}>Start Server</button></div>
 							<div class="col-sm-3"><button type="button" id="stopServer" act="stopServer" class="actButton btn btn-lg btn-danger" ${control.get("stopServer") ? "" : "disabled"}>Stop Server</button></div>
-							<div class="col-sm-3"><button type="button" id="restartServer" act="restartServer" class="actButton btn btn-lg btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button></div>
 							<div class="col-sm-3"><button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-lg btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button></div>
+							<div class="col-sm-3"><button type="button" id="restartServer" act="restartServer" class="actButton btn btn-lg btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button></div>
 						</div>
 					</c:when>
 					<c:when test="${user.getGroup().hasPermission('server.reload')}">
