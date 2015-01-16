@@ -23,6 +23,7 @@ public class Config
         
         configDefaults.put("server-ip", "localhost");
         configDefaults.put("web-port", "80");
+        configDefaults.put("language", "english");
         
         configDefaults.put("installed", "false");
         configDefaults.put("enable-whitelist", "true");

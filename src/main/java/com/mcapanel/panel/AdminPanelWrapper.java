@@ -68,6 +68,7 @@ import com.avaje.ebeaninternal.server.subclass.SubClassManager;
 import com.mcapanel.bukkit.BukkitServer;
 import com.mcapanel.bukkit.utils.UUIDFetcher;
 import com.mcapanel.config.Config;
+import com.mcapanel.language.Language;
 import com.mcapanel.log.NoLogging;
 import com.mcapanel.utils.TinyUrl;
 import com.mcapanel.utils.UsageMonitor;
@@ -91,6 +92,7 @@ public class AdminPanelWrapper
 	
 	public Map<Integer, BukkitServer> servers = new HashMap<Integer, BukkitServer>();
 	
+	private Language language;
 	private EbeanServer db;
 	
 	private Server webServer;
@@ -112,19 +114,22 @@ public class AdminPanelWrapper
 	{
 		instance = this;
 		
+		new File("McAdminPanel").mkdirs();
+		
 		setupLogger();
 		
-		System.out.println("Starting McAdminPanel " + VERSION + "...");
+		config = new Config();
+		language = new Language(config.getString("language", "english"));
 		
-		new File("McAdminPanel").mkdirs();
+		System.out.println(language.localize("Starting McAdminPanel") + " " + VERSION + "...");
 		
 		setupConfig();
 		setupDatabases();
 		
 		startUsages();
 		
-		System.out.println("Loading servers...");
-		System.out.println("Loading backups...");
+		System.out.println(language.localize("Loading servers") + "...");
+		System.out.println(language.localize("Loading backups") + "...");
 		
 		List<com.mcapanel.web.database.Server> servs = db.find(com.mcapanel.web.database.Server.class).findList();
 		
@@ -142,6 +147,18 @@ public class AdminPanelWrapper
 		
 		initialEvent = new InitialEvent();
 		initialEvent.start();
+		
+		if (!config.getBoolean("installed", false))
+		{
+			Scanner in = new Scanner(System.in);
+			
+	        Logger.getLogger(getClass().getName()).info(language.localize("Enter Port") + ": ");
+	        
+	        String s = in.next();
+	        
+	        config.setValue("web-port", s);
+	        config.saveConfig();
+		}
 		
 		startWebPanel();
 		setShutdownHook();
@@ -243,9 +260,8 @@ public class AdminPanelWrapper
 	
 	private void setupConfig()
 	{
-		System.out.println("Loading config file...");
+		System.out.println(language.localize("Loading config file") + "...");
 		
-		config = new Config();
 		tinyUrl = new TinyUrl();
 		
 		File webPages = new File("McAdminPanel", "webpages/");
@@ -294,7 +310,7 @@ public class AdminPanelWrapper
 	
 	private void setupDatabases()
 	{
-		System.out.println("Loading databases...");
+		System.out.println(language.localize("Loading databases") + "...");
 		
 		//Disable annoying log messages...
 		Logger.getLogger(DdlGenerator.class.getName()).setLevel(Level.WARNING);
@@ -472,19 +488,7 @@ public class AdminPanelWrapper
 	
 	private void startWebPanel() throws Exception
 	{
-		if (!config.getBoolean("installed", false))
-		{
-			Scanner in = new Scanner(System.in);
-			
-	        Logger.getLogger(getClass().getName()).info("Enter Port: ");
-	        
-	        String s = in.next();
-	        
-	        config.setValue("web-port", s);
-	        config.saveConfig();
-		}
-		
-		System.out.println("Starting web server on port " + config.getString("web-port", "80") + "...");
+		System.out.println(language.localize("Starting web server on port %s", config.getString("web-port", "80")) + "...");
 		
 		ControllerHandler.loadControllers();
 		
@@ -575,16 +579,21 @@ public class AdminPanelWrapper
 			
 			if (!config.getBoolean("installed", false))
 			{
-				System.out.println("Goto http://localhost:" + config.getString("web-port", "80") + " in a browser to start the setup.");
+				System.out.println(language.localize("Goto %s in a browser to start the setup.", "http://localhost:" + config.getString("web-port", "80")));
 				
-				Desktop.getDesktop().browse(URI.create("http://localhost:" + config.getString("web-port", "80") + "/install"));
+				Desktop.getDesktop().browse(URI.create("http://localhost:" + config.getString("web-port", "80") + "/install/"));
 			}
 		} catch (BindException e)
 		{
-			System.out.println("McAdminPanel failed to bind to port " + config.getString("web-port", "80"));
+			System.out.println(language.localize("McAdminPanel failed to bind to port %s", config.getString("web-port", "80")) + "...");
 			
 			System.exit(-1);
 		}
+	}
+	
+	public Language getLanguage()
+	{
+		return language;
 	}
 	
 	private void setShutdownHook()

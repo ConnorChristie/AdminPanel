@@ -37,6 +37,8 @@ public class AppServlet extends HttpServlet
 						response.getWriter().print("<script>document.location = '/install/';</script>");
 					} catch (IOException e) { e.printStackTrace(); }
 					
+					latch.countDown();
+					
 					return;
 				}
 				
@@ -64,6 +66,8 @@ public class AppServlet extends HttpServlet
 							response.getWriter().print("<script>document.location = '/install/';</script>");
 						} catch (IOException e) { e.printStackTrace(); }
 						
+						latch.countDown();
+						
 						return;
 					}
 				}
@@ -71,6 +75,7 @@ public class AppServlet extends HttpServlet
 				
 				request.setAttribute("ap", AdminPanelWrapper.getInstance());
 				request.setAttribute("user", getUser(request, response));
+				request.setAttribute("language", AdminPanelWrapper.getInstance().getLanguage());
 				request.setAttribute("connected", bukkitServer != null ? bukkitServer.getPluginConnector().connected() : false);
 				request.setAttribute("bukkitServer", bukkitServer);
 				
@@ -100,7 +105,7 @@ public class AppServlet extends HttpServlet
 		try
 		{
 			latch.await();
-		} catch (InterruptedException e) { e.printStackTrace(); }
+		} catch (InterruptedException e) { }
 	}
 	
 	private boolean[] callController(BukkitServer bukkitServer, HttpServletRequest request, HttpServletResponse response) throws IOException

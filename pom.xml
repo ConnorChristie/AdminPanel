@@ -16,7 +16,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jetty-version>9.2.6.v20141205</jetty-version>
+		<jetty-version>9.2.1.v20140609</jetty-version>
 	</properties>
 
 	<repositories>
@@ -73,13 +73,7 @@
 			<type>jar</type>
       		<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<version>1.14</version>
-			<type>jar</type>
-      		<scope>compile</scope>
-		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

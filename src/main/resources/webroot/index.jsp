@@ -1,11 +1,12 @@
-<%@page pageEncoding="UTF-8" %>
+<%@page pageEncoding="ISO-8859-15" %>
+<%@page contentType="text/html; charset=ISO-8859-15" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <jsp:useBean id="now" class="java.util.Date" />
 
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">
 		
 		<title>McAdminPanel | ${page.substring(0, 1).toUpperCase()}${page.substring(1)}</title>
 		
@@ -18,6 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="/css/jquery-linedtextarea.css">
 		<link rel="stylesheet" type="text/css" href="/js/jsTree/themes/default/style.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/skins/all.css">
+		<link rel="stylesheet" type="text/css" href="/css/animate.css">
 		
 		<script src="/js/jquery.min.js"></script>
 		<script src="/js/md5.js"></script>
@@ -28,7 +30,7 @@
 		<script src="/js/jquery.knob.js"></script>
 		<script src="/js/jquery.cookie.js"></script>
 		<script src="/js/noty/packaged/jquery.noty.packaged.min.js"></script>
-		<script src="/js/noty/themes/bootstrap.js"></script>
+		<script src="/js/noty/themes/relax.js"></script>
 		
 		<script src="/js/viewjs/index.js"></script>
 		<script src="/js/elements/modal.js"></script>
@@ -106,7 +108,7 @@
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 							</button>
-							<a class="navbar-brand" href="/"><b>McAdminPanel</b></a>
+							<a class="navbar-brand" href="/${install ? 'install/' : ''}"><b>McAdminPanel</b></a>
 						</div>
 						<div class="navbar-collapse collapse">
 							<ul id="nav" class="nav navbar-nav" style="float: left;">
@@ -284,7 +286,7 @@
 				</c:otherwise>
 			</c:choose>
 			
-			<div class="alert alert-warning" role="alert">
+			<div class="alert alert-warning" role="alert" ${install ? "style='margin-bottom: 10px;'" : ""}>
 				<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
 			</div>
 			
