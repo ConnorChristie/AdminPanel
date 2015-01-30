@@ -69,6 +69,7 @@ public class ControllerHandler
 			co.arguments = args;
 			co.request = request;
 			co.response = response;
+			co.language = AdminPanelWrapper.getInstance().getLanguage();
 			
 			co.user = (User) request.getAttribute("user");
 			co.config = ap.getConfig();
@@ -81,6 +82,7 @@ public class ControllerHandler
 			request.setAttribute("tinyUrl", ap.getTinyUrl());
 			request.setAttribute("versions", ap.getVersion());
 			request.setAttribute("config", co.config);
+			request.setAttribute("language", co.language);
 			
 			Method m = co.getClass().getMethod(method);
 			

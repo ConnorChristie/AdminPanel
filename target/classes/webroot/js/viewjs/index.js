@@ -466,12 +466,12 @@ function loadEverything(doCycle)
 				
 				if (data.usage != undefined)
 				{
-					$("#ramtotal").html("<b>Total: " + data.usage.ramTotal + " GB</b>");
-					$("#ramused").html("<b>Used: " + data.usage.ramUsed + " GB</b>");
-					$("#ramfree").html("<b>Free: " + data.usage.ramFree + " GB</b>");
+					$("#ramtotal").html("<b>" + totalString + " " + data.usage.ramTotal + " GB</b>");
+					$("#ramused").html("<b>" + usedString + " " + data.usage.ramUsed + " GB</b>");
+					$("#ramfree").html("<b>" + freeString + " " + data.usage.ramFree + " GB</b>");
 					
-					$("#cpucores").html("<b>Cores: " + data.usage.cpuCores + "</b>");
-					$("#cpufreq").html("<b>Frequency: " + data.usage.cpuFreq + " GHz</b>");
+					$("#cpucores").html("<b>" + coresString + " " + data.usage.cpuCores + "</b>");
+					$("#cpufreq").html("<b>" + freqString + " " + data.usage.cpuFreq + " GHz</b>");
 					
 					$("#ramcircle").val(data.usage.ramPercent).trigger("change");
 					$("#cpucircle").val(data.usage.cpuPercent).trigger("change");
@@ -507,9 +507,9 @@ function loadEverything(doCycle)
 						var disk = disks[i];
 						
 						$("#disk" + i + "title").html("<b>" + disk.diskName + "</b>");
-						$("#disk" + i + "total").html("<b>Total: " + disk.diskTotal + " GB</b>");
-						$("#disk" + i + "used").html("<b>Used: " + disk.diskUsed + " GB</b>");
-						$("#disk" + i + "free").html("<b>Free: " + disk.diskFree + " GB</b>");
+						$("#disk" + i + "total").html("<b>" + totalString + " " + disk.diskTotal + " GB</b>");
+						$("#disk" + i + "used").html("<b>" + usedString + " " + disk.diskUsed + " GB</b>");
+						$("#disk" + i + "free").html("<b>" + freeString + " " + disk.diskFree + " GB</b>");
 						
 						$("#disk" + i + "circle").val(disk.diskPercent).trigger("change");
 					}

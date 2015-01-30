@@ -150,6 +150,7 @@ public class AdminPanelWrapper
 		
 		if (!config.getBoolean("installed", false))
 		{
+			/*
 			Scanner in = new Scanner(System.in);
 			
 	        Logger.getLogger(getClass().getName()).info(language.localize("Enter Port") + ": ");
@@ -157,6 +158,10 @@ public class AdminPanelWrapper
 	        String s = in.next();
 	        
 	        config.setValue("web-port", s);
+	        config.saveConfig();
+	        */
+			
+			config.setValue("web-port", "80");
 	        config.saveConfig();
 		}
 		
@@ -488,7 +493,7 @@ public class AdminPanelWrapper
 	
 	private void startWebPanel() throws Exception
 	{
-		System.out.println(language.localize("Starting web server on port %s", config.getString("web-port", "80")) + "...");
+		System.out.println(language.localize("Starting web server on port $$", config.getString("web-port", "80")) + "...");
 		
 		ControllerHandler.loadControllers();
 		
@@ -579,13 +584,13 @@ public class AdminPanelWrapper
 			
 			if (!config.getBoolean("installed", false))
 			{
-				System.out.println(language.localize("Goto %s in a browser to start the setup.", "http://localhost:" + config.getString("web-port", "80")));
+				System.out.println(language.localize("Goto $$ in a browser to start the setup.", "http://localhost:" + config.getString("web-port", "80")));
 				
 				Desktop.getDesktop().browse(URI.create("http://localhost:" + config.getString("web-port", "80") + "/install/"));
 			}
 		} catch (BindException e)
 		{
-			System.out.println(language.localize("McAdminPanel failed to bind to port %s", config.getString("web-port", "80")) + "...");
+			System.out.println(language.localize("McAdminPanel failed to bind to port $$", config.getString("web-port", "80")) + "...");
 			
 			System.exit(-1);
 		}

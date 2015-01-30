@@ -11,6 +11,7 @@ import org.json.simple.parser.JSONParser;
 import com.avaje.ebean.EbeanServer;
 import com.mcapanel.bukkit.BukkitServer;
 import com.mcapanel.config.Config;
+import com.mcapanel.language.Language;
 import com.mcapanel.panel.AdminPanelWrapper;
 import com.mcapanel.utils.Utils;
 import com.mcapanel.web.database.User;
@@ -29,6 +30,8 @@ public abstract class Controller
 	public Config config;
 	public EbeanServer db;
 	public BukkitServer bukkitServer;
+	
+	public Language language;
 	
 	public boolean includeIndex = true;
 	

@@ -8,7 +8,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">
 		
-		<title>McAdminPanel | ${page.substring(0, 1).toUpperCase()}${page.substring(1)}</title>
+		<title>McAdminPanel | ${language.localize(page.substring(0, 1).toUpperCase().concat(page.substring(1)))}</title>
 		
 		<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIjNJ/xklNP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkNUz/JDVM/y5EXv8dKjv/JjdN/xgjMv8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC07TvwzSmf/OVFy/yQ1TP8zSGb/FB4r/xgjMv8YIzL/Fh8t/xklNP8AAAAAAAAAAAAAAAAAAAAAJDVM/zpTdP8kNkz/JDVM/yc5Uf8cKTv/TFBU/x4rPP8gLkD/ITBC/xomNf8eLD7/GCMy/xgjMv8AAAAAAAAAAC1CXP8kNUz/NEto/zpBSP86U3T/OlN0/xwoO/8ZJTT/GCMy/xgjMv8iLTr/GiY1/xgjMv8fLT7/AAAAAAAAAAAdKj7/LkRe/yc5Uf8kNUz/LkRe/yQ1TP8mN0//GiY2/yY3Tf8fLT7/GCMy/yY3Tf8RGSb/IjFF/wAAAAAAAAAALkRe/yQ1TP8sQVv/LEFa/zpTdP8kNUz/HCg7/xklNP8fLT7/GCMy/xolNf8fLT7/JjdN/zg4OP8AAAAAAAAAACQ1TP86U3T/JDVM/xomOP8aJjj/JDVM/ydENP8ZIyf/ERkl/x8tPv8RGSX/JDNI/xgjMv8RGSX/AAAAAAAAAAAkNUz/LkRe/yxBW/8oRTT/OmZE/zpjSf8sTjP/JUEr/yE7J/8RGSX/FB8k/xEZJf8YIzL/GCMy/wAAAAAAAAAAJDVM/xomOP8eLzj/LVA2/zVePf8zWTr/TYhZ/1SUYv8mQiz/GSom/x0zJP8mQiz/GCMy/xEZJf8AAAAAAAAAABwnOP8zWjv/JT44/zlkQf9XmWT/Vphk/0FyS/9do2z/R31S/0d+U/8mRC3/JD8q/yhGMv8dMyL/AAAAAAAAAAA5ZkL/M1s8/1mcZv9Nhln/QHJL/06KW/8/bkn/TIZY/0yGWP9KhFb/TIZY/0h/U/8nRC3/HTMh/wAAAAAAAAAATYhZ/1aYZP9Cdk7/VJVh/0h/U/9TkV//UpFg/0uGWP9KhFb/Q3ZO/06KW/9Ge1D/SH9T/0FzS/8AAAAAAAAAAAAAAAAAAAAAUI1d/0N3Tv9epW3/SYBU/0V8Uf9Tk2H/SoJV/02IWf9XmmX/R35S/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASoFV/0R6UP9HflL/RHlQ/0+JW/9GfVL/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATYlZ/2Wydf8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/n8AAPgfAADgBwAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAOAHAAD4HwAA/n8AAA==" />
 		
@@ -32,9 +32,6 @@
 		<script src="/js/noty/packaged/jquery.noty.packaged.min.js"></script>
 		<script src="/js/noty/themes/relax.js"></script>
 		
-		<script src="/js/viewjs/index.js"></script>
-		<script src="/js/elements/modal.js"></script>
-		
 		<script>
 			var canHealfeed = ${user.getGroup().hasPermission("server.players.healfeed") == true};
 			var canKill = ${user.getGroup().hasPermission("server.players.kill") == true};
@@ -43,14 +40,21 @@
 			
 			var canCommand = ${user.getGroup().hasPermission("server.console.issue") == true};
 			
+			var totalString = "${language.localize('Total:')}";
+			var usedString = "${language.localize('Used:')}";
+			var freeString = "${language.localize('Free:')}";
+			
+			var coresString = "${language.localize('Cores:')}";
+			var freqString = "${language.localize('Frequency:')}";
+			
 			function bugAlert()
 			{
 				$("#custommodal").on("shown.bs.modal", function() { $("#email").focus(); });
 				
 				showModalFull(
-					"Submit a Bug",
-					'<form id="bugreport"><label for="email">Email</label><input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" onkeydown="if (event.keyCode == 13) $(\'#custommodal .btn\').click();"><br><label for="description">Description of Bug</label><textarea rows="4" class="form-control" id="description" name="description" placeholder="Enter Description" onkeydown="if (event.keyCode == 13) $(\'#custommodal .btn\').click();"></textarea><br><p>Thank you for your feedback!<br />We may contact you for more information if needed.</p></form>',
-					"Submit Bug",
+					"${language.localize('Submit a Bug')}",
+					'<form id="bugreport"><label for="email">${language.localize("Email")}</label><input type="text" class="form-control" id="email" name="email" placeholder="${language.localize("Enter Email")}" onkeydown="if (event.keyCode == 13) $(\'#custommodal .btn\').click();"><br><label for="description">${language.localize("Description of Bug")}</label><textarea rows="4" class="form-control" id="description" name="description" placeholder="${language.localize("Enter Description")}" onkeydown="if (event.keyCode == 13) $(\'#custommodal .btn\').click();"></textarea><br><p>${language.localize("Thank you for your feedback!$$We may contact you for more information if needed.", "<br />")}</p></form>',
+					"${language.localize('Submit Bug')}",
 					true
 				);
 				
@@ -92,6 +96,8 @@
 			}
 		</script>
 		
+		<script src="/js/viewjs/index.js"></script>
+		<script src="/js/elements/modal.js"></script>
 		<script src="/js/viewjs/players.js"></script>
 	</head>
 	<body style="background: url(/images/diamond_upholstery.png);">
@@ -115,10 +121,10 @@
 								<c:forEach var="tab" items="${tabs}">
 									<c:choose>
 										<c:when test="${tab == 'home'}">
-											<li id="home"><a href="/">Home</a></li>
+											<li id="home"><a href="/">${language.localize("Home")}</a></li>
 										</c:when>
 										<c:when test="${tab != 'settings'}">
-											<li id="${tab}"><a href="/${tab}/">${tab.substring(0, 1).toUpperCase()}${tab.substring(1)}<c:if test="${tab.equalsIgnoreCase('applications') && applications > 0}"> <span id="appBadge" class="badge" style="margin-left: 5px; background-color: rgb(229, 91, 91);">${applications}</span></c:if></a></li>
+											<li id="${tab}"><a href="/${tab}/">${language.localize(tab.substring(0, 1).toUpperCase().concat(tab.substring(1)))}<c:if test="${tab.equalsIgnoreCase('applications') && applications > 0}"> <span id="appBadge" class="badge" style="margin-left: 5px; background-color: rgb(229, 91, 91);">${applications}</span></c:if></a></li>
 										</c:when>
 									</c:choose>
 								</c:forEach>
@@ -127,7 +133,7 @@
 					                	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Server <span class="caret"></span></a>
 					               		<ul class="dropdown-menu" role="menu">
 					               			<c:forEach var="serverTab" items="${serverTabs}">
-					               				<li><a href="/${serverTab}/">${serverTab.substring(0, 1).toUpperCase()}${serverTab.substring(1)}</a></li>
+					               				<li><a href="/${serverTab}/">${language.localize(serverTab.substring(0, 1).toUpperCase().concat(serverTab.substring(1)))}</a></li>
 					               			</c:forEach>
 					                	</ul>
 					              	</li>
@@ -144,7 +150,7 @@
 								</c:if>
 								<c:forEach var="tab" items="${tabs}">
 									<c:if test="${tab == 'settings'}">
-										<li id="${tab}"><a href="/${tab}/">${tab.substring(0, 1).toUpperCase()}${tab.substring(1)}</a></li>
+										<li id="${tab}"><a href="/${tab}/">${language.localize(tab.substring(0, 1).toUpperCase().concat(tab.substring(1)))}</a></li>
 									</c:if>
 								</c:forEach>
 							</ul>
@@ -212,12 +218,12 @@
 								<form class="navbar-form navbar-right" role="form" id="loginForm" method="post" action="<%= request.getPathInfo() %>" onsubmit="$('#password').val(md5($('#opassword').val()))">
 									<input type="hidden" name="password" id="password" />
 									<div class="form-group">
-										<input type="text" name="username" id="username" placeholder="Minecraft Username" class="form-control">
+										<input type="text" name="username" id="username" placeholder="${language.localize('Minecraft Username')}" class="form-control">
 									</div>
 									<div class="form-group">
-										<input type="password" name="opassword" id="opassword" placeholder="Password" class="form-control">
+										<input type="password" name="opassword" id="opassword" placeholder="${language.localize('Password')}" class="form-control">
 									</div>
-									<button type="submit" class="btn btn-success">Login</button>
+									<button type="submit" class="btn btn-success">${language.localize("Login")}</button>
 								</form>
 							</c:if>
 						</div>
@@ -229,13 +235,13 @@
 		<div class="container marketing" style="top: 93px;">
 			<c:if test="${loggedIn && !b && user.getGroup().hasPermission('mcapanel.properties.edit')}">
 				<div class="alert alert-warning" role="alert">
-					<b>New Version:</b> There has been a new version of McAdminPanel released! Please <a href="javascript:void(0)" onclick="showUpdateModal();">update</a> to the latest version!
+					${language.localize("$$New Version:$$ There has been a new version of McAdminPanel released! Please $$update$$ to the latest version!", "<b>", "</b>", "<a href='javascript:void(0)' onclick='showUpdateModal();'>", "</a>")}
 				</div>
 			</c:if>
 			
 			<c:if test="${!install && loggedIn && user.getGroup().hasPermission('server.properties.edit') && (bukkitServer.getServerJar() == null || (bukkitServer.getServerJar() != null && !bukkitServer.getServerJar().exists()))}">
 				<div class="alert alert-danger" role="alert">
-					<b>Invalid Server Jar:</b> The server jar for this server could not be found, <a href="/settings/">click here</a> to change it.
+					${language.localize("$$Invalid Server Jar:$$ The server jar for this server could not be found, $$click here$$ to change it.", "<b>", "</b>", "<a href='/settings/'>", "</a>")}
 				</div>
 			</c:if>
 			
@@ -251,7 +257,7 @@
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<h3 class="panel-title">
-											Server Status: <span id="status">${status}</span>
+											${language.localize("Server Status:")} <span id="status">${status}</span>
 											<span id="ponline" style="float: right;">${online} / ${total}</span>
 										</h3>
 									</div>
@@ -272,7 +278,7 @@
 										
 										<a href="/players/">
 											<div style="background-color: #E7E7E7; padding: 4px; text-align: center;">
-												<b>View All Players</b>
+												<b>${language.localize("View All Players")}</b>
 											</div>
 										</a>
 									</div>
@@ -287,7 +293,7 @@
 			</c:choose>
 			
 			<div class="alert alert-warning" role="alert" ${install ? "style='margin-bottom: 10px;'" : ""}>
-				<b>Submitting Bugs:</b> If you find any bugs please report them <a href="javascript:void(0)" onclick="bugAlert();">here</a> so we can improve McAdminPanel!
+				${language.localize("$$Submitting Bugs:$$ If you find any bugs please report them $$here$$ so we can improve McAdminPanel!", "<b>", "</b>", "<a href='javascript:void(0)' onclick='bugAlert();'>", "</a>")}
 			</div>
 			
 			<c:if test="${!install && ((!loggedIn && ap.getGlobalGroup().hasPermission('server.chat.view')) || user.getGroup().hasPermission('server.chat.view'))}">
@@ -299,15 +305,15 @@
 									<c:choose>
 										<c:when test="${user.getGroup().hasPermission('server.console.view')}">
 											<div class="row">
-												<div class="col-sm-2"><ul id="server" class="nav nav-pills"><li class="active"><a href="#" forid="messages">Server Chat</a></li></ul></div>
-												<div class="col-sm-8" style="text-align: center;">
+												<div class="col-sm-3"><ul id="server" class="nav nav-pills"><li class="active"><a href="#" forid="messages">${language.localize("Server Chat")}</a></li></ul></div>
+												<div class="col-sm-6" style="text-align: center;">
 													<c:if test="${loggedIn && page != 'home' && (user.getGroup().hasPermission('server.controls') || user.getGroup().hasPermission('server.reload'))}">
 														<c:choose>
 															<c:when test="${user.getGroup().hasPermission('server.controls')}">
-																<button type="button" id="startServer" act="startServer" class="actButton btn btn-sm btn-success" ${control.get("startServer") ? "" : "disabled"}>Start Server</button>
-																<button type="button" id="stopServer" act="stopServer" class="actButton btn btn-sm btn-danger" ${control.get("stopServer") ? "" : "disabled"}>Stop Server</button>
-																<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>
-																<button type="button" id="restartServer" act="restartServer" class="actButton btn btn-sm btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button>
+																<button type="button" id="startServer" act="startServer" class="actButton btn btn-sm btn-success" ${control.get("startServer") ? "" : "disabled"}>${language.localize("Start Server")}</button>
+																<button type="button" id="stopServer" act="stopServer" class="actButton btn btn-sm btn-danger" ${control.get("stopServer") ? "" : "disabled"}>${language.localize("Stop Server")}</button>
+																<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>${language.localize("Reload Server")}</button>
+																<button type="button" id="restartServer" act="restartServer" class="actButton btn btn-sm btn-primary" ${control.get("restartServer") ? "" : "disabled"}>${language.localize("Restart Server")}</button>
 															</c:when>
 															<c:when test="${user.getGroup().hasPermission('server.reload')}">
 																<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>
@@ -315,27 +321,11 @@
 														</c:choose>
 													</c:if>
 												</div>
-												<div class="col-sm-2"><ul id="server" class="nav nav-pills"><li id="consolebutton" style="float: right;"><a href="#" forid="console">Server Console</a></li></ul></div>
+												<div class="col-sm-3"><ul id="server" class="nav nav-pills"><li id="consolebutton" style="float: right;"><a href="#" forid="console">${language.localize("Server Console")}</a></li></ul></div>
 											</div>
-											
-											<!--
-											<ul id="server" class="nav nav-pills">
-												<li class="active" style="width: 22.5%; float: left;"><a href="#" forid="messages">Server Chat</a></li>
-												
-												<li style="width: 55%; float: left;">
-													<span style="padding: 9px;">Server Status: <span id="statusTitle">${control.get("statusTitle")}</span></span>
-													<button type="button" id="startServer" act="startServer" class="actButton btn btn-sm btn-success" ${control.get("startServer") ? "" : "disabled"}>Start Server</button>
-													<button type="button" id="stopServer" act="stopServer" class="actButton btn btn-sm btn-danger" ${control.get("stopServer") ? "" : "disabled"}>Stop Server</button>
-													<button type="button" id="restartServer" act="restartServer" class="actButton btn btn-sm btn-primary" ${control.get("restartServer") ? "" : "disabled"}>Restart Server</button>
-													<button type="button" id="reloadServer" act="reloadServer" class="actButton btn btn-sm btn-info" ${control.get("reloadServer") ? "" : "disabled"}>Reload Server</button>
-												</li>
-												
-												<li id="consolebutton" style="width: 22.5%; float: right;"><a href="#" forid="console">Server Console</a></li>
-											</ul>
-											-->
 										</c:when>
 										<c:otherwise>
-											Server Chat
+											${language.localize("Server Chat")}
 										</c:otherwise>
 									</c:choose>
 								</h3>
@@ -353,9 +343,17 @@
 								
 								<c:if test="${user.getGroup().hasPermission('server.chat.issue')}">
 									<form style="margin-top: 10px;" id="chatform">
-										<input type="text" class="form-control" name="chatmsg" id="chatmsg" placeholder="Chat Message" style="float: left;" required />
-										<button type="submit" class="btn btn-primary" id="chatbtn" style="float: right;">Chat</button>
+										<input type="text" class="form-control" name="chatmsg" id="chatmsg" placeholder="${language.localize('Chat Message')}" style="float: left;" required />
+										<button type="submit" class="btn btn-primary" id="chatbtn" style="float: right;">${language.localize("Chat")}</button>
 									</form>
+									
+									<script>
+										$(function() {
+											var width = 1075 - $("#chatbtn").width();
+											
+											$("#chatmsg").css({"width": width + "px"});
+										});
+									</script>
 								</c:if>
 							</div>
 						</div>
@@ -365,7 +363,7 @@
 			
 			<div class="row" style="margin-top: 10px; margin-bottom: 40px;">
 				<div class="col-sm-12">
-					<span style="float: left;">Copyright &copy; <a href="http://mcapanel.com" target="_blank" style="color: #428bca;">McAdminPanel</a> <%= java.util.Calendar.getInstance().get(java.util.Calendar.YEAR) %></span>
+					<span style="float: left;">${language.localize("Copyright")} &copy; <a href="http://mcapanel.com" target="_blank" style="color: #428bca;">McAdminPanel</a> <%= java.util.Calendar.getInstance().get(java.util.Calendar.YEAR) %></span>
 					<span style="float: right;">McAdminPanel ${versions}</span>
 				</div>
 			</div>

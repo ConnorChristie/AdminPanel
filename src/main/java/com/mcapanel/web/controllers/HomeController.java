@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 
 import com.mcapanel.bukkit.BukkitServer;
+import com.mcapanel.panel.AdminPanelWrapper;
 import com.mcapanel.panel.ServerStatus;
 import com.mcapanel.web.handlers.Controller;
 
@@ -35,7 +36,7 @@ public class HomeController extends Controller
 		
 		ServerStatus status = server.getStatus();
 		
-		obj.put("statusTitle", "<span style='color: " + status.getColor() + ";'>" + status.getName() + "</span>");
+		obj.put("statusTitle", "<span style='color: " + status.getColor() + ";'>" + AdminPanelWrapper.getInstance().getLanguage().localize(status.getName()) + "</span>");
 		
 		switch (status)
 		{

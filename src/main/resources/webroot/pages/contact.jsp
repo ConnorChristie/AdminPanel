@@ -8,15 +8,15 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">
-			Contact Us
+			${language.localize("Contact Us")}
 		</h3>
 	</div>
 	<div class="panel-body">
 		<form id="contactform" method="post" action="/contact/send">
 			<c:if test="${!loggedIn}">
 				<div class="form-group">
-					<label for="mcname">Minecraft Username</label>
-					<input type="text" class="form-control" style="width: 380px;" id="mcname" name="mcname" placeholder="Enter Username" required>
+					<label for="mcname">${language.localize("Minecraft Username")}</label>
+					<input type="text" class="form-control" style="width: 380px;" id="mcname" name="mcname" placeholder="${language.localize('Enter Username')}" required>
 				</div>
 			</c:if>
 			
@@ -25,13 +25,13 @@
 			</c:if>
 			
 			<div class="form-group">
-				<label for="subject">Subject</label>
-				<input type="text" class="form-control" style="width: 380px;" id="subject" name="subject" placeholder="Enter Subject" required>
+				<label for="subject">${language.localize("Subject")}</label>
+				<input type="text" class="form-control" style="width: 380px;" id="subject" name="subject" placeholder="${language.localize('Enter Subject')}" required>
 			</div>
 			
 			<div class="form-group">
-				<label for="message">Message</label>
-				<textarea class="form-control" style="width: 380px; height: 100px;" id="message" name="message" placeholder="Enter Message" required></textarea>
+				<label for="message">${language.localize("Message")}</label>
+				<textarea class="form-control" style="width: 380px; height: 100px;" id="message" name="message" placeholder="${language.localize('Enter Message')}" required></textarea>
 			</div>
 			
 			<div class="form-group">
@@ -45,9 +45,9 @@
 				<%= c.createRecaptchaHtml(null, props) %>
 			</div>
 						
-			<p style="width: 700px; font-size: 15px; margin-top: 10px;">Please note that a response will not be instant, please allow up to 3 days for a response.</p>
+			<p style="width: 700px; font-size: 15px; margin-top: 10px;">${language.localize("Please note that a response will not be instant, please allow up to 3 days for a response.")}</p>
 			
-			<p><button type="submit" id="submitapp" class="btn btn-primary btn-lg">Send Message</button></p>
+			<p><button type="submit" id="submitapp" class="btn btn-primary btn-lg">${language.localize("Send Message")}</button></p>
 		</form>
 	</div>
 </div>
