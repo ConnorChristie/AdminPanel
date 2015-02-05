@@ -125,7 +125,7 @@ public class PluginsController extends Controller
 						try
 						{
 							out = (JSONObject) jsonParser.parse(resp);
-						} catch (ParseException e) { }
+						} catch (Exception e) { }
 						
 						out.put("plugins", getPluginsJson(false));
 					} else
