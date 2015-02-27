@@ -1,0 +1,104 @@
+{
+    "spanish": {
+        "Starting McAdminPanel": "Comienzo McAdminPanel",
+        "Loading servers": "Cargando servidores",
+        "Loading backups": "Cargando copias de seguridad",
+        "Loading config file": "Archivo de configuración de carga",
+        "Loading databases": "Cargando bases de datos",
+        
+        "Enter Port": "Introduzca Puerto",
+        "Starting web server on port $$": "Inicio del servidor web en el puerto $$",
+        "Goto $$ in a browser to start the setup.": "Ir a $$ en un navegador para iniciar la instalación.",
+        "McAdminPanel failed to bind to port $$": "McAdminPanel no pudo enlazar con el puerto $$",
+        
+        "Information": "Información",
+        "Step": "Paso",
+        
+        "Next Step": "Siguiente paso",
+        "Previous Step": "Paso anterior",
+        "Skip": "Omitir",
+        
+        "Here you will enter your servers IP address.": "Aquí se entra en su dirección IP de los servidores.",
+        "Here you will enter the panels port number, port 80 is recommended.": "Aquí se entra en el número de puerto de los paneles, se recomienda el puerto 80.",
+        "Since the port you entered is different, we have to restart the webserver. A new page will open automatically, if not check the console.": "Desde el puerto que ha introducido es diferente, tenemos que reiniciar el servidor web. Una nueva página se abre automáticamente, si no se compruebe la consola.",
+        "Server IP (Don't include the port, ex: 99.26.137.7 or demo.mcapanel.com)": "Servidor IP (No incluya el puerto, por ejemplo: 99.26.137.7 o demo.mcapanel.com)",
+        "Port": "Puerto",
+        "Enter Server IP": "Introduzca servidor IP",
+        "Enter McAdminPanel Port": "Ingrese puerto McAdminPanel",
+        
+        "Here you will enter a name for your server.": "Aquí se entra en un nombre para su servidor.",
+        "Here you will enter the servers bukkit jar file.": "Aquí se entra en el archivo jar servidores bukkit.",
+        "Server Name": "Nombre del servidor",
+        "Server Jar File": "Servidor de archivos Jar",
+        "Enter Server Name": "Introducir nombre del servidor",
+        "Enter Server Jar File": "Introduzca archivo jar servidor",
+        "It seems the server jar file you entered does not exist, do you want to proceed anyway?": "Parece el archivo jar del servidor que ha introducido no existe, ¿quieres continuar de todos modos?",
+       
+        "Here you will enter your Minecraft username.": "Aquí usted entrara su nombre de usuario Minecraft.",
+        "Here you will enter a password for your account.": "Aquí se entra en una contraseña para su cuenta.",
+        "Minecraft Username": "Minecraft Nombre de usuario",
+        "Password (Don't use your Minecraft password)": "Contraseña (No utilice su contraseña Minecraft)",
+        "Confirm Password": "Confirmar contraseña",
+        "Enter Username": "Ingrese Nombre de usuario",
+        "Enter Password": "Introduzca la contraseña",
+        "The passwords that you entered do not match.": "Las contraseñas que ha introducido no coinciden.",
+        
+        "Here you will enter your McAdminPanel License Email.": "Aquí se entra en tu correo electrónico licencia McAdminPanel.",
+        "Here you will enter your McAdminPanel License Key.": "Aquí se entra en la clave de licencia McAdminPanel.",
+        "License Email": "Correo electrónico de licencia",
+        "License Key": "Clave de licencia",
+        "Enter License Email": "Ingrese correo electrónico licencia",
+        "Enter License Key": "Introduzca la clave de licencia",
+        
+        "Successfully saved all installation settings.$$It is recommended to create another user so you can see what they see.": "Salvado con éxito todos los ajustes de instalación.$$Se recomienda crear otro usuario para que pueda ver lo que ven.",
+        "McAdminPanel is already installed.": "McAdminPanel ya está instalado.",
+        
+        "Yes": "Sí",
+        "No": "No",
+        
+        "Install": "Instalar",
+        "Settings": "Ajustes",
+        "Home": "Principal",
+        
+        "Start Server": "Iniciar servidor",
+        "Stop Server": "Detener el servidor",
+        "Reload Server": "Servidor actualizar",
+        "Restart Server": "Reiniciar servidor",
+        
+        "RAM:": "RAM:",
+        "CPU:": "CPU:",
+        "CPU Usage": "Uso de la CPU",
+        "RAM Usage": "Uso de RAM",
+        "Total:": "Total:",
+        "Used:": "Usado:",
+        "Free:": "Disponible:",
+        "Cores:": "Núcleos:",
+        "Frequency:": "Frecuencia:",
+        
+        "Server Status:": "Estado del servidor:",
+        "Starting...": "",
+        "Started": "",
+        "Stopping...": "",
+        "Stopped": "",
+        "Restarting...": "",
+        "Reloading...": "",
+        "": "",
+        
+        "Server Chat": "Servidor de chat",
+        "Server Console": "Consola del servidor",
+        "Chat Message": "Mensaje de conversación",
+        "Chat": "Charlar",
+        
+        "$$Invalid Server Jar:$$ The server jar for this server could not be found, $$click here$$ to change it.": "$$Jar servidor no válido:$$ El tarro de servidor para este servidor no se pudo encontrar, haga $$clic aquí$$ para cambiarlo.",
+        "$$New Version:$$ There has been a new version of McAdminPanel released! Please $$update$$ to the latest version!": "$$Nueva versión:$$ Se ha producido una nueva versión de McAdminPanel puesto en libertad! Por favor, $$actualice$$ a la última versión!",
+        "$$Submitting Bugs:$$ If you find any bugs please report them $$here$$ so we can improve McAdminPanel!": "$$El envío de errores:$$ Si usted encuentra algún error, por favor, las reportamos $$aquí$$ para que podamos mejorar McAdminPanel!",
+        "Copyright": "Derechos de autor",
+        
+        "": "",
+        "": "",
+        "": "",
+    },
+    "french": {
+        "test": "hola"
+    }
+}
