@@ -167,6 +167,11 @@ public class PluginConnector
 	
 	public String sendMethodResponse(String method, String... params)
 	{
+		return sendMethodResponse(method, 2000, params);
+	}
+	
+	public String sendMethodResponse(String method, int waitTime, String... params)
+	{
 		if (connected())
 		{
 			//if (returns.containsKey(method))
@@ -178,7 +183,7 @@ public class PluginConnector
 			{
 				long start = System.currentTimeMillis();
 				
-				while (System.currentTimeMillis() - start < 2000)
+				while (System.currentTimeMillis() - start < waitTime)
 				{
 					final Lock lock = returnsLock.readLock();
 					lock.lock();

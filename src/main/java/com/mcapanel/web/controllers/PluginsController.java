@@ -120,7 +120,7 @@ public class PluginsController extends Controller
 				{
 					if (bukkitServer.getPluginConnector().connected())
 					{
-						String resp = bukkitServer.getPluginConnector().sendMethodResponse("doPluginEvent", act, pluginName, slug, link == null ? "-" : link);
+						String resp = bukkitServer.getPluginConnector().sendMethodResponse("doPluginEvent", 15000, act, pluginName, slug, link == null ? "-" : link);
 						
 						try
 						{
