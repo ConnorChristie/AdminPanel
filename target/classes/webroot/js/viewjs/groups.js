@@ -114,32 +114,25 @@ $(function() {
 			
 			showModalFull("Add Group", "<label for='groupname'>Group Name</label><input type=\"text\" class=\"form-control\" id=\"groupname\" placeholder=\"Enter Group Name\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\">", "Save Group", true);
 			
-			var clicked;
-			
-			$("#custommodal .btn-primary").click(function() {
-				if (!clicked)
-				{
-					var gname = $("#groupname").val();
-					
-					$.post("/groups/addGroup", {"groupname": gname}, function(data) {
-						if (data.good != undefined)
-						{
-							location.reload();
-						} else if (data.error != undefined)
-						{
-							var n = noty({
-					            text        : "<b>Error: </b>" + data.error,
-					            type        : 'error',
-					            dismissQueue: true,
-					            layout      : 'bottomLeft',
-					            theme       : 'defaultTheme',
-					            timeout     : 2000
-					        });
-						}
-					});
-					
-					clicked = true;
-				}
+			modalClick("#custommodal", function() {
+				var gname = $("#groupname").val();
+				
+				$.post("/groups/addGroup", {"groupname": gname}, function(data) {
+					if (data.good != undefined)
+					{
+						location.reload();
+					} else if (data.error != undefined)
+					{
+						var n = noty({
+				            text        : "<b>Error: </b>" + data.error,
+				            type        : 'error',
+				            dismissQueue: true,
+				            layout      : 'bottomLeft',
+				            theme       : 'defaultTheme',
+				            timeout     : 2000
+				        });
+					}
+				});
 			});
 		});
 	}

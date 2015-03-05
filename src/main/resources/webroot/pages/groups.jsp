@@ -35,18 +35,11 @@
 var canEditGroups = ${user.getGroup().hasPermission("web.groups.edit") == true};
 
 $(function() {
-	var clicked;
-	
 	$(".editperms").on("click", function() {
 		showModalFull("Edit Permissions", $(this).attr("permissions"), "Save", true);
 		
-		$("#custommodalButton").click(function() {
-			if (!clicked)
-			{
-				savePermissions();
-				
-				clicked = true;
-			}
+		modalClick("#custommodal", function() {
+			savePermissions();
 		});
 		
 		$('.permcheck').iCheck({
@@ -59,49 +52,41 @@ $(function() {
 	$(".delgroup").on("click", function() {
 		showModalFull("Delete Group", "<form><label>Move everybody to this group:</label><select id='delgroupSelect' class='form-control'>${groupsStr}</select></form>", "Delete Group", true);
 		
-		var cled = false;
 		var bttn = $(this);
 		
-		$("#custommodalButton").click(function() {
-			if (!cled)
-			{
-				$.post("/groups/deleteGroup", {"groupid": bttn.attr("groupid"), "moveto": $("#delgroupSelect").val()}, function(data) {
-					if (data.good != undefined)
-					{
-						var n = noty({
-				            text        : "<b>Success: </b>" + data.good,
-				            type        : 'success',
-				            dismissQueue: true,
-				            layout      : 'bottomLeft',
-				            theme       : 'defaultTheme',
-				            timeout     : 2000
-				        });
-						
-						clicked = false;
-					} else if (data.error != undefined)
-					{
-						var n = noty({
-				            text        : "<b>Error: </b>" + data.error,
-				            type        : 'error',
-				            dismissQueue: true,
-				            layout      : 'bottomLeft',
-				            theme       : 'defaultTheme',
-				            timeout     : 2000
-				        });
-						
-						clicked = false;
-					}
-				});
-				
-				cled = true;
-			}
+		modalClick("#custommodal", function() {
+			$.post("/groups/deleteGroup", {"groupid": bttn.attr("groupid"), "moveto": $("#delgroupSelect").val()}, function(data) {
+				if (data.good != undefined)
+				{
+					var n = noty({
+			            text        : "<b>Success: </b>" + data.good,
+			            type        : 'success',
+			            dismissQueue: true,
+			            layout      : 'bottomLeft',
+			            theme       : 'defaultTheme',
+			            timeout     : 2000
+			        });
+				} else if (data.error != undefined)
+				{
+					var n = noty({
+			            text        : "<b>Error: </b>" + data.error,
+			            type        : 'error',
+			            dismissQueue: true,
+			            layout      : 'bottomLeft',
+			            theme       : 'defaultTheme',
+			            timeout     : 2000
+			        });
+				}
+			});
 		});
 	});
 });
 
 function savePermissions()
 {
-	$.post("/groups/updatePermissions", {"id": $("#permform").attr("groupid"), "data": $("#permform").serialize()}, function(data) {
+	var gId = $("#permform").attr("groupid");
+	
+	$.post("/groups/updatePermissions", {"id": gId, "data": $("#permform").serialize()}, function(data) {
 		if (data.good != undefined)
 		{
 			var n = noty({
@@ -113,7 +98,7 @@ function savePermissions()
 	            timeout     : 2000
 	        });
 			
-			clicked = false;
+			$("tr[group-id=" + gId + "] .editperms").attr("permissions", data.permissions)
 		} else if (data.error != undefined)
 		{
 			var n = noty({
@@ -124,8 +109,6 @@ function savePermissions()
 	            theme       : 'defaultTheme',
 	            timeout     : 2000
 	        });
-			
-			clicked = false;
 		}
 	});
 }

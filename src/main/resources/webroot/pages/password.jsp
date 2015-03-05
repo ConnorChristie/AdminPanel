@@ -7,15 +7,8 @@ $(function() {
 		
 		showModalFull("Obtain Reset Code", "How to obtain password reset code:<br />1. Login to the server<br />2. Type the command <code>/mcapanel resetpassword</code><br />3. It will display a code, enter it below!<br /><br /><label>Reset Code</label><input type='text' id='resetcode' class='form-control' placeholder='Enter Reset Code' onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\" />", "Done", true);
 		
-		var clicked;
-		
-		$("#custommodal .btn-primary").click(function() {
-			if (!clicked)
-			{
-				$("#seccode").val($("#resetcode").val());
-				
-				clicked = true;
-			}
+		modalClick("#custommodal", function() {
+			$("#seccode").val($("#resetcode").val());
 		});
 		
 		return false;
@@ -32,15 +25,8 @@ $(function() {
 			{
 				showModal("Changed Password", data.success);
 				
-				var clicked;
-				
-				$("#custommodal .btn-primary").click(function() {
-					if (!clicked)
-					{
-						window.location = "/";
-						
-						clicked = true;
-					}
+				modalClick("#custommodal", function() {
+					window.location = "/";
 				});
 			}
 		});

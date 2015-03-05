@@ -58,40 +58,33 @@
 					true
 				);
 				
-				var clicked;
-				
-				$("#custommodal .btn-primary").click(function() {
-					if (!clicked)
-					{
-						var data = {};
-						$("#bugreport").serializeArray().map(function(x){data[x.name] = x.value;});
-						
-						$.post("http://mcapanel.com/submitbug.php", {data: JSON.stringify(data)}, function(ret) {
-							if (ret == "good")
-							{
-								var n = noty({
-						            text        : "<b>Success: </b> Successfully submitted your bug. Thanks for helping!",
-						            type        : 'success',
-						            dismissQueue: true,
-						            layout      : 'bottomLeft',
-						            theme       : 'defaultTheme',
-						            timeout     : 3000
-						        });
-							} else
-							{
-								var n = noty({
-						            text        : "<b>Error: </b> Could not submit your bug at this time...",
-						            type        : 'error',
-						            dismissQueue: true,
-						            layout      : 'bottomLeft',
-						            theme       : 'defaultTheme',
-						            timeout     : 3000
-						        });
-							}
-						});
-						
-						clicked = true;
-					}
+				modalClick("#custommodal", function() {
+					var data = {};
+					$("#bugreport").serializeArray().map(function(x){data[x.name] = x.value;});
+					
+					$.post("http://mcapanel.com/submitbug.php", {data: JSON.stringify(data)}, function(ret) {
+						if (ret == "good")
+						{
+							var n = noty({
+					            text        : "<b>Success: </b> Successfully submitted your bug. Thanks for helping!",
+					            type        : 'success',
+					            dismissQueue: true,
+					            layout      : 'bottomLeft',
+					            theme       : 'defaultTheme',
+					            timeout     : 3000
+					        });
+						} else
+						{
+							var n = noty({
+					            text        : "<b>Error: </b> Could not submit your bug at this time...",
+					            type        : 'error',
+					            dismissQueue: true,
+					            layout      : 'bottomLeft',
+					            theme       : 'defaultTheme',
+					            timeout     : 3000
+					        });
+						}
+					});
 				});
 			}
 		</script>

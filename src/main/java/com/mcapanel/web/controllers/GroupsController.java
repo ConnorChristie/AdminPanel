@@ -113,35 +113,40 @@ public class GroupsController extends Controller
 		{
 			JSONArray ar = new JSONArray();
 			
-			String permissionsHtml = "<form id='permform' method='post' groupid='" + g.getId() + "'>";
-			
-			for (WebPermission perm : perms)
-			{
-				permissionsHtml += "<div class='permgroup'><label><input type='checkbox' name='" + perm.getPermName().replace(".", "-") + "' class='permcheck' " + (g.hasPermission(perm.getPermName()) ? "checked" : "") + " /><span>" + perm.getTitle() + "</span><p>" + perm.getDescription() + "</p></label>";
-				
-				for (WebPermission perm1 : perm.getPermissions())
-				{
-					permissionsHtml += "<br /><label class='indent'><input type='checkbox' name='" + perm1.getPermName().replace(".", "-") + "' class='permcheck' " + (g.hasPermission(perm1.getPermName()) ? "checked" : "") + " /><span>" + perm1.getTitle() + "</span><p>" + perm1.getDescription() + "</p></label>";
-				}
-				
-				permissionsHtml += "</div>";
-			}
-			
 			boolean canEdit = isLoggedIn() && user.getGroup().hasPermission("web.groups.edit");
 			
-			if (raw) ar.add("<tr>");
+			if (raw) ar.add("<tr group-id=\"" + g.getId() + "\">");
 			ar.add(b + g.getId() + e);
 			ar.add(b + "<span class=\"groupname\">" + g.getGroupName() + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"ghostcheck\" type=\"checkbox\" " + (g.isGhost() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isGhost() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"existingradio\" type=\"radio\" " + (g.isExistingDefault() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isExistingDefault() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"whitelistradio\" type=\"radio\" " + (g.isWhitelistDefault() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isWhitelistDefault() ? "success\">true" : "danger\">false") + "</span>" + e);
-			ar.add(b + (canEdit ? ((isLoggedIn() && user.getGroup().hasPermission("web.groups.permissions") ? ("<button type=\"button\" class=\"editperms btn btn-xs btn-info\" permissions=\"" + permissionsHtml + "\">Edit Permissions</button>") : "") + (isLoggedIn() && user.getGroup().hasPermission("web.groups.delete") ? ("<button type=\"button\" groupid=\"" + g.getId() + "\" class=\"delgroup btn btn-xs btn-danger\" style=\"margin-left: 10px;\">Delete Group</button>") : "")) : "-") + e);
+			ar.add(b + (canEdit ? ((isLoggedIn() && user.getGroup().hasPermission("web.groups.permissions") ? ("<button type=\"button\" class=\"editperms btn btn-xs btn-info\" permissions=\"" + getPermissionsString(g) + "\">Edit Permissions</button>") : "") + (isLoggedIn() && user.getGroup().hasPermission("web.groups.delete") ? ("<button type=\"button\" groupid=\"" + g.getId() + "\" class=\"delgroup btn btn-xs btn-danger\" style=\"margin-left: 10px;\">Delete Group</button>") : "")) : "-") + e);
 			if (raw) ar.add("</tr>");
 			
 			groups.add(ar);
 		}
 		
 		return groups;
+	}
+	
+	private String getPermissionsString(Group g)
+	{
+		String permissionsHtml = "<form id='permform' method='post' groupid='" + g.getId() + "'>";
+		
+		for (WebPermission perm : perms)
+		{
+			permissionsHtml += "<div class='permgroup'><label><input type='checkbox' name='" + perm.getPermName().replace(".", "-") + "' class='permcheck' " + (g.hasPermission(perm.getPermName()) ? "checked" : "") + " /><span>" + perm.getTitle() + "</span><p>" + perm.getDescription() + "</p></label>";
+			
+			for (WebPermission perm1 : perm.getPermissions())
+			{
+				permissionsHtml += "<br /><label class='indent'><input type='checkbox' name='" + perm1.getPermName().replace(".", "-") + "' class='permcheck' " + (g.hasPermission(perm1.getPermName()) ? "checked" : "") + " /><span>" + perm1.getTitle() + "</span><p>" + perm1.getDescription() + "</p></label>";
+			}
+			
+			permissionsHtml += "</div>";
+		}
+		
+		return permissionsHtml;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -229,6 +234,7 @@ public class GroupsController extends Controller
 				db.update(gr);
 				
 				obj.put("good", "Successfully saved permissions.");
+				obj.put("permissions", getPermissionsString(gr));
 				
 				/*
 				String data = request.getParameter("data");

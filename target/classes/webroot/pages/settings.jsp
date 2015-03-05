@@ -9,20 +9,13 @@ $(function() {
 		
 		showModalFull("Edit License", "<label for='licemail'>License Email</label><input type=\"text\" class=\"form-control\" id=\"licemail\" placeholder=\"Enter License Email\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\"><br /><label for='lickey'>License Key</label><input type=\"text\" class=\"form-control\" id=\"lickey\" placeholder=\"Enter License Key\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\"><br /><p>It may take a few seconds to update your license</p>", "Save", true);
 		
-		var clicked;
-		
-		$("#custommodal .btn-primary").click(function() {
-			if (!clicked)
-			{
-				$("#licenemail").text($("#licemail").val());
-				$("#licenkey").text($("#lickey").val());
-				
-				$.post("/settings/updateLicense", {"licemail":$("#licemail").val(), "lickey":$("#lickey").val()}, function(data) {
-					window.location = '/settings/';
-				});
-				
-				clicked = true;
-			}
+		modalClick("#custommodal", function() {
+			$("#licenemail").text($("#licemail").val());
+			$("#licenkey").text($("#lickey").val());
+			
+			$.post("/settings/updateLicense", {"licemail":$("#licemail").val(), "lickey":$("#lickey").val()}, function(data) {
+				window.location = '/settings/';
+			});
 		});
 	});
 	

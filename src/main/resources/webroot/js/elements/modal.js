@@ -27,3 +27,12 @@ function showModalFull(title, body, button, closeButton)
 	
 	modal.modal();
 }
+
+function modalClick(modalId, handler)
+{
+	$(modalId + " .btn-primary").bind("click", handler);
+	
+	$(modalId).on("hidden.bs.modal", function () {
+		$(modalId + " .btn-primary").unbind("click", handler);
+	})
+}
