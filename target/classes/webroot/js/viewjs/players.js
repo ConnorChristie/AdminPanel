@@ -132,60 +132,53 @@ function clickPlayer(uuid, e)
 				
 				showModalFull(type + " Message", "<input type=\"text\" class=\"form-control\" id=\"" + type.toLowerCase() + "Message\" placeholder=\"Enter " + type + " Message\" onkeydown=\"if (event.keyCode == 13) $('#custommodal .btn').click();\">", type + " Player", true);
 				
-				var clicked;
-				
-				$("#custommodal .btn-primary").click(function() {
-					if (!clicked)
-					{
-						setTimeout(function() {
-							$.post("/player/event/" + uuid + "/" + type.toLowerCase() + "/" + $("#" + type.toLowerCase() + "Message").val(), function(data) {
-								if (data.good != undefined)
-								{
-									//showModal((type == "Ban" ? "Bann" : "Kick") + "ed Player", data.good);
-									
-									var n = noty({
-							            text        : "<b>Success: </b>" + data.good,
-							            type        : 'success',
-							            dismissQueue: true,
-							            layout      : 'bottomLeft',
-							            theme       : 'defaultTheme',
-							            timeout     : 3000
-							        });
-								} else if (data.error != undefined)
-								{
-									//errorModal(data.error);
-									
-									var n = noty({
-							            text        : "<b>Error: </b>" + data.error,
-							            type        : 'error',
-							            dismissQueue: true,
-							            layout      : 'bottomLeft',
-							            theme       : 'defaultTheme',
-							            timeout     : 3000
-							        });
-								}
+				modalClick("#custommodal", function() {
+					setTimeout(function() {
+						$.post("/player/event/" + uuid + "/" + type.toLowerCase() + "/" + $("#" + type.toLowerCase() + "Message").val(), function(data) {
+							if (data.good != undefined)
+							{
+								//showModal((type == "Ban" ? "Bann" : "Kick") + "ed Player", data.good);
 								
-								if (data.plist != undefined)
+								var n = noty({
+						            text        : "<b>Success: </b>" + data.good,
+						            type        : 'success',
+						            dismissQueue: true,
+						            layout      : 'bottomLeft',
+						            theme       : 'defaultTheme',
+						            timeout     : 3000
+						        });
+							} else if (data.error != undefined)
+							{
+								//errorModal(data.error);
+								
+								var n = noty({
+						            text        : "<b>Error: </b>" + data.error,
+						            type        : 'error',
+						            dismissQueue: true,
+						            layout      : 'bottomLeft',
+						            theme       : 'defaultTheme',
+						            timeout     : 3000
+						        });
+							}
+							
+							if (data.plist != undefined)
+							{
+								if ($("#playertable").length != 0)
 								{
-									if ($("#playertable").length != 0)
+									var dt = $("#playertable").dataTable();
+									
+									if (data.plist.length == 0)
+										dt.fnClearTable();
+									else
 									{
-										var dt = $("#playertable").dataTable();
-										
-										if (data.plist.length == 0)
-											dt.fnClearTable();
-										else
-										{
-											dt.fnClearTable();
-											dt.fnAddData(data.plist);
-											dt.fnDraw();
-										}
+										dt.fnClearTable();
+										dt.fnAddData(data.plist);
+										dt.fnDraw();
 									}
 								}
-							});
-						}, 500);
-						
-						clicked = true;
-					}
+							}
+						});
+					}, 500);
 				});
 			}
 			

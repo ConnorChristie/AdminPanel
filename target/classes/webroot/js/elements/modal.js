@@ -28,11 +28,6 @@ function showModalFull(title, body, button, closeButton)
 	modal.modal();
 }
 
-function modalClick(handler)
-{
-	modalClick("#custommodal", handler)
-}
-
 function modalClick(modalId, handler)
 {
 	$(modalId + " .btn-primary").bind("click", handler);
