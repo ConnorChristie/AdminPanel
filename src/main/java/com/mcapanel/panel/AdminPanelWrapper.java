@@ -585,7 +585,13 @@ public class AdminPanelWrapper
 			{
 				System.out.println(language.localize("Goto $$ in a browser to start the setup.", "http://localhost:" + config.getString("web-port", "80")));
 				
-				Desktop.getDesktop().browse(URI.create("http://localhost:" + config.getString("web-port", "80") + "/install/"));
+				try
+				{
+					Desktop.getDesktop().browse(URI.create("http://localhost:" + config.getString("web-port", "80") + "/install/"));
+				} catch (Exception e)
+				{
+					System.out.println("Failed to open browser: " + e.getClass().getSimpleName());
+				}
 			}
 		} catch (BindException e)
 		{
