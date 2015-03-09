@@ -22,7 +22,7 @@ $(function () {
 	$("#plugin_jstree").on("select_node.jstree", function(e, data) {
 		if (!saved)
 		{
-			showModalFull("Save File", "You haven't saved your file, are you sure you want to continue?", "Yes", true);
+			showModalFull("Save File", "You haven't saved your file, are you sure you want to continue?", "Yes", "No");
 			
 			$("#custommodalButton").click(function() {
 				selectNode(myCodeMirror, data);
@@ -421,6 +421,7 @@ function changeEvent(state)
 	if (state == 0)
 	{
 		$("#savefile").removeClass("btn-success").removeClass("btn-noclick").addClass("btn-danger").text("Save File");
+		$("#filePanel").css({"border-bottom": "2px solid #FF592B"});
 		
 		saved = false;
 		
@@ -442,6 +443,7 @@ function changeEvent(state)
 	} else if (state == 2)
 	{
 		$("#savefile").removeClass("btn-danger").addClass("btn-noclick").addClass("btn-success").text("File Already Saved");
+		$("#filePanel").css({"border-bottom": "2px solid #42CC3D"});
 		
 		saved = true;
 	}
@@ -456,7 +458,7 @@ function changeEvent(state)
 		<button type="button" id="savefile" class="btn btn-xs btn-success btn-noclick" style="float: right;">File Already Saved</button>
 		<br style="clear: both;" />
 	</div>
-	<div class="panel-body" style="padding: 0px;">
+	<div id="filePanel" class="panel-body" style="padding: 0px; border-bottom: 2px solid #42CC3D;">
 		<div class="row">
 			<div class="col-sm-3" style="padding-right: 0px;">
 				<div id="plugin_jstree" style="overflow: auto; padding: 5px; padding-top: 0px; width: 100%;"></div>

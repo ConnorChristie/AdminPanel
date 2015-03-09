@@ -278,7 +278,7 @@ $(function() {
 					${language.localize("Information")}
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; border-bottom: 2px solid #52C5FF;">
 				<br />
 				&raquo; ${language.localize("Here you will enter your servers IP address.")}
 				<br /><br />
@@ -293,7 +293,7 @@ $(function() {
 					${language.localize("Step")} 1
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative; border-bottom: 2px solid #52C5FF;">
 				<form id="installform1" role="form" method="post" action="/install/step">
 					<input type="hidden" name="step" value="1" />
 					
@@ -323,7 +323,7 @@ $(function() {
 					${language.localize("Information")}
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; border-bottom: 2px solid #52C5FF;">
 				<br />
 				&raquo; ${language.localize("Here you will enter a name for your server.")}
 				<br /><br />
@@ -338,7 +338,7 @@ $(function() {
 					${language.localize("Step")} 2
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative; border-bottom: 2px solid #52C5FF;">
 				<form id="installform2" role="form" method="post" action="/install/step">
 					<input type="hidden" name="step" value="2" />
 					
@@ -369,7 +369,7 @@ $(function() {
 					${language.localize("Information")}
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; border-bottom: 2px solid #52C5FF;">
 				<br />
 				&raquo; ${language.localize("Here you will enter your Minecraft username.")}
 				<br /><br />
@@ -384,7 +384,7 @@ $(function() {
 					${language.localize("Step")} 3
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative; border-bottom: 2px solid #52C5FF;">
 				<form id="installform3" role="form" method="post" action="/install/step">
 					<input type="hidden" name="step" value="3" />
 					
@@ -425,7 +425,7 @@ $(function() {
 					${language.localize("Information")}
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; border-bottom: 2px solid #52C5FF;">
 				<br />
 				&raquo; ${language.localize("Here you will enter your McAdminPanel License Email.")}
 				<br /><br />
@@ -440,7 +440,7 @@ $(function() {
 					${language.localize("Step")} 4
 				</h3>
 			</div>
-			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative;">
+			<div class="panel-body" style="padding-top: 10px; min-height: 250px; position: relative; border-bottom: 2px solid #52C5FF;">
 				<form id="installform4" role="form" method="post" action="/install/step">
 					<input type="hidden" name="step" value="4" />
 					

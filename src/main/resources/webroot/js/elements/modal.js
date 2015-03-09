@@ -16,9 +16,12 @@ function showModalFull(title, body, button, closeButton)
 	modal.find("#custommodalBody").html(body);
 	modal.find("#custommodalButton").text(button);
 	
-	if (closeButton)
+	if (closeButton === true)
 	{
 		$('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>').insertBefore("#custommodalButton");
+	} else if (closeButton !== false)
+	{
+		$('<button type="button" class="btn btn-default" data-dismiss="modal">' + closeButton + '</button>').insertBefore("#custommodalButton");
 	}
 	
 	modal.on("hidden.bs.modal", function() {

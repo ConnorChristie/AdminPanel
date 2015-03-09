@@ -117,11 +117,11 @@ public class GroupsController extends Controller
 			
 			if (raw) ar.add("<tr group-id=\"" + g.getId() + "\">");
 			ar.add(b + g.getId() + e);
-			ar.add(b + "<span class=\"groupname\">" + g.getGroupName() + "</span>" + e);
+			ar.add(b + "<span " + (!g.isGlobal() ? "class=\"groupname\"" : "") + ">" + g.getGroupName() + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"ghostcheck\" type=\"checkbox\" " + (g.isGhost() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isGhost() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"existingradio\" type=\"radio\" " + (g.isExistingDefault() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isExistingDefault() ? "success\">true" : "danger\">false") + "</span>" + e);
 			ar.add(b + (canEdit ? "<input class=\"whitelistradio\" type=\"radio\" " + (g.isWhitelistDefault() ? "checked" : "") + " />" : "") + "<span class=\"label " + (canEdit ? "changelabel" : "") + " label-" + (g.isWhitelistDefault() ? "success\">true" : "danger\">false") + "</span>" + e);
-			ar.add(b + (canEdit ? ((isLoggedIn() && user.getGroup().hasPermission("web.groups.permissions") ? ("<button type=\"button\" class=\"editperms btn btn-xs btn-info\" permissions=\"" + getPermissionsString(g) + "\">Edit Permissions</button>") : "") + (isLoggedIn() && user.getGroup().hasPermission("web.groups.delete") ? ("<button type=\"button\" groupid=\"" + g.getId() + "\" class=\"delgroup btn btn-xs btn-danger\" style=\"margin-left: 10px;\">Delete Group</button>") : "")) : "-") + e);
+			ar.add(b + (canEdit ? ((isLoggedIn() && user.getGroup().hasPermission("web.groups.permissions") ? ("<button type=\"button\" class=\"editperms btn btn-xs btn-info\" permissions=\"" + getPermissionsString(g) + "\">Edit Permissions</button>") : "") + (isLoggedIn() && user.getGroup().hasPermission("web.groups.delete") && !g.isGlobal() ? ("<button type=\"button\" groupid=\"" + g.getId() + "\" class=\"delgroup btn btn-xs btn-danger\" style=\"margin-left: 10px;\">Delete Group</button>") : "")) : "-") + e);
 			if (raw) ar.add("</tr>");
 			
 			groups.add(ar);

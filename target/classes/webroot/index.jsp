@@ -247,7 +247,7 @@
 						
 						<c:if test="${includeSidebar && !install && ((!loggedIn && ap.getGlobalGroup().hasPermission('server.players.view')) || user.getGroup().hasPermission('server.players.view'))}">
 							<div class="col-sm-4">
-								<div class="panel panel-default">
+								<div class="panel panel-default" style="border-bottom: 2px solid ${status.contains('Online') ? '#42CC3D' : '#FF592B'};">
 									<div class="panel-heading">
 										<h3 class="panel-title">
 											${language.localize("Server Status:")} <span id="status">${status}</span>
@@ -323,7 +323,7 @@
 									</c:choose>
 								</h3>
 							</div>
-							<div id="chatconsolebody" class="panel-body" style="padding-top: 10px;">
+							<div id="chatconsolebody" class="panel-body" style="padding-top: 10px; border-bottom: 2px solid orange;">
 								<div id="messages" style="line-height: 24px; font-size: 16px; max-height: 175px; overflow-y: auto;">
 									${chats}
 								</div>

@@ -102,4 +102,9 @@ public class Group
 	{
 		return permissions.contains("*") || permissions.contains(perm);
 	}
+	
+	public boolean isGlobal()
+	{
+		return groupName.equalsIgnoreCase("global");
+	}
 }

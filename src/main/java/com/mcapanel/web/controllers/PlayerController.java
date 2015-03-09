@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.mcapanel.bukkit.BukkitPlayer;
 import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.Controller;
 
@@ -35,18 +36,20 @@ public class PlayerController extends Controller
 						return error();
 					
 					User u = ap.getUserFromPlayer(arguments.get(0));
+					BukkitPlayer pl = new BukkitPlayer(player.get("name").toString());
 					
-					request.setAttribute("player", player.get("name"));
-					request.setAttribute("group", u != null ? u.getGroup().getGroupName() : "Not Registered");
+					pl.setGroup(u != null ? u.getGroup().getGroupName() : "Not Registered");
 					
-					request.setAttribute("playerStatus", (Boolean) player.get("online") ? "Online" : "Offline");
-					request.setAttribute("statusLabel", (Boolean) player.get("online") ? "success" : "danger");
+					pl.setStatus((Boolean) player.get("online") ? "Online" : "Offline");
+					pl.setStatusLabel((Boolean) player.get("online") ? "success" : "danger");
 					
-					request.setAttribute("firstPlayed", player.get("firstPlayed"));
-					request.setAttribute("lastPlayed", player.get("lastPlayed"));
+					pl.setFirstPlayed(player.get("firstPlayed").toString());
+					pl.setLastPlayed(player.get("lastPlayed").toString());
 					
-					request.setAttribute("health", player.get("health"));
-					request.setAttribute("food", player.get("food"));
+					pl.setHealth(player.get("health").toString());
+					pl.setFood(player.get("food").toString());
+					
+					request.setAttribute("player", pl);
 				
 					return renderView();
 				} catch (ParseException e) { }

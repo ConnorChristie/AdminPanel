@@ -11,7 +11,7 @@
 			${language.localize("Contact Us")}
 		</h3>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body" style="border-bottom: 2px solid #52C5FF;">
 		<form id="contactform" method="post" action="/contact/send">
 			<c:if test="${!loggedIn}">
 				<div class="form-group">

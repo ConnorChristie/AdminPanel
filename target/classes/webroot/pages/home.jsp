@@ -28,7 +28,7 @@
 			</c:choose>
 		</h3>
 	</div>
-	<div id="homepanel" class="panel-body" style="padding-top: 10px;">
+	<div id="homepanel" class="panel-body" style="padding-top: 10px; border-bottom: 2px solid #52C5FF;">
 		<c:choose>
 			<c:when test="${loggedIn || !config.getBoolean('enable-whitelist', true)}">
 				<c:choose>

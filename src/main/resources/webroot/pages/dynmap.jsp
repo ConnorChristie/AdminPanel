@@ -4,7 +4,7 @@
 			Dynmap Map Viewer
 		</h3>
 	</div>
-	<div class="panel-body" style="padding: 0px;">
+	<div class="panel-body" style="padding: 0px; border-bottom: 2px solid #52C5FF;">
 		<iframe src="http://localhost:8123" width="100%" height="100%">
 		  	<p>Unable to render dynmap in your browser.</p>
 		</iframe>

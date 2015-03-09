@@ -159,7 +159,7 @@ public class InstallController extends Controller
 							
 							request.getSession().setAttribute("step", "4");
 							
-							out.put("good", language.localize("Successfully saved all installation settings.%sIt is recommended to create another user so you can see what they see.", "<br />"));
+							out.put("good", language.localize("We recommend you create another user account so you can see what they see."));
 						} else
 							out.put("error", language.localize("The passwords that you entered do not match."));
 					} else if (step.equals("4"))

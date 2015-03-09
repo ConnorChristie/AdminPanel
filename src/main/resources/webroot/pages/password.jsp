@@ -40,7 +40,7 @@ $(function() {
 			Reset Password
 		</h3>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body" style="border-bottom: 2px solid #52C5FF;">
 		<form id="contactform" method="post" action="/password/reset">
 			<div class="row">
 				<div class="col-sm-6 form-group">

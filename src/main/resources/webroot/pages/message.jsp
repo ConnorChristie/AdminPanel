@@ -4,7 +4,7 @@
 			Message: ${message.getId()}
 		</h3>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body" style="border-bottom: 2px solid #52C5FF;">
 		<div class="row" style="font-size: 13pt;">
 			<div class="col-sm-12">
 				<b>From</b><br />&nbsp;&nbsp;&nbsp;&nbsp;${message.getUsername()}<br /><br />

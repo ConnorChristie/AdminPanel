@@ -260,14 +260,14 @@ function deleteServer(e)
 			</ul>
 		</h3>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body" style="border-bottom: 2px solid #52C5FF;">
 		<div id="serversettings" style="padding-left: 0px; padding-right: 0px;">
 			<div class="panel panel-default" style="box-shadow: none; border: 1px solid #DADADA; margin-bottom: 15px;">
             	<div class="panel-heading" style="height: 38px;">
               		<h3 class="panel-title" style="float: left;">Server Settings</h3>
               		<span style="float: right;"><a href="/server/deleteServer" onclick="deleteServer(event);" style="color: red !important;">Delete Server</a></span>
             	</div>
-            	<div class="panel-body">
+            	<div class="panel-body" style="border-bottom: 2px solid #A35CFF;">
 					<form id="settingsform" role="form" method="post" action="/">
 						<div class="form-group">
 							<div class="col-sm-4">

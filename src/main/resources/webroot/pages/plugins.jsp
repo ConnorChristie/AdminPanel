@@ -59,7 +59,7 @@ $(function() {
 			</c:choose>
 		</h3>
 	</div>
-	<div class="panel-body" style="padding: 0px;">
+	<div class="panel-body" style="padding: 0px; border-bottom: 2px solid #52C5FF;">
 		<c:if test="${connected}">
 			<div id="installedpluginsdiv">
 				<table id="installedplugins" class="table table-striped"

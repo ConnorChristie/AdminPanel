@@ -592,6 +592,14 @@ function loadEverything(doCycle)
 				{
 					$("#status").html(data.playersObj.status);
 					
+					if (data.playersObj.status.indexOf("Online") != -1)
+					{
+						$("#status").parent().parent().parent().css({"border-bottom": "2px solid #42CC3D"});
+					} else
+					{
+						$("#status").parent().parent().parent().css({"border-bottom": "2px solid #FF592B"});
+					}
+					
 					$("#playerson").html(data.playersObj.plist);
 					$("#ponline").text(data.playersObj.online + " / " + data.playersObj.total);
 				}

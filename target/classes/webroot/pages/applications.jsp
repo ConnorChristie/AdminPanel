@@ -10,7 +10,7 @@
 			Whitelist Applications
 		</h3>
 	</div>
-	<div class="panel-body" style="padding: 0px;">
+	<div class="panel-body" style="padding: 0px; border-bottom: 2px solid #52C5FF;">
 		<table id="whitelistapps" class="table table-striped" style="margin-bottom: 0px; border-bottom: 1px solid lightgray;">
 			<thead>
 				<tr>
