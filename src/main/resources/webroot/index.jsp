@@ -22,6 +22,7 @@
 		<link rel="stylesheet" type="text/css" href="/css/animate.css">
 		
 		<script src="/js/jquery.min.js"></script>
+		<script src="/js/jquery-ui.min.js"></script>
 		<script src="/js/md5.js"></script>
 		<script src="/js/bootstrap.js"></script>
 		<script src="/js/jquery.dataTables.js"></script>
@@ -92,6 +93,24 @@
 		<script src="/js/viewjs/index.js"></script>
 		<script src="/js/elements/modal.js"></script>
 		<script src="/js/viewjs/players.js"></script>
+		
+		<style>
+			.item {
+		  		image-rendering: pixelated;
+			}
+			
+			.item span {
+				text-shadow: 1px 1px black;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				width: 18px;
+				height: 20px;
+				color: white;
+				font-size: 18px;
+				font-weight: bold;
+			}
+		</style>
 	</head>
 	<body style="background: url(/images/diamond_upholstery.png);">
 		<div class="navbar-wrapper">

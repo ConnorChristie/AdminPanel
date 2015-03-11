@@ -14,13 +14,14 @@
 		<br style="clear: both;" />
 		<br />
 		<div class="row" style="font-size: 13pt;">
-			<div class="col-sm-6">
-				<b>Group</b><br />&nbsp;&nbsp;&nbsp;&nbsp;${player.getGroup()}<br /><br />
-				<b>Health</b><br />&nbsp;&nbsp;&nbsp;&nbsp;${player.getHealth()}%<br /><br />
-				<b>Food</b><br />&nbsp;&nbsp;&nbsp;&nbsp;${player.getFood()}%
+			<div class="col-sm-4" style="text-align: center;">
+				<b>Group</b><br />${player.getGroup()}
 			</div>
-			<div class="col-sm-6">
-				
+			<div class="col-sm-4" style="text-align: center;">
+				<b>Health</b><br />${player.getHealth()}%
+			</div>
+			<div class="col-sm-4" style="text-align: center;">
+				<b>Food</b><br />${player.getFood()}%
 			</div>
 		</div>
 		<br />

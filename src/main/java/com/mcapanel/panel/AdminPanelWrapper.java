@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -149,7 +150,6 @@ public class AdminPanelWrapper
 		
 		if (!config.getBoolean("installed", false))
 		{
-			/*
 			Scanner in = new Scanner(System.in);
 			
 	        Logger.getLogger(getClass().getName()).info(language.localize("Enter Port") + ": ");
@@ -157,10 +157,6 @@ public class AdminPanelWrapper
 	        String s = in.next();
 	        
 	        config.setValue("web-port", s);
-	        config.saveConfig();
-	        */
-			
-			config.setValue("web-port", "80");
 	        config.saveConfig();
 		}
 		
@@ -406,7 +402,7 @@ public class AdminPanelWrapper
 			getDatabase().save(g);
 			
 			g = new Group("Admin");
-			g.setPermissions("server.chat.view;server.chat.issue;server.console.view;server.console.issue;server.controls;server.reload;server.usage;server.properties.view;server.properties.edit;server.properties.add;server.whitelist.view;server.whitelist.edit;server.players.view;server.players.healfeed;server.players.kill;server.players.kick;server.plugins.view;server.plugins.control;server.plugins.edit;server.plugins.install;server.plugins.delete;server.backups.view;server.backups.schedule.issue;server.backups.schedule.delete;server.backups.restore;server.backups.delete;web.users.view;web.users.group;web.users.whiteblack;web.users.delete;web.groups.view;web.groups.edit;web.groups.permissions;web.groups.delete;web.messages.view;web.messages.respond;mcapanel.properties.view;mcapanel.properties.edit;");
+			g.setPermissions("server.chat.view;server.chat.issue;server.console.view;server.console.issue;server.controls;server.reload;server.usage;server.properties.view;server.properties.edit;server.properties.add;server.whitelist.view;server.whitelist.edit;server.players.view;server.players.healfeed;server.players.kill;server.players.kick;server.players.ban;server.plugins.view;server.plugins.control;server.plugins.edit;server.plugins.install;server.plugins.delete;server.backups.view;server.backups.schedule.issue;server.backups.schedule.delete;server.backups.restore;server.backups.delete;web.users.view;web.users.group;web.users.whiteblack;web.users.changePassword;web.users.delete;web.groups.view;web.groups.edit;web.groups.permissions;web.groups.delete;web.messages.view;web.messages.respond;mcapanel.properties.view;mcapanel.properties.edit;");
 			getDatabase().save(g);
 		}
 		
