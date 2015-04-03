@@ -303,7 +303,7 @@ public class BackupsController extends Controller
 		
 		for (File w : bukkitServer.getWorlds())
 		{
-			worlds += "<span style='margin-left: 40px;'><input type='checkbox' name='" + w.getName() + "' disabled />&nbsp;&nbsp;<b>" + w.getName() + "</b></span><br />";
+			worlds += "<span style='margin-left: 40px;'><input type='checkbox' class='worldSelect' name='" + w.getName() + "' disabled />&nbsp;&nbsp;<b>" + w.getName() + "</b></span><br />";
 		}
 		
 		return worlds;

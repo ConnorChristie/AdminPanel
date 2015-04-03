@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -33,6 +34,8 @@ public class BukkitServer
 	
 	private File serverJar;
 	private String serverName;
+	
+	private String javaArgs = "";
 	
 	private String minMemory = "1024m";
 	private String maxMemory = "4096m";
@@ -78,14 +81,22 @@ public class BukkitServer
 		
 		pluginConnector = new PluginConnector(this);
 		
-		processBuilder = new ProcessBuilder(new String[] {
-			"java",
-			"-Djline.terminal=jline.UnsupportedTerminal",
-			"-Xms" + minMemory,
-			"-Xmx" + maxMemory,
-			"-jar", serverJar.getAbsolutePath()
-		});
+		List<String> commandList = new ArrayList<String>();
 		
+		commandList.add("java");
+		commandList.add("-Djline.terminal=jline.UnsupportedTerminal");
+		commandList.add("-Xms" + minMemory);
+		commandList.add("-Xmx" + maxMemory);
+		commandList.addAll(new ArrayList<String>(Arrays.asList(javaArgs.split(" "))));
+		commandList.add("-jar");
+		commandList.add(serverJar.getAbsolutePath());
+		
+		for (String l : commandList)
+		{
+			System.out.println("Command: " + l);
+		}
+		
+		processBuilder = new ProcessBuilder(commandList);
 		processBuilder.directory(serverJar.getParentFile());
 		
 		copyPlugin();
@@ -247,6 +258,16 @@ public class BukkitServer
 	public String getName()
 	{
 		return serverName;
+	}
+	
+	public void setJavaArgs(String javaArgs)
+	{
+		this.javaArgs = javaArgs;
+	}
+	
+	public String getJavaArgs()
+	{
+		return javaArgs;
 	}
 	
 	public void setMinMemory(String minMemory)

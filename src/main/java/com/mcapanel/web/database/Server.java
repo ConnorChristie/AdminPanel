@@ -13,6 +13,7 @@ public class Server
 	
 	private String name;
 	private String serverJar;
+	private String javaArgs;
 	private String minMemory;
 	private String maxMemory;
 	
@@ -22,6 +23,7 @@ public class Server
 	{
 		this.name = name;
 		this.serverJar = serverJar;
+		this.javaArgs = "";
 		
 		this.minMemory = "1024m";
 		this.maxMemory = "2048m";
@@ -55,6 +57,16 @@ public class Server
 	public void setServerJar(String serverJar)
 	{
 		this.serverJar = serverJar;
+	}
+	
+	public String getJavaArgs()
+	{
+		return javaArgs;
+	}
+
+	public void setJavaArgs(String javaArgs)
+	{
+		this.javaArgs = javaArgs;
 	}
 
 	public String getMinMemory()

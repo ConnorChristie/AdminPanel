@@ -74,6 +74,7 @@ import com.mcapanel.utils.TinyUrl;
 import com.mcapanel.utils.UsageMonitor;
 import com.mcapanel.utils.Utils;
 import com.mcapanel.web.database.Group;
+import com.mcapanel.web.database.PasswordReset;
 import com.mcapanel.web.database.User;
 import com.mcapanel.web.handlers.ControllerHandler;
 import com.mcapanel.web.handlers.MultipartConfigInjectionHandler;
@@ -150,6 +151,7 @@ public class AdminPanelWrapper
 		
 		if (!config.getBoolean("installed", false))
 		{
+			@SuppressWarnings("resource")
 			Scanner in = new Scanner(System.in);
 			
 	        Logger.getLogger(getClass().getName()).info(language.localize("Enter Port") + ": ");
@@ -167,7 +169,13 @@ public class AdminPanelWrapper
 		
 		while (true)
 		{
-			queue.take().run();
+			try
+			{
+				queue.take().run();
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -357,7 +365,10 @@ public class AdminPanelWrapper
 		
 		int errorCount = 0;
 		
-		for (Class<?> c : getDatabaseClasses())
+		List<Class<?>> databaseClasses = getDatabaseClasses();
+		List<Class<?>> noTables = new ArrayList<Class<?>>();
+		
+		for (Class<?> c : databaseClasses)
 		{
 			try
 			{
@@ -365,19 +376,15 @@ public class AdminPanelWrapper
 			} catch (PersistenceException e)
 			{
 				errorCount++;
+				
+				noTables.add(c);
 			}
 		}
 		
-		if (errorCount == 1)
+		if (errorCount == databaseClasses.size())
 		{
-			SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
-			DdlGenerator gen = serv.getDdlGenerator();
+			//Initialize the database for the first time
 			
-			String resetCodes = "CREATE TABLE resetcodes (id integer primary key, username varchar(255), reset_code varchar(255));";
-			
-			gen.runScript(true, resetCodes);
-		} else if (errorCount > 1)
-		{
 			System.out.println("Initializing database...");
 			
 			installDDL();
@@ -404,19 +411,46 @@ public class AdminPanelWrapper
 			g = new Group("Admin");
 			g.setPermissions("server.chat.view;server.chat.issue;server.console.view;server.console.issue;server.controls;server.reload;server.usage;server.properties.view;server.properties.edit;server.properties.add;server.whitelist.view;server.whitelist.edit;server.players.view;server.players.healfeed;server.players.kill;server.players.kick;server.players.ban;server.plugins.view;server.plugins.control;server.plugins.edit;server.plugins.install;server.plugins.delete;server.backups.view;server.backups.schedule.issue;server.backups.schedule.delete;server.backups.restore;server.backups.delete;web.users.view;web.users.group;web.users.whiteblack;web.users.changePassword;web.users.delete;web.groups.view;web.groups.edit;web.groups.permissions;web.groups.delete;web.messages.view;web.messages.respond;mcapanel.properties.view;mcapanel.properties.edit;");
 			getDatabase().save(g);
+		} else if (noTables.contains(PasswordReset.class))
+		{
+			System.out.println("Adding table: password reset");
+			
+			SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
+			DdlGenerator gen = serv.getDdlGenerator();
+			
+			String resetCodes = "CREATE TABLE resetcodes (id integer primary key, username varchar(255), reset_code varchar(255));";
+			
+			gen.runScript(true, resetCodes);
 		}
 		
 		if (getDatabase().find(Group.class).where().ieq("group_name", "Global").findRowCount() == 0)
 		{
+			//Update database to include the global group
+			
 			Group g = new Group("Global");
 			g.setPermissions("server.chat.view;server.players.view;");
 			getDatabase().save(g);
+		}
+		
+		try
+		{
+			db.find(com.mcapanel.web.database.Server.class).findList();
+		} catch (PersistenceException e)
+		{
+			//Update database to include java_args
+			
+			SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
+			DdlGenerator gen = serv.getDdlGenerator();
+			
+			gen.runScript(true, "ALTER TABLE servers ADD java_args varchar(255);");
 		}
 		
 		ExpressionList<User> users = getDatabase().find(User.class).where().eq("uuid", "");
 		
 		if (users.findRowCount() > 0)
 		{
+			//Get players username's from the API
+			
 			final List<User> userList = users.findList();
 			
 			new Thread(new Runnable() {

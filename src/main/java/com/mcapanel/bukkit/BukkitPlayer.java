@@ -14,6 +14,8 @@ public class BukkitPlayer
 	private String health;
 	private String food;
 	
+	private String inventory;
+	
 	public BukkitPlayer(String name)
 	{
 		this.name = name;
@@ -94,5 +96,13 @@ public class BukkitPlayer
 		this.food = food;
 	}
 	
-	
+	public String getInventory()
+	{
+		return inventory;
+	}
+
+	public void setInventory(String inventory)
+	{
+		this.inventory = inventory;
+	}
 }

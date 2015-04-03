@@ -81,11 +81,13 @@ public class SettingsController extends Controller
 			{
 				String serverjar = request.getParameter("serverjar");
 				String servername = request.getParameter("servername");
+				String javaargs = request.getParameter("javaargs");
 				String minmemory = request.getParameter("minmemory");
 				String maxmemory = request.getParameter("maxmemory");
 				
 				bukkitServer.setServerJar(serverjar);
 				bukkitServer.setName(servername);
+				bukkitServer.setJavaArgs(javaargs);
 				bukkitServer.setMinMemory(minmemory);
 				bukkitServer.setMaxMemory(maxmemory);
 				
@@ -95,6 +97,7 @@ public class SettingsController extends Controller
 				{
 					serv.setServerJar(serverjar);
 					serv.setName(servername);
+					serv.setJavaArgs(javaargs);
 					serv.setMinMemory(minmemory);
 					serv.setMaxMemory(maxmemory);
 					

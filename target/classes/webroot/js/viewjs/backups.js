@@ -59,6 +59,8 @@ $(function() {
 	});
 	
 	$("#backupmodal .btn-primary").on("click", function() {
+		console.log($("#schedulebackupform").serialize());
+		
 		$.post("/backups/schedule", $("#schedulebackupform").serialize(), function(data) {
 			if (data.good != undefined)
 			{

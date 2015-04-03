@@ -301,6 +301,21 @@ function deleteServer(e)
 						</div>
 						<div class="form-group">
 							<div class="col-sm-4">
+								<label for="serverjar">Java Arguments</label><br />
+								Arguments for the Java run time environment.
+							</div>
+							<div class="col-sm-8">
+								<br />
+								<input type="text" class="form-control"
+									id="javaargs" name="javaargs"
+									value="${bukkitServer.getJavaArgs()}"
+									${user.getGroup().hasPermission("server.properties.edit") ? "" : "disabled"}
+								>
+							</div>
+							<br style="clear: both;" />
+						</div>
+						<div class="form-group">
+							<div class="col-sm-4">
 								<label for="minmemory">Minimum Memory</label><br />
 								The minimum amount of memory that the server will run on. (Ex. 1024m)
 							</div>

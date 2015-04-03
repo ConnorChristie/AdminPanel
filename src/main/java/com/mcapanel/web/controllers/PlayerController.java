@@ -2,6 +2,7 @@ package com.mcapanel.web.controllers;
 
 import java.io.IOException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -22,8 +23,6 @@ public class PlayerController extends Controller
 	{
 		if (arguments.size() == 1)
 		{
-			includeSidebar();
-			
 			String pRet = bukkitServer.getPluginConnector().sendMethodResponse("getPlayer", arguments.get(0));
 			
 			if (pRet != null)
@@ -48,6 +47,11 @@ public class PlayerController extends Controller
 					
 					pl.setHealth(player.get("health").toString());
 					pl.setFood(player.get("food").toString());
+					
+					if ((Boolean) player.get("online"))
+					{
+						pl.setInventory(player.get("inventory").toString());
+					}
 					
 					request.setAttribute("player", pl);
 				

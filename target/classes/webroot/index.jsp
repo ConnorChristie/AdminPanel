@@ -102,12 +102,11 @@
 			.item span {
 				text-shadow: 1px 1px black;
 				position: absolute;
-				bottom: 0;
-				right: 0;
-				width: 18px;
+				bottom: -5px;
+				right: 3px;
 				height: 20px;
 				color: white;
-				font-size: 18px;
+				font-size: 13px;
 				font-weight: bold;
 			}
 		</style>
