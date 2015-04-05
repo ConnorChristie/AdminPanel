@@ -85,11 +85,11 @@ public class SettingsController extends Controller
 				String minmemory = request.getParameter("minmemory");
 				String maxmemory = request.getParameter("maxmemory");
 				
-				bukkitServer.setServerJar(serverjar);
 				bukkitServer.setName(servername);
 				bukkitServer.setJavaArgs(javaargs);
 				bukkitServer.setMinMemory(minmemory);
 				bukkitServer.setMaxMemory(maxmemory);
+				bukkitServer.setServerJar(serverjar);
 				
 				Server serv = db.find(Server.class, bukkitServer.getId());
 				

@@ -56,10 +56,9 @@ public class BackupHandler
 		for (BackupSchedule bs : scheds)
 		{
 			BackupInterval.Interval i = BackupInterval.Interval.getFromString(bs.getIntervalString());
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm a");
 			
 			long nextBackup = bs.getLastBackup() + (bs.getInterval() * i.getMult());
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm a");
 			
 			if (System.currentTimeMillis() >= nextBackup)
 			{
@@ -68,7 +67,7 @@ public class BackupHandler
 				
 				backupNow(bs);
 				
-				return;
+				continue;
 			}
 			
 			scheduleBackup(bs);

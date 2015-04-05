@@ -60,10 +60,10 @@ public class BukkitServer
 	
 	public BukkitServer(Server server)
 	{
-		this(server.getId(), server.getName(), new File(server.getServerJar()), server.getMinMemory(), server.getMaxMemory());
+		this(server.getId(), server.getName(), new File(server.getServerJar()), server.getMinMemory(), server.getMaxMemory(), server.getJavaArgs());
 	}
 	
-	private BukkitServer(int id, String serverName, File serverJar, String minMemory, String maxMemory)
+	private BukkitServer(int id, String serverName, File serverJar, String minMemory, String maxMemory, String javaArgs)
 	{
 		this.ap = AdminPanelWrapper.getInstance();
 		
@@ -76,30 +76,33 @@ public class BukkitServer
 		this.minMemory = minMemory;
 		this.maxMemory = maxMemory;
 		
+		this.javaArgs = javaArgs;
+		
 		this.bukkitConfig = new BukkitConfig(serverJar);
 		this.serverStatus = ServerStatus.STOPPED;
 		
 		pluginConnector = new PluginConnector(this);
+		processBuilder = buildProcess();
 		
+		copyPlugin();
+	}
+	
+	private ProcessBuilder buildProcess()
+	{
 		List<String> commandList = new ArrayList<String>();
 		
 		commandList.add("java");
 		commandList.add("-Djline.terminal=jline.UnsupportedTerminal");
 		commandList.add("-Xms" + minMemory);
 		commandList.add("-Xmx" + maxMemory);
-		commandList.addAll(new ArrayList<String>(Arrays.asList(javaArgs.split(" "))));
 		commandList.add("-jar");
 		commandList.add(serverJar.getAbsolutePath());
+		commandList.addAll(new ArrayList<String>(Arrays.asList(javaArgs.split(","))));
 		
-		for (String l : commandList)
-		{
-			System.out.println("Command: " + l);
-		}
-		
-		processBuilder = new ProcessBuilder(commandList);
+		ProcessBuilder processBuilder = new ProcessBuilder(commandList);
 		processBuilder.directory(serverJar.getParentFile());
 		
-		copyPlugin();
+		return processBuilder;
 	}
 	
 	public int getId()
@@ -135,8 +138,8 @@ public class BukkitServer
 				outReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				errReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 				
-				new Thread(new BukkitConsoleReader(false)).start();
-				new Thread(new BukkitConsoleReader(true)).start();
+				new Thread(new BukkitConsoleReader(this, false)).start();
+				new Thread(new BukkitConsoleReader(this, true)).start();
 			} catch (IOException ex)
 			{
 				System.out.println("Error starting server... Please try again.");
@@ -144,6 +147,37 @@ public class BukkitServer
 				serverStatus = ServerStatus.STOPPED;
 			}
 		}
+	}
+	
+	public void errorStop()
+	{
+		serverStatus = ServerStatus.STOPPED;
+		
+		try
+		{
+			writer.write("stop\n".getBytes());
+			writer.flush();
+		} catch (IOException e) { }
+		
+		try
+		{
+			process.waitFor();
+		} catch (InterruptedException e) { }
+		
+		try
+		{
+			writer.close();
+		} catch (IOException e) { }
+		
+		try
+		{
+			outReader.close();
+		} catch (IOException e) { }
+		
+		try
+		{
+			errReader.close();
+		} catch (IOException e) { }
 	}
 	
 	public void stopServer(final boolean restart)
@@ -294,15 +328,7 @@ public class BukkitServer
 	{
 		serverJar = new File(jar);
 		
-		processBuilder = new ProcessBuilder(new String[] {
-			"java",
-			"-Djline.terminal=jline.UnsupportedTerminal",
-			"-Xms" + minMemory,
-			"-Xmx" + maxMemory,
-			"-jar", serverJar.getAbsolutePath()
-		});
-		
-		processBuilder.directory(serverJar.getParentFile());
+		processBuilder = buildProcess();
 		
 		bukkitConfig = new BukkitConfig(serverJar);
 	}
@@ -343,10 +369,12 @@ public class BukkitServer
 	
 	private class BukkitConsoleReader implements Runnable
 	{
+		private BukkitServer bServer = null;
 		private boolean isErr = false;
 		
-		public BukkitConsoleReader(boolean isErr)
+		public BukkitConsoleReader(BukkitServer bServer, boolean isErr)
 		{
+			this.bServer = bServer;
 			this.isErr = isErr;
 		}
 		
@@ -460,6 +488,8 @@ public class BukkitServer
 						sb.append(c);
 					}
 				}
+				
+				if (!isErr) bServer.errorStop();
 			} catch (Exception ex)
 			{
 				ex.printStackTrace();

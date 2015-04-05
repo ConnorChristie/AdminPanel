@@ -442,7 +442,7 @@ public class AdminPanelWrapper
 			SpiEbeanServer serv = (SpiEbeanServer) getDatabase();
 			DdlGenerator gen = serv.getDdlGenerator();
 			
-			gen.runScript(true, "ALTER TABLE servers ADD java_args varchar(255);");
+			gen.runScript(true, "ALTER TABLE servers ADD java_args varchar(255) DEFAULT `` NOT NULL;");
 		}
 		
 		ExpressionList<User> users = getDatabase().find(User.class).where().eq("uuid", "");
